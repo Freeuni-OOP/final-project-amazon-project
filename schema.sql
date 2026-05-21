@@ -2,11 +2,57 @@ DROP TABLE IF EXISTS Users;
 
 CREATE TABLE Users (
     ID SERIAL PRIMARY KEY,
-    First_Name VARCHAR(50) NOT NULL,
-    Last_Name VARCHAR(100) NOT NULL,
     Email VARCHAR(150) NOT NULL,
+    Balance NUMERIC(10, 2) NOT NULL DEFAULT 1000.00,
     Gender VARCHAR(10),
     Birth_Date DATE,
-    UserName VARCHAR(50) UNIQUE NOT NULL,
+    UserName VARCHAR(50)  NOT NULL UNIQUE,
     Pass_Encrypted VARCHAR(500) NOT NULL
-)
+);
+
+DROP TABLE IF EXISTS Categories;
+
+CREATE TABLE Categories (
+    Category_ID SERIAL PRIMARY KEY,
+    Category VARCHAR(100) NOT NULL UNIQUE
+);
+
+DROP TABLE IF EXISTS Products;
+
+CREATE TABLE Products (
+    Product_ID SERIAL PRIMARY KEY,
+    Seller_ID INTEGER NOT NULL REFERENCES Users(ID),
+    Category_ID INTEGER NOT NULL REFERENCES Categories(Category_ID),
+    ProductName VARCHAR(300) NOT NULL,
+    Price NUMERIC(10, 2) NOT NULL,
+    Quantity INTEGER NOT NULL
+);
+
+DROP TABLE IF EXISTS Orders;
+
+CREATE TABLE Orders (
+    Order_ID SERIAL PRIMARY KEY,
+    Seller_ID INTEGER NOT NULL REFERENCES Users(ID),
+    Buyer_ID INTEGER NOT NULL REFERENCES Users(ID),
+    Total_Amount NUMERIC(10, 2) NOT NULL,
+    Order_Date TIMESTAMP NOT NULL
+);
+
+DROP TABLE IF EXISTS Order_Details;
+
+CREATE TABLE Order_Details (
+    Order_Details_ID SERIAL PRIMARY KEY,
+    Product_ID INTEGER NOT NULL REFERENCES Products(Product_ID),
+    Order_ID INTEGER NOT NULL REFERENCES Orders(Order_ID),
+    Quantity INTEGER NOT NULL,
+    Amount NUMERIC(10, 2) NOT NULL
+);
+
+DROP TABLE IF EXISTS Transactions;
+
+CREATE TABLE Transactions (
+    Transaction_ID SERIAL PRIMARY KEY,
+    Order_ID INTEGER NOT NULL REFERENCES Orders(Order_ID),
+    Amount NUMERIC(10,2) NOT NULL,
+    Payment_Status VARCHAR(50) NOT NULL DEFAULT 'Pending'
+);
