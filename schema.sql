@@ -1,0 +1,12 @@
+DROP TABLE IF EXISTS Users;
+
+CREATE TABLE Users (
+    ID SERIAL PRIMARY KEY,
+    First_Name VARCHAR(50) NOT NULL,
+    Last_Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(150) NOT NULL,
+    Gender VARCHAR(10),
+    Birth_Date DATE,
+    UserName VARCHAR(50) UNIQUE NOT NULL,
+    Pass_Encrypted VARCHAR(500) NOT NULL
+)
