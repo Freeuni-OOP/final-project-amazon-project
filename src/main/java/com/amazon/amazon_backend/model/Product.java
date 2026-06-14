@@ -22,9 +22,10 @@ public class Product {
     @Column(name = "Description", length = 800)
     private String description;
 
-    @Column(name = "Seller_ID", nullable = false)
-    private Integer sellerId;
-
+    @ManyToOne
+    @JoinColumn(name = "Seller_ID", nullable = false)
+    private User seller;
+    
     @Column(name = "Category_ID", nullable = false)
     private Integer categoryId;
 
