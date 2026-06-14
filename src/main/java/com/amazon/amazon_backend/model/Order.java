@@ -18,13 +18,14 @@ public class Order {
     @Column(name="Order_ID")
     private Long orderId;
 
-    @Column(name="Buyer_ID")
+    @ManyToOne
+    @JoinColumn(name="Buyer_ID", nullable = false)
     private Long buyerId;
 
-    @Column(name="Total_Amount")
+    @Column(name="Total_Amount", nullable = false)
     private double totalAmount;
 
-    @Column(name="Order_Date")
+    @Column(name="Order_Date", nullable = false)
     private LocalDateTime datetime;
 
     public Order(Long buyerId,
