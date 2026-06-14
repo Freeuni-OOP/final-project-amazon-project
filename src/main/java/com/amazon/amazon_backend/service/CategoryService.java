@@ -14,11 +14,7 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    public CategoryResponse getCategoryById(Integer id){
-        return toCategoryResponse(categoryRepository.findCategoryById(id).orElseThrow(() -> new NoSuchElementException("Category not found")));
-    }
-
-    public CategoryResponse getCategoryByName(String name){
-        return toCategoryResponse(categoryRepository.findCategoryByName(name).orElseThrow(() -> new NoSuchElementException("Category not found")));
+    public CategoryResponse getByCategoryName(String name){
+        return toCategoryResponse(categoryRepository.findByCategoryName(name).orElseThrow(() -> new NoSuchElementException("Category not found")));
     }
 }

@@ -14,13 +14,8 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/id/{id}")
-    public CategoryResponse getCategoryById(@PathVariable Integer id) {
-        return categoryService.getCategoryById(id);
-    }
-
     @GetMapping("/name/{name}")
-    public CategoryResponse getCategoryByName(@PathVariable String name){
-        return categoryService.getCategoryByName(name);
+    public CategoryResponse getByCategoryName(@PathVariable String name){
+        return categoryService.getByCategoryName(name);
     }
 }
