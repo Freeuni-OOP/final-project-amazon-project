@@ -17,4 +17,8 @@ public class CategoryService {
     public CategoryResponse getCategoryById(Long id){
         return toCategoryResponse(categoryRepository.findCategoryById(id).orElseThrow(() -> new NoSuchElementException("Category not found")));
     }
+
+    public CategoryResponse getCategoryByName(String name){
+        return toCategoryResponse(categoryRepository.findCategoryByName(name).orElseThrow(() -> new NoSuchElementException("Category not found")));
+    }
 }
