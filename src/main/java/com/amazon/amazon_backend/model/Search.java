@@ -5,11 +5,9 @@ import java.util.ArrayList;
 
 public class Search {
 
-    // Object to reach data of all products
-    private ProductRepository productRepository;
 
     public Search(){
-        productRepository = new ProductRepository();
+
     }
 
     public ArrayList<Product> getProductsWithName(String productName){
