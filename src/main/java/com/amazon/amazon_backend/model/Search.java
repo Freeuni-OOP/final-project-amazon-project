@@ -1,5 +1,4 @@
 package com.amazon.amazon_backend.model;
-import com.amazon.amazon_backend.repository.ProductRepository;
 
 import java.util.ArrayList;
 
