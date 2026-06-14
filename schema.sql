@@ -11,7 +11,6 @@ CREATE TABLE Users (
 );
 
 DROP TABLE IF EXISTS Categories;
-
 CREATE TABLE Categories (
     Category_ID SERIAL PRIMARY KEY,
     Category VARCHAR(100) NOT NULL UNIQUE
