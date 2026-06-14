@@ -26,8 +26,9 @@ public class Product {
     @JoinColumn(name = "Seller_ID", nullable = false)
     private User seller;
     
-    @Column(name = "Category_ID", nullable = false)
-    private Integer categoryId;
+    @ManyToOne
+    @JoinColumn(name = "Category_ID", nullable = false)
+    private Category category;
 
     @Column(name = "ProductName", nullable = false, length = 300)
     private String productName;
