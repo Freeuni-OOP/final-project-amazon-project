@@ -16,11 +16,11 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="Order_ID")
-    private Long orderId;
+    private Integer orderId;
 
     @ManyToOne
     @JoinColumn(name="Buyer_ID", nullable = false)
-    private Long buyerId;
+    private Integer buyerId;
 
     @Column(name="Total_Amount", nullable = false)
     private double totalAmount;
@@ -28,7 +28,7 @@ public class Order {
     @Column(name="Order_Date", nullable = false)
     private LocalDateTime datetime;
 
-    public Order(Long buyerId,
+    public Order(Integer buyerId,
                  double totalAmount,
                  LocalDateTime datetime){
 

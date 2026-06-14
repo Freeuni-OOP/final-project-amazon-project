@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class OrderTest {
     @Test
     public void testConstructorAndGetters() {
-        Long buyerId=100L;
+        Integer buyerId=100;
         double totalAmount=250.50;
         LocalDateTime datetime=LocalDateTime.now();
 
@@ -26,15 +26,15 @@ public class OrderTest {
     public void testSetters(){
         Order order=new Order();
 
-        order.setBuyerId(205L);
+        order.setBuyerId(205);
         order.setTotalAmount(1999.37);
         LocalDateTime datetime=LocalDateTime.now();
         order.setDatetime(datetime);
-        order.setOrderId(3L);
+        order.setOrderId(3);
 
-        assertEquals(order.getBuyerId(), 205L);
-        assertEquals(order.getTotalAmount(), 1999.37);
+        assertEquals(205, order.getBuyerId());
+        assertEquals(1999.37, order.getTotalAmount());
         assertEquals(datetime, order.getDatetime());
-        assertEquals(3L, order.getOrderId());
+        assertEquals(3, order.getOrderId());
     }
 }
