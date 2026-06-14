@@ -40,7 +40,6 @@ CREATE TABLE Orders (
 CREATE TABLE Order_Details (
     Order_Details_ID INTEGER IDENTITY(1,1) PRIMARY KEY,
     Product_ID INTEGER NOT NULL REFERENCES Products(Product_ID),
-    Seller_ID INTEGER NOT NULL REFERENCES Users(ID),
     Order_ID INTEGER NOT NULL REFERENCES Orders(Order_ID),
     Quantity INTEGER NOT NULL,
     Amount NUMERIC(10, 2) NOT NULL
