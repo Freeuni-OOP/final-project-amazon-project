@@ -20,7 +20,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name="Buyer_ID", nullable = false)
-    private Integer buyerId;
+    private User buyer;
 
     @Column(name="Total_Amount", nullable = false)
     private double totalAmount;
@@ -28,11 +28,11 @@ public class Order {
     @Column(name="Order_Date", nullable = false)
     private LocalDateTime datetime;
 
-    public Order(Integer buyerId,
+    public Order(User buyer,
                  double totalAmount,
                  LocalDateTime datetime){
 
-        this.buyerId=buyerId;
+        this.buyer=buyer;
         this.totalAmount=totalAmount;
         this.datetime=datetime;
     }

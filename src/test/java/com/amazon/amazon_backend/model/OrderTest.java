@@ -1,6 +1,7 @@
 package com.amazon.amazon_backend.model;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties;
 
 import java.time.LocalDateTime;
 
@@ -10,13 +11,14 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class OrderTest {
     @Test
     public void testConstructorAndGetters() {
-        Integer buyerId=100;
+        User buyer=new User();
+        buyer.setId(100);
         double totalAmount=250.50;
         LocalDateTime datetime=LocalDateTime.now();
 
-        Order order=new Order(buyerId, totalAmount, datetime);
+        Order order=new Order(buyer, totalAmount, datetime);
 
-        assertEquals(buyerId, order.getBuyerId());
+        assertEquals(100, order.getBuyer().getId());
         assertEquals(totalAmount, order.getTotalAmount());
         assertEquals(datetime, order.getDatetime());
         assertNull(order.getOrderId());
@@ -25,14 +27,15 @@ public class OrderTest {
     @Test
     public void testSetters(){
         Order order=new Order();
-
-        order.setBuyerId(205);
+        User buyer=new User();
+        buyer.setId(205);
+        order.setBuyer(buyer);
         order.setTotalAmount(1999.37);
         LocalDateTime datetime=LocalDateTime.now();
         order.setDatetime(datetime);
         order.setOrderId(3);
 
-        assertEquals(205, order.getBuyerId());
+        assertEquals(205, order.getBuyer().getId());
         assertEquals(1999.37, order.getTotalAmount());
         assertEquals(datetime, order.getDatetime());
         assertEquals(3, order.getOrderId());
