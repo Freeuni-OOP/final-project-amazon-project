@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "Users")
@@ -31,7 +32,7 @@ public class User {
     @Column(name = "Gender", length = 10)
     private String gender;
 
-    @Column(name = "Birth_Date")
+    @Column(name = "Birth_Date", nullable = false)
     private LocalDate birthDate;
 
     @Column(name = "UserName", nullable = false, unique = true, length = 50)
@@ -40,6 +41,6 @@ public class User {
     @Column(name = "Pass_Encrypted", nullable = false, length = 500)
     private String passEncrypted;
 
-    @OneToOne(mappedBy = "user")
-    private Cart cart;
+    @OneToMany(mappedBy = "user")
+    private List<CartItem> cartItems;
 }

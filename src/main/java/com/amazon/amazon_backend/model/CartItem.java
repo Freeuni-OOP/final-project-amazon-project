@@ -1,4 +1,4 @@
 package com.amazon.amazon_backend.model;
 
-public class Cart {
+public class CartItem {
 }
