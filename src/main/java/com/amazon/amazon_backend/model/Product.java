@@ -19,6 +19,9 @@ public class Product {
     @Column(name = "Product_ID")
     private Integer productId;
 
+    @Column(name = "Description", length = 800)
+    private String description;
+
     @Column(name = "Seller_ID", nullable = false)
     private Integer sellerId;
 
