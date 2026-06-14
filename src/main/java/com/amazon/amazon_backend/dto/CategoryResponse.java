@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-// DTO stands for Data Transfer Object.
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

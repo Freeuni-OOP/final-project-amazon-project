@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Slf4j // This gives you access to a standardized logging tool (log.info(...)). It replaces the amateurish System.out.println()
-@Component // this tells Spring to initialize all the objects when needed
-@RequiredArgsConstructor // creates constructor with parameter categoryRepository
+@Slf4j
+@Component
+@RequiredArgsConstructor
 public class CategoryRepositorySeeder implements CommandLineRunner {
 
     private final CategoryRepository categoryRepository;
