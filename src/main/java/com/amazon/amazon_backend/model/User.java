@@ -27,7 +27,7 @@ public class User {
     private String email;
 
     @Column(name = "Balance", nullable = false)
-    private BigDecimal balance = BigDecimal.valueOf(1000.00);
+    private Double balance = 1000.00;
 
     @Column(name = "Gender", length = 10)
     private String gender;
