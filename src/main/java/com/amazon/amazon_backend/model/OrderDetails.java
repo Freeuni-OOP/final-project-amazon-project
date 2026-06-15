@@ -33,6 +33,10 @@ public class OrderDetails {
     @Column(name = "Amount", nullable = false)
     private BigDecimal amount;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "transaction_id")
+    private Transaction transaction;
+
     public OrderDetails(Integer orderDetailID, Product product,
                         Order order, Integer quantity, BigDecimal amount){
         this.orderDetailID=orderDetailID;
