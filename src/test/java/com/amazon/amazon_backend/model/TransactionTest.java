@@ -2,7 +2,11 @@ package com.amazon.amazon_backend.model;
 
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+
 
 class TransactionTest {
 
@@ -28,4 +32,17 @@ class TransactionTest {
         assertEquals(amount, transaction.getTotalAmount());
         assertEquals(TransactionStatus.PENDING, transaction.getStatus());
     }
+
+    @Test
+    void testOnCreate() {
+        Transaction transaction = new Transaction();
+        assertThat(transaction.getCreatedAt()).isNull();
+
+        transaction.onCreate();
+
+        assertThat(transaction.getCreatedAt()).isNotNull();
+
+        assertThat(transaction.getCreatedAt()).isBeforeOrEqualTo(LocalDateTime.now());
+    }
+
 }
