@@ -28,7 +28,7 @@ public class CategoryControllerTest {
     private CategoryService service;
 
     @InjectMocks
-    private CategoryController categoryController; // 1. Instantiate the actual controller under test
+    private CategoryController categoryController;
 
     @BeforeEach
     public void setUp() {
