@@ -22,7 +22,7 @@ class OrderDetailsTest {
         Transaction transaction=new Transaction();
         transaction.setId(3);
 
-        OrderDetails orderDetail=new OrderDetails(null, product, order, quantity, amount, transaction);
+        OrderDetails orderDetail=new OrderDetails(null, product, order, quantity, amount);
 
         assertNull(orderDetail.getOrderDetailID());
         assertEquals(84, orderDetail.getProduct().getProductId());

@@ -38,12 +38,11 @@ public class OrderDetails {
     private Transaction transaction;
 
     public OrderDetails(Integer orderDetailID, Product product,
-                        Order order, Integer quantity, BigDecimal amount, Transaction transaction){
+                        Order order, Integer quantity, BigDecimal amount){
         this.orderDetailID=orderDetailID;
         this.product=product;
         this.order=order;
         this.quantity=quantity;
         this.amount=amount;
-        this.transaction=transaction;
     }
 }
