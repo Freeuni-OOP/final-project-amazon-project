@@ -15,6 +15,7 @@ public class UserConverter {
         response.setEmail(user.getEmail());
         response.setBalance(user.getBalance());
         response.setGender(user.getGender());
+        response.setBirthday(user.getBirthDate());
 
         return response;
     }
