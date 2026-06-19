@@ -97,6 +97,7 @@ public class ProductService {
                 .quantity(quantity)
                 .seller(seller)
                 .category(category)
+                .imgUrl(imgUrl)
                 .build();
 
         return toProductResponse(productRepository.save(product));
