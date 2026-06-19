@@ -33,7 +33,7 @@ public class Transaction {
     @JoinColumn(name = "Seller_ID")
     private User seller;
 
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(name = "Amount", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalAmount;
 
     @Enumerated(EnumType.STRING)
