@@ -42,14 +42,18 @@ CREATE TABLE Order_Details (
     Product_ID INTEGER NOT NULL REFERENCES Products(Product_ID),
     Order_ID INTEGER NOT NULL REFERENCES Orders(Order_ID),
     Quantity INTEGER NOT NULL,
-    Amount NUMERIC(10, 2) NOT NULL
+    Amount NUMERIC(10, 2) NOT NULL,
+    transaction_id INTEGER NOT NULL REFERENCES Transactions(transaction_id)
 );
 
 CREATE TABLE Transactions (
-    Transaction_ID INTEGER IDENTITY(1,1) PRIMARY KEY,
+    transaction_id INTEGER IDENTITY(1,1) PRIMARY KEY,
     Order_ID INTEGER NOT NULL REFERENCES Orders(Order_ID),
+    Buyer_ID INTEGER NOT NULL REFERENCES Users(ID),
+    Seller_ID INTEGER NOT NULL REFERENCES Users(ID),
     Amount NUMERIC(10,2) NOT NULL,
-    Payment_Status VARCHAR(50) NOT NULL DEFAULT 'Pending'
+    Payment_Status VARCHAR(50) NOT NULL DEFAULT 'Pending',
+    Created_At DATETIME2 NOT NULL
 );
 
 CREATE TABLE Cart_Items (
