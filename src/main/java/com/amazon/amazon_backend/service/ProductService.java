@@ -43,19 +43,19 @@ public class ProductService {
         return toProductResponse(productRepository.findById(id).orElseThrow(()-> new NoSuchElementException("Product not found.")));
     }
 
-    public List<ProductResponse> SearchProductsByName(String name) {
+    public List<ProductResponse> searchProductsByName(String name) {
         return toProductResponseList(productRepository.findByProductNameContainingIgnoreCase(name));
     }
 
-    public List<ProductResponse> SearchProductsByCategoryId(Integer categoryId) {
+    public List<ProductResponse> searchProductsByCategoryId(Integer categoryId) {
         return toProductResponseList(productRepository.findByCategory_CategoryId(categoryId));
     }
 
-    public List<ProductResponse> SearchProductsByCategoryName(String categoryName){
+    public List<ProductResponse> searchProductsByCategoryName(String categoryName){
         return toProductResponseList(productRepository.findByCategory_CategoryNameIgnoreCase(categoryName));
     }
 
-    public List<ProductResponse> SearchProductsBySellerId(Integer sellerId){
+    public List<ProductResponse> searchProductsBySellerId(Integer sellerId){
         return toProductResponseList(productRepository.findBySeller_Id(sellerId));
     }
 
