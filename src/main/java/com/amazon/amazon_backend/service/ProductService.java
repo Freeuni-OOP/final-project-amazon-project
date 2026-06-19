@@ -63,8 +63,8 @@ public class ProductService {
         if(request.getProductName() == null || request.getProductName().isBlank()){
             throw new IllegalArgumentException("Product name is required.");
         }
-        if(request.getPrice() == null || request.getPrice().compareTo(BigDecimal.ZERO) < 0){
-            throw new IllegalArgumentException("Price is required and cannot be negative.");
+        if(request.getPrice() == null || request.getPrice().compareTo(BigDecimal.ZERO) <= 0){
+            throw new IllegalArgumentException("Price is required and cannot be negative or zero.");
         }
         if(request.getSellerId() == null){
             throw new IllegalArgumentException("Seller id is required.");
@@ -111,8 +111,8 @@ public class ProductService {
 
 
     public ProductResponse updatePrice(Integer id, PriceUpdateRequest request){
-        if(request.getPrice() == null || request.getPrice().compareTo(BigDecimal.ZERO) < 0){
-            throw new IllegalArgumentException("Price is required and cannot be negative");
+        if(request.getPrice() == null || request.getPrice().compareTo(BigDecimal.ZERO) <= 0){
+            throw new IllegalArgumentException("Price is required and cannot be negative or zero");
         }
         Product product = findProduct(id);
         product.setPrice(request.getPrice());
