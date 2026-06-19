@@ -26,23 +26,23 @@ public class ProductController {
 
     @GetMapping("/search")
     public List<ProductResponse> searchProductsByName(@RequestParam String name) {
-        return productService.SearchProductsByName(name);
+        return productService.searchProductsByName(name);
     }
 
     @GetMapping("/category/{categoryId}")
     public List<ProductResponse> getProductsByCategoryId(@PathVariable Integer categoryId) {
-        return productService.SearchProductsByCategoryId(categoryId);
+        return productService.searchProductsByCategoryId(categoryId);
 
     }
 
     @GetMapping("/category-name/{categoryName}")
     public List<ProductResponse> getProductsByCategoryName(@PathVariable String categoryName) {
-        return productService.SearchProductsByCategoryName(categoryName);
+        return productService.searchProductsByCategoryName(categoryName);
     }
 
     @GetMapping("/seller/{sellerId}")
     public List<ProductResponse> getProductsBySellerId(@PathVariable Integer sellerId) {
-        return productService.SearchProductsBySellerId(sellerId);
+        return productService.searchProductsBySellerId(sellerId);
     }
 
     @PostMapping
