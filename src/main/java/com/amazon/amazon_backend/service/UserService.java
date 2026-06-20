@@ -5,6 +5,7 @@ import com.amazon.amazon_backend.dto.UserResponse;
 import com.amazon.amazon_backend.dto.UserUpdateRequests;
 import com.amazon.amazon_backend.model.User;
 import com.amazon.amazon_backend.repository.UserRepository;
+import com.amazon.amazon_backend.utility.PassEncryption;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,10 +63,11 @@ public class UserService {
             throw new IllegalArgumentException("User with this email already exists.");
         }
 
+        String hashedPassword = PassEncryption.hashPassword(request.getPassword());
         User user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
-                .passEncrypted(request.getPassword())
+                .passEncrypted(hashedPassword)
                 .gender(request.getGender())
                 .birthDate(request.getBirthDate())
                 .balance(INITIAL_BALANCE)
