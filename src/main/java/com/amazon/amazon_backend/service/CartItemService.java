@@ -45,26 +45,31 @@ public class CartItemService {
         return toCartItemResponseList(cartItemRepository.findByProduct_ProductId(productId));
     }
 
-    @Transactional
-    public CartItemResponse updateCartItem(CartItemRequest request){
-        if(request.getUserId()== null || request.getProductId() == null){
-            throw new IllegalArgumentException("userID and productID are required");
+   @Transactional
+    public CartItemResponse addCartItem(CartItemRequest request){
+        if(request.getUserId() == null || request.getProductId() == null){
+            throw new IllegalArgumentException("userId and productId are required");
         }
+        
         if(request.getQuantity() == null){
-            throw new IllegalArgumentException("Quantity is required.");
+            request.setQuantity(1);
+        }
+
+        if(request.getQuantity() <= 0){
+            throw new IllegalArgumentException("Quantity must be greater than 0.");
         }
 
         Optional<CartItem> existing = cartItemRepository.findByUser_IdAndProduct_ProductId(request.getUserId(), request.getProductId());
 
-        if (request.getQuantity() <= 0) {
-            existing.ifPresent(cartItemRepository::delete);
-            return null;
+        if (existing.isPresent()) {
+            CartItem cartItem = existing.get();
+            cartItem.setQuantity(cartItem.getQuantity() + request.getQuantity());
+            return toCartItemResponse(cartItemRepository.save(cartItem));
         }
 
-        if (existing.isPresent()) {
-                CartItem cartItem = existing.get();
-                cartItem.setQuantity(request.getQuantity());
-                return toCartItemResponse(cartItemRepository.save(cartItem));
+        long distinctItemCount = cartItemRepository.countByUser_Id(request.getUserId());
+        if(distinctItemCount >= MAX_DISTINCT_ITEMS){
+            throw new IllegalStateException("There cannot be more than " + MAX_DISTINCT_ITEMS + " distinct items in the cart");
         }
 
         User user = userRepository.findById(request.getUserId())
@@ -72,16 +77,32 @@ public class CartItemService {
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(() -> new NoSuchElementException("Product not found."));
 
-        long distinctItemCount = cartItemRepository.countByUser_Id(request.getUserId());
-        if(distinctItemCount >= MAX_DISTINCT_ITEMS){
-            throw new IllegalStateException("There cannot be  more than " + MAX_DISTINCT_ITEMS + " distinct items in the cart");
-        }
-
         CartItem cartItem = new CartItem();
         cartItem.setUser(user);
         cartItem.setProduct(product);
         cartItem.setQuantity(request.getQuantity());
 
+        return toCartItemResponse(cartItemRepository.save(cartItem));
+    }
+    
+    @Transactional
+    public CartItemResponse updateCartItem(CartItemRequest request){
+        if(request.getUserId()== null || request.getProductId() == null){
+            throw new IllegalArgumentException("userId and productId are required");
+        }
+        
+        if(request.getQuantity() == null){
+            request.setQuantity(1);
+        }
+
+        if(request.getQuantity() <= 0){
+            throw new IllegalArgumentException("Quantity must be greater than 0");
+        }
+
+        CartItem cartItem = cartItemRepository.findByUser_IdAndProduct_ProductId(request.getUserId(), request.getProductId())
+                .orElseThrow(() -> new NoSuchElementException("Cart item not found for this user and product."));
+
+        cartItem.setQuantity(request.getQuantity());
         return toCartItemResponse(cartItemRepository.save(cartItem));
     }
 
