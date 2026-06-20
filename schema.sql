@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS Transactions;
 DROP TABLE IF EXISTS Order_Details;
+DROP TABLE IF EXISTS Transactions;
 DROP TABLE IF EXISTS Orders;
 DROP TABLE IF EXISTS Cart_Items;
 DROP TABLE IF EXISTS Products;
@@ -37,15 +37,6 @@ CREATE TABLE Orders (
     Order_Date TIMESTAMP NOT NULL
 );
 
-CREATE TABLE Order_Details (
-    Order_Details_ID INTEGER IDENTITY(1,1) PRIMARY KEY,
-    Product_ID INTEGER NOT NULL REFERENCES Products(Product_ID),
-    Order_ID INTEGER NOT NULL REFERENCES Orders(Order_ID),
-    Quantity INTEGER NOT NULL,
-    Amount NUMERIC(10, 2) NOT NULL,
-    transaction_id INTEGER NOT NULL REFERENCES Transactions(transaction_id)
-);
-
 CREATE TABLE Transactions (
     transaction_id INTEGER IDENTITY(1,1) PRIMARY KEY,
     Order_ID INTEGER NOT NULL REFERENCES Orders(Order_ID),
@@ -54,6 +45,15 @@ CREATE TABLE Transactions (
     Amount NUMERIC(10,2) NOT NULL,
     Payment_Status VARCHAR(50) NOT NULL DEFAULT 'Pending',
     Created_At DATETIME2 NOT NULL
+);
+
+CREATE TABLE Order_Details (
+    Order_Details_ID INTEGER IDENTITY(1,1) PRIMARY KEY,
+    Product_ID INTEGER NOT NULL REFERENCES Products(Product_ID),
+    Order_ID INTEGER NOT NULL REFERENCES Orders(Order_ID),
+    Quantity INTEGER NOT NULL,
+    Amount NUMERIC(10, 2) NOT NULL,
+    transaction_id INTEGER NOT NULL REFERENCES Transactions(transaction_id)
 );
 
 CREATE TABLE Cart_Items (
