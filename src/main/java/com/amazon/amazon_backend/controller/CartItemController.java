@@ -33,6 +33,11 @@ public class CartItemController {
 
     }
 
+    @PostMapping("/add")
+    public CartItemResponse addCartItem(@RequestBody CartItemRequest request) {
+        return cartItemService.addCartItem(request);
+    }
+    
     @PostMapping("/update")
     public CartItemResponse updateCartItem(@RequestBody CartItemRequest request) {
         return cartItemService.updateCartItem(request);
