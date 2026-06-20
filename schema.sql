@@ -12,7 +12,7 @@ CREATE TABLE Users (
     Balance NUMERIC(10, 2) NOT NULL DEFAULT 1000.00,
     Gender VARCHAR(10),
     Birth_Date DATE NOT NULL ,
-    UserName VARCHAR(50)  NOT NULL UNIQUE,
+    Username VARCHAR(50)  NOT NULL UNIQUE,
     Pass_Encrypted VARCHAR(500) NOT NULL
 );
 
