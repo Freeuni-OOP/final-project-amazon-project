@@ -11,7 +11,9 @@ public class TransactionConverter {
         return TransactionResponse.builder()
                 .id(transaction.getId())
                 .orderId(transaction.getOrder().getOrderId())
+                .buyerId(transaction.getBuyer().getId())
                 .buyerName(transaction.getBuyer().getUsername())
+                .sellerId(transaction.getSeller().getId())
                 .sellerName(transaction.getSeller().getUsername())
                 .totalAmount(transaction.getTotalAmount())
                 .status(transaction.getStatus())
@@ -21,7 +23,7 @@ public class TransactionConverter {
 
     public static List<TransactionResponse> tranListToTranRespList(List<Transaction> transactions){
         return transactions.stream()
-                .map(com.amazon.amazon_backend.utility.TransactionConverter::toTranResp)
+                .map(TransactionConverter::toTranResp)
                 .collect(Collectors.toList());
     }
 }

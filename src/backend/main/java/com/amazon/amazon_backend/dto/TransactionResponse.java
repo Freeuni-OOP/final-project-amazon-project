@@ -13,9 +13,15 @@ import java.time.LocalDateTime;
 public class TransactionResponse {
     private Integer id;
     private Integer orderId;
+
+    private Integer buyerId;
     private String buyerName;
+
+    private Integer sellerId;
     private String sellerName;
+
     private BigDecimal totalAmount;
     private TransactionStatus status;
     private LocalDateTime createdAt;
+
 }
