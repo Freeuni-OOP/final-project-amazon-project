@@ -13,8 +13,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import static com.amazon.amazon_backend.utility.TransactionConverter.toTranResp;
-import static com.amazon.amazon_backend.utility.TransactionConverter.tranListToTranRespList;
+import static com.amazon.amazon_backend.utility.TransactionConverter.*;
 
 @Service
 public class TransactionService {
@@ -35,7 +34,7 @@ public class TransactionService {
     }
 
     public TransactionResponse getTransactionById(Integer transactionId){
-        return toTranResp(tranRepo.findById(transactionId)
+        return toDetailedTranResp(tranRepo.findById(transactionId)
                 .orElseThrow(() -> new NoSuchElementException("Transaction not found with ID: " + transactionId)));
     }
 
@@ -74,7 +73,7 @@ public class TransactionService {
 
         transaction.setStatus(newStatus);
         Transaction updatedTransaction = tranRepo.save(transaction);
-        return toTranResp(updatedTransaction);
+        return toDetailedTranResp(updatedTransaction);
     }
 
 }
