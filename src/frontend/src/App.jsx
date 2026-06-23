@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import './index.css';
+import './App.css';
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -8,7 +8,6 @@ function App() {
     fetch('http://localhost:8080/products')
         .then(data => data.json())
         .then(fetchedProducts => {
-            console.log(fetchedProducts); // <-- Look at this in your browser DevTools Console!
             setProducts(fetchedProducts);
         })
         .catch(() => alert("Products not found"));
@@ -17,7 +16,7 @@ function App() {
   return (
       <div>
         <nav id="navbar">
-          <img src="../public/images/light-logo.png" alt=""/>
+          <img src="../public/images/dark-logo.png" alt=""/>
           <input type="text" id="search-item" name="search" placeholder="Search Amazon ..."/>
           <div className="navbar-btns">
             <button className="sign-in">Sign In</button>
@@ -29,20 +28,20 @@ function App() {
           {products.map((product) => {
             return (
                 <div key={product.productId} className="product">
-                    <img src={product.imgUrl} alt={product.productName}/>
-                    <p>Description: {product.description}</p>
-                    <p>Price: {product.price}</p>
-                    <p>Quantity: {product.quantity}</p>
-                    <p>Category: {product.categoryName}</p>
-                    <p>Seller: {product.sellerName}</p>
+                    <img src={product.imgUrl} alt=""/>
+                    <p class="productName">{product.productName}</p>
+                    <p class="price">Price: {product.price}$</p>
+                    <p class="quantity">Quantity: {product.quantity}</p>
+                    <p class="category">Category: {product.categoryName}</p>
+                    <p class="seller">Seller: {product.sellerName}</p>
                 </div>
             );
           })}
         </div>
 
-        <div id="footer">
+          <div id="footer">
 
-        </div>
+          </div>
       </div>
   );
 }

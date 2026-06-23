@@ -1,0 +1,199 @@
+:root {
+    --Very-dark-desaturated-blue-1: hsl(222, 26%, 31%);
+    --Very-dark-desaturated-blue-2: hsl(223, 31%, 20%);
+    --Very-dark-desaturated-blue-3: hsl(224, 36%, 15%);
+    --Desaturated-dark-blue-1: hsl(225, 21%, 49%);
+    --Desaturated-dark-blue-hover-1: hsl(225, 47%, 69%);
+    --Desaturated-dark-blue-2: hsl(224, 28%, 35%);
+    --Red: hsl(6, 63%, 50%);
+    --Red-hover: hsl(6, 93%, 60%);
+    --Dark-red: hsl(6, 70%, 34%);
+    --Light-grayish-orange: hsl(30, 25%, 89%);
+    --Grayish-orange: hsl(28, 16%, 65%);
+    --Very-dark-grayish-blue: hsl(221, 14%, 31%);
+    --Light-gray: hsl(0, 0%, 90%);
+    --Grayish-red: hsl(0, 5%, 81%);
+    --Very-light-gray: hsl(0, 0%, 93%);
+    --Dark-moderate-cyan: hsl(185, 42%, 37%);
+    --Very-dark-cyan: hsl(185, 58%, 25%);
+    --Orange: hsl(25, 98%, 40%);
+    --Orange-hover: hsl(25, 97%, 57%);
+    --Dark-orange: hsl(25, 99%, 27%);
+    --Light-grayish-yellow: hsl(45, 7%, 89%);
+    --Dark-grayish-orange: hsl(35, 11%, 61%);
+    --Very-dark-grayish-yellow: hsl(60, 10%, 19%);
+    --Very-dark-violet1: hsl(268, 75%, 9%);
+    --Very-dark-violet2: hsl(268, 71%, 12%);
+    --Dark-violet: hsl(281, 89%, 26%);
+    --Dark-violet-hover: hsl(281, 88%, 38%);
+    --Vivid-magenta: hsl(285, 91%, 52%);
+    --Pure-cyan: hsl(176, 100%, 44%);
+    --Soft-cyan: hsl(177, 92%, 70%);
+    --Soft-cyan-hover: hsl(177, 95%, 78%);
+    --Very-dark-violet: hsl(268, 47%, 21%);
+    --Dark-magenta: hsl(290, 70%, 36%);
+    --Light-yellow: hsl(52, 100%, 62%);
+    --Very-dark-blue: hsl(198, 20%, 13%);
+    --White: hsl(0, 0%, 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--Very-light-gray);
+    color: var(--Very-dark-grayish-blue);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#navbar {
+    background-color: var(--Very-dark-desaturated-blue-3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+#navbar img {
+    height: 40px;
+    cursor: pointer;
+}
+
+#search-item {
+    width: 70%;
+    margin: 0px 20px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    color: var(--Very-dark-grayish-blue);
+}
+
+.navbar-btns {
+    display: flex;
+    gap: 10px;
+}
+
+.navbar-btns button {
+    padding: 8px 16px;
+    border-radius: 5px;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+}
+
+.sign-in {
+    background-color: transparent;
+    color: var(--White);
+    border: 1px solid var(--White) !important;
+}
+
+.sign-in:hover {
+    background-color: var(--Very-dark-grayish-blue);
+}
+
+.sign-up {
+    background-color: var(--Orange);
+    color: var(--White);
+}
+
+.sign-up:hover {
+    background-color: var(--Orange-hover);
+}
+
+#main-box {
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.product {
+    background-color: var(--White);
+    border: 1px solid var(--Light-gray);
+    border-radius: 8px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease-in-out;
+}
+
+.product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px var(--Very-dark-desaturated-blue-1);
+}
+
+.product img {
+    object-fit: contain;
+    height: 250px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--Very-light-gray);
+    padding-bottom: 15px;
+}
+
+.product .productName{
+    font-size: 15px;
+    font-weight: 500;
+    opacity: 0.8;
+    color: var(--Very-dark-grayish-blue);
+}
+
+.product .price {
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--Red);
+    margin: 10px 0px;
+}
+
+.product .quantity, .category, .seller {
+    font-size: 12px;
+    color: var(--Grayish-orange);
+    line-height: 18px;
+}
+
+#footer {
+    background-color: var(--Very-dark-desaturated-blue-2);
+    padding: 40px 20px;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.mail-icon{
+    color: white;
+}
+
+@media (max-width: 600px) {
+    #navbar {
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px;
+    }
+
+    #navbar img{
+        height: 200px;
+    }
+
+    #search-item {
+        width: 100%;
+        order: 3;
+    }
+
+    .navbar-btns {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
