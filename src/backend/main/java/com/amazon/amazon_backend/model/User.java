@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class User {
     @Column(name = "Birth_Date", nullable = false)
     private Date birthDate;
 
-    @Column(name = "Username", nullable = false, unique = true, length = 50)
+    @Column(name = "user_name", nullable = false, unique = true, length = 50)
     private String username;
 
     @Column(name = "Pass_Encrypted", nullable = false, length = 500)
@@ -47,7 +46,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<CartItem> cartItems;
 
-    public User(String username, String email, String password, String gender, LocalDate birthDate) {
+    public User(String username, String email, String password, String gender, Date birthDate) {
         this.username = username;
         this.email = email;
         this.passEncrypted = PassEncryption.hashPassword(password);

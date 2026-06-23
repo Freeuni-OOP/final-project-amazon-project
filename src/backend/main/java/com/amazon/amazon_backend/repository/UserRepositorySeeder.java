@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Slf4j
@@ -25,9 +24,8 @@ public class UserRepositorySeeder implements CommandLineRunner {
 
         log.info("Seeding AmazonBot");
 
-        BigDecimal balance = new BigDecimal(1000000);
         Date date = new Date();
-        User amazonBot = new User("AmazonBot@gmail.com", balance, null, date, "AmazonBot", "AmazonBotPassword");
+        User amazonBot = new User("AmazonBot", "AmazonBot@gmail.com", "AmazonBotPassword", null, date);
         userRepository.save(amazonBot);
     }
 

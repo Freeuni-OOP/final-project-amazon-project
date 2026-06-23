@@ -7,7 +7,10 @@ function App() {
   useEffect(() => {
     fetch('http://localhost:8080/products')
         .then(data => data.json())
-        .then(fetchedProducts => setProducts(fetchedProducts))
+        .then(fetchedProducts => {
+            console.log(fetchedProducts); // <-- Look at this in your browser DevTools Console!
+            setProducts(fetchedProducts);
+        })
         .catch(() => alert("Products not found"));
   }, []);
 
@@ -26,11 +29,12 @@ function App() {
           {products.map((product) => {
             return (
                 <div key={product.productId} className="product">
-                    <img src={product.imgUrl} alt={product.productName} />
-                    <p>Quantity: {product.quantity}</p>
+                    <img src={product.imgUrl} alt={product.productName}/>
+                    <p>Description: {product.description}</p>
                     <p>Price: {product.price}</p>
-                    <p>Seller: {product.sellerName}</p>
+                    <p>Quantity: {product.quantity}</p>
                     <p>Category: {product.categoryName}</p>
+                    <p>Seller: {product.sellerName}</p>
                 </div>
             );
           })}
