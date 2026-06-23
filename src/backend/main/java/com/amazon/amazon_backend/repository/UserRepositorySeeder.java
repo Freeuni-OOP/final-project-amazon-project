@@ -27,7 +27,7 @@ public class UserRepositorySeeder implements CommandLineRunner {
 
         BigDecimal balance = new BigDecimal(1000000);
         Date date = new Date();
-        User amazonBot = new User("AmazonBot@gmail.com", balance, null, date, "AmazonBot", "AmazonBotPassword");
+        User amazonBot = new User("AmazonBot", "AmazonBot@gmail.com", "AmazonBotPassword", null, date);
         userRepository.save(amazonBot);
     }
 

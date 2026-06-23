@@ -47,7 +47,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<CartItem> cartItems;
 
-    public User(String username, String email, String password, String gender, LocalDate birthDate) {
+    public User(String username, String email, String password, String gender, Date birthDate) {
         this.username = username;
         this.email = email;
         this.passEncrypted = PassEncryption.hashPassword(password);

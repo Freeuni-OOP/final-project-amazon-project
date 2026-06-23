@@ -1,5 +1,6 @@
 package com.amazon.amazon_backend.service;
 
+import com.amazon.amazon_backend.dto.SignInRequest;
 import com.amazon.amazon_backend.dto.UserRequest;
 import com.amazon.amazon_backend.dto.UserResponse;
 import com.amazon.amazon_backend.dto.UserUpdateRequests;
@@ -74,6 +75,17 @@ public class UserService {
                 .build();
 
         return toUserResponse(userRepository.save(user));
+    }
+
+    public UserResponse signInUser(SignInRequest request){
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("User not found with email: " + request.getEmail()));
+
+        if (!PassEncryption.hashPassword(request.getPassword()).equals(user.getPassEncrypted())) {
+            throw new IllegalArgumentException("Invalid password!");
+        }
+
+        return toUserResponse(user);
     }
 
     private User findUser(Integer id) {
