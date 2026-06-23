@@ -17,6 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 
 public class User {
+    private static final BigDecimal DEFAULT_BALANCE = BigDecimal.valueOf(1000.00);
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
@@ -27,7 +29,7 @@ public class User {
 
     @Builder.Default
     @Column(name = "Balance", nullable = false)
-    private BigDecimal balance = BigDecimal.valueOf(1000.00);
+    private BigDecimal balance = DEFAULT_BALANCE;
 
     @Column(name = "Gender", length = 10)
     private String gender;
@@ -50,6 +52,6 @@ public class User {
         this.passEncrypted = PassEncryption.hashPassword(password);
         this.gender = gender;
         this.birthDate = birthDate;
-        this.balance = BigDecimal.valueOf(1000.00);
+        this.balance = DEFAULT_BALANCE;
     }
 }
