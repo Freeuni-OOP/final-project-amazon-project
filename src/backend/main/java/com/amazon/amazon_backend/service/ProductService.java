@@ -13,6 +13,7 @@ import com.amazon.amazon_backend.repository.CategoryRepository;
 import com.amazon.amazon_backend.repository.ProductRepository;
 import com.amazon.amazon_backend.repository.UserRepository;
 import com.sun.nio.sctp.IllegalReceiveException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ import static com.amazon.amazon_backend.utility.ProductConverter.toProductRespon
 import static com.amazon.amazon_backend.utility.ProductConverter.toProductResponseList;
 
 @Service
+@Transactional
 public class ProductService {
 
     private static final String DEFAULT_CATEGORY_NAME = "Other";
@@ -38,6 +40,26 @@ public class ProductService {
     @Autowired
     CategoryRepository categoryRepository;
 
+    public List<ProductResponse> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        List<ProductResponse> result = new ArrayList<>();
+
+        for(Product product : products){
+            result.add(convertToResponse(product));
+        }
+
+        return result;
+    }
+
+    private ProductResponse convertToResponse(Product product) {
+        ProductResponse response = new ProductResponse();
+        response.setProductId(product.getProductId());
+        response.setProductName(product.getProductName());
+        response.setDescription(product.getDescription());
+        response.setPrice(product.getPrice());
+        response.setQuantity(product.getQuantity());
+        return response;
+    }
 
     public ProductResponse getProductById(Integer id){
         return toProductResponse(productRepository.findById(id).orElseThrow(()-> new NoSuchElementException("Product not found.")));

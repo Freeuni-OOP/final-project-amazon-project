@@ -22,11 +22,11 @@ public class Product {
     @Column(name = "Description", length = 800)
     private String description;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "Seller_ID", nullable = false)
     private User seller;
-    
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "Category_ID", nullable = false)
     private Category category;
 
@@ -41,5 +41,15 @@ public class Product {
 
     @Column (name = "Img_Url", length = 500)
     private String imgUrl;
+
+    public Product(String description, User seller, Category category, String productName, BigDecimal price, Integer quantity, String imgUrl) {
+        this.description = description;
+        this.seller = seller;
+        this.category = category;
+        this.productName = productName;
+        this.price = price;
+        this.quantity = quantity;
+        this.imgUrl = imgUrl;
+    }
 
 }

@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -35,7 +36,7 @@ public class User {
     private String gender;
 
     @Column(name = "Birth_Date", nullable = false)
-    private LocalDate birthDate;
+    private Date birthDate;
 
     @Column(name = "Username", nullable = false, unique = true, length = 50)
     private String username;

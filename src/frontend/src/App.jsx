@@ -25,8 +25,12 @@ function App() {
         <div id="main-box">
           {products.map((product) => {
             return (
-                <div key={product.productId} className="product-item">
-                  {product.productName}
+                <div key={product.productId} className="product">
+                    <img src={product.imgUrl} alt={product.productName} />
+                    <p>Quantity: {product.quantity}</p>
+                    <p>Price: {product.price}</p>
+                    <p>Seller: {product.sellerName}</p>
+                    <p>Category: {product.categoryName}</p>
                 </div>
             );
           })}
