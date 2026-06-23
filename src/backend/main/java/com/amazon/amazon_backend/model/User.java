@@ -37,7 +37,7 @@ public class User {
     @Column(name = "Birth_Date", nullable = false)
     private Date birthDate;
 
-    @Column(name = "user_name", nullable = false, unique = true, length = 50)
+    @Column(name = "User_Name", nullable = false, unique = true, length = 50)
     private String username;
 
     @Column(name = "Pass_Encrypted", nullable = false, length = 500)

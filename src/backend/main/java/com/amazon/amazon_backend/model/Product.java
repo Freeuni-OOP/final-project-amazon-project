@@ -16,30 +16,30 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id")
+    @Column(name = "Product_ID")
     private Integer productId;
 
-    @Column(name = "description", length = 800)
+    @Column(name = "Description", length = 800)
     private String description;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "seller_id", nullable = false)
+    @JoinColumn(name = "Seller_ID", nullable = false)
     private User seller;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "category_id", nullable = false)
+    @JoinColumn(name = "Category_ID", nullable = false)
     private Category category;
 
-    @Column(name = "product_name", nullable = false, length = 300)
+    @Column(name = "Product_Name", nullable = false, length = 300)
     private String productName;
 
-    @Column(name = "price", nullable = false)
+    @Column(name = "Price", nullable = false)
     private BigDecimal price;
 
-    @Column(name = "quantity", nullable = false)
+    @Column(name = "Quantity", nullable = false)
     private Integer quantity;
 
-    @Column (name = "img_url", length = 500)
+    @Column (name = "Img_Url", length = 500)
     private String imgUrl;
 
     public Product(String description, User seller, Category category, String productName, BigDecimal price, Integer quantity, String imgUrl) {
