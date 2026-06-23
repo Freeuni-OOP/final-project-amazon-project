@@ -1,5 +1,6 @@
 package com.amazon.amazon_backend.model;
 
+import com.amazon.amazon_backend.utility.PassEncryption;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,6 +25,7 @@ public class User {
     @Column(name = "Email", nullable = false, length = 150)
     private String email;
 
+    @Builder.Default
     @Column(name = "Balance", nullable = false)
     private BigDecimal balance = BigDecimal.valueOf(1000.00);
 
@@ -41,4 +43,13 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<CartItem> cartItems;
+
+    public User(String username, String email, String password, String gender, LocalDate birthDate) {
+        this.username = username;
+        this.email = email;
+        this.passEncrypted = PassEncryption.hashPassword(password);
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.balance = BigDecimal.valueOf(1000.00);
+    }
 }
