@@ -33,9 +33,16 @@ public class TransactionService {
         return tranListToTranRespList(tranRepo.findBySellerId(userId));
     }
 
-    public TransactionResponse getTransactionById(Integer transactionId){
-        return toDetailedTranResp(tranRepo.findById(transactionId)
-                .orElseThrow(() -> new NoSuchElementException("Transaction not found with ID: " + transactionId)));
+    public TransactionResponse getTransactionById(Integer userId, Integer transactionId){
+        Transaction transaction = tranRepo.findById(transactionId)
+                .orElseThrow(() -> new NoSuchElementException("Transaction not found with ID: " + transactionId));
+
+        boolean isBuyer = transaction.getBuyer().getId().equals(userId);
+        boolean isSeller = transaction.getSeller().getId().equals(userId);
+        String msg = "Access Denied: You do not have permission to view this transaction.";
+        permissionCheck(!isBuyer && !isSeller, msg);
+
+        return toDetailedTranResp(transaction);
     }
 
     @Transactional
@@ -67,13 +74,37 @@ public class TransactionService {
         }
     }
 
-    public TransactionResponse updateTransactionStatus(Integer transactionId, TransactionStatus newStatus){
+    public TransactionResponse updateTransactionStatus(Integer userId, Integer transactionId, TransactionStatus newStatus){
         Transaction transaction = tranRepo.findById(transactionId)
                 .orElseThrow(() -> new NoSuchElementException("Transaction not found with ID: " + transactionId));
+
+        boolean isSeller = transaction.getSeller().getId().equals(userId);
+        String msg = "Access Denied: Only the seller assigned to this transaction can modify its status.";
+        permissionCheck(!isSeller, msg);
+
+        statusChecks(transaction);
 
         transaction.setStatus(newStatus);
         Transaction updatedTransaction = tranRepo.save(transaction);
         return toDetailedTranResp(updatedTransaction);
+    }
+
+    /**
+        Throws an exception if status goes backward.
+        Written in case for an intrusion.
+     */
+    private void statusChecks(Transaction transaction){
+        if (transaction.getStatus() == TransactionStatus.SUCCESS) {
+            throw new IllegalStateException("Invalid Operation: A completed transaction cannot be modified.");
+        }
+
+        if (transaction.getStatus() == TransactionStatus.FAILED) {
+            throw new IllegalStateException("Invalid Operation: A failed transaction cannot be modified.");
+        }
+    }
+
+    private void permissionCheck(boolean shouldThrow, String message){
+        if(shouldThrow) throw new SecurityException(message);
     }
 
 }
