@@ -12,15 +12,15 @@ import com.amazon.amazon_backend.model.User;
 import com.amazon.amazon_backend.repository.CategoryRepository;
 import com.amazon.amazon_backend.repository.ProductRepository;
 import com.amazon.amazon_backend.repository.UserRepository;
-import com.sun.nio.sctp.IllegalReceiveException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
 import static com.amazon.amazon_backend.utility.ProductConverter.toProductResponse;
 import static com.amazon.amazon_backend.utility.ProductConverter.toProductResponseList;
 
@@ -31,8 +31,7 @@ public class ProductService {
     private static final String DEFAULT_CATEGORY_NAME = "Other";
     private static final String DEFAULT_IMAGE_URL = "/photos/No-image-placeholder.png";
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -40,25 +39,23 @@ public class ProductService {
     @Autowired
     CategoryRepository categoryRepository;
 
-    public List<ProductResponse> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-        List<ProductResponse> result = new ArrayList<>();
-
-        for(Product product : products){
-            result.add(convertToResponse(product));
-        }
-
-        return result;
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
 
-    private ProductResponse convertToResponse(Product product) {
-        ProductResponse response = new ProductResponse();
-        response.setProductId(product.getProductId());
-        response.setProductName(product.getProductName());
-        response.setDescription(product.getDescription());
-        response.setPrice(product.getPrice());
-        response.setQuantity(product.getQuantity());
-        return response;
+    public List<ProductResponse> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+
+        return products.stream().map(product -> new ProductResponse(
+                product.getProductId(),
+                product.getProductName(),
+                product.getDescription(),
+                product.getPrice(),
+                product.getQuantity(),
+                product.getImgUrl(),
+                product.getCategory() != null ? product.getCategory().getCategoryName() : "No Category",
+                product.getSeller() != null ? product.getSeller().getUsername() : "Unknown Seller"
+        )).collect(Collectors.toList());
     }
 
     public ProductResponse getProductById(Integer id){

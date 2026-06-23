@@ -22,15 +22,15 @@ public class Product {
     @Column(name = "Description", length = 800)
     private String description;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Seller_ID", nullable = false)
     private User seller;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Category_ID", nullable = false)
     private Category category;
 
-    @Column(name = "ProductName", nullable = false, length = 300)
+    @Column(name = "Product_Name", nullable = false, length = 300)
     private String productName;
 
     @Column(name = "Price", nullable = false)

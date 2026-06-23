@@ -88,7 +88,22 @@ button:hover{
   color: var(--Desaturated-dark-blue-1);
 }
 
-.product {
+#main-box{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
 
+.product{
+  background-color: var(--Light-gray);
+  padding: 20px;
+  text-align: center;
+  margin: 20px;
+  cursor: pointer;
+  border-radius: 1em;
+}
+
+.product img{
+  width: 150px;
+  height: 150px;
 }
 
