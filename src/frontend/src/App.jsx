@@ -8,7 +8,7 @@ function App() {
     fetch('http://localhost:8080/products')
         .then(data => data.json())
         .then(fetchedProducts => {
-            console.log(fetchedProducts); // <-- Look at this in your browser DevTools Console!
+            console.log(fetchedProducts);
             setProducts(fetchedProducts);
         })
         .catch(() => alert("Products not found"));
