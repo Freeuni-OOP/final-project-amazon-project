@@ -50,6 +50,11 @@ public class ProductController {
         return productService.createProduct(request);
     }
 
+    @GetMapping
+    public List<ProductResponse> getAllProducts() {
+        return productService.getAllProducts();
+    }
+
     @DeleteMapping("/{id}")
     public String deleteProduct(@PathVariable Integer id){
         productService.deleteProduct(id);

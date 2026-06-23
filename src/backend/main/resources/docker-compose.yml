@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./amazon_backend
+    ports:
+      - "8080:8080"
+    networks:
+      - amazon-network
+
+  frontend:
+    build: ./amazon_frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - amazon-network
+    environment:
+      - REACT_APP_API_URL=http://localhost:8080
+      -
+networks:
+  amazon-network:
+    driver: bridge

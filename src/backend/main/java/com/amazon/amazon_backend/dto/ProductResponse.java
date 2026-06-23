@@ -1,5 +1,7 @@
 package com.amazon.amazon_backend.dto;
 
+import com.amazon.amazon_backend.model.Category;
+import com.amazon.amazon_backend.model.User;
 import lombok.*;
 import java.math.BigDecimal;
 
