@@ -3,6 +3,7 @@ package com.amazon.amazon_backend.model;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,7 +14,7 @@ public class OrderTest {
     public void testConstructorAndGetters() {
         User buyer=new User();
         buyer.setId(100);
-        double totalAmount=250.50;
+        BigDecimal totalAmount=new BigDecimal("250.50");
         LocalDateTime datetime=LocalDateTime.now();
 
         Order order=new Order(buyer, totalAmount, datetime);
@@ -30,13 +31,15 @@ public class OrderTest {
         User buyer=new User();
         buyer.setId(205);
         order.setBuyer(buyer);
-        order.setTotalAmount(1999.37);
+
+        BigDecimal totalAmount=new BigDecimal("1999.37")
+        order.setTotalAmount(totalAmount);
         LocalDateTime datetime=LocalDateTime.now();
         order.setDatetime(datetime);
         order.setOrderId(3);
 
         assertEquals(205, order.getBuyer().getId());
-        assertEquals(1999.37, order.getTotalAmount());
+        assertEquals(totalAmount, order.getTotalAmount());
         assertEquals(datetime, order.getDatetime());
         assertEquals(3, order.getOrderId());
     }

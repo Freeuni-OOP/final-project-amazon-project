@@ -12,5 +12,6 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByBuyer(User buyer);
-    List<Order> findByDatetime(LocalDateTime dateTime);
+    List<Order> findByBuyer_Id(Integer userId);
+    List<Order> findByDateTime(LocalDateTime dateTime);
 }
