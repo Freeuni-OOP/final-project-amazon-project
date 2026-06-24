@@ -21,7 +21,6 @@ public class AuthController {
         return ResponseEntity.ok(userService.createUser(request));
     }
 
-    // 🔑 2. სისტემაში შესვლა (Log In / Sign In)
     @PostMapping("/signIn")
     public ResponseEntity<UserResponse> logIn(SignInRequest request) {
         return ResponseEntity.ok(userService.signInUser(request));
