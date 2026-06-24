@@ -12,6 +12,7 @@ import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -95,7 +96,7 @@ public class TransactionRepositoryTest {
         int year = max(2026, 2000 + (2*n-1));
         int month = (1 + 2*n) % 12 + 1;
         int day = (10 + 2*n) % 28 + 1;
-        user.setBirthDate(LocalDate.of(year, month, day));
+        user.setBirthDate(Date.valueOf(LocalDate.of(year, month, day)));
         return user;
     }
 
