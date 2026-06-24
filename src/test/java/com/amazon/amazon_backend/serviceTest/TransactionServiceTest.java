@@ -35,7 +35,7 @@ public class TransactionServiceTest {
     private Order order;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         buyer = new User();
         buyer.setId(1);
         buyer.setUsername("buyerUser");
@@ -54,7 +54,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    void testGetTransactionById_Success_WhenUserIsBuyer() {
+    public void testGetTransactionByIdWhenUserIsBuyer() {
         when(tranRepo.findById(500)).thenReturn(Optional.of(sampleTransaction));
 
         TransactionResponse response = transactionService.getTransactionById(1, 500);
@@ -66,7 +66,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    void testGetTransactionById_ThrowsSecurityException_WhenUserNotAuthorized() {
+    public void testGetTransactionByIdWhenUserIsNotAuthorized() {
         when(tranRepo.findById(500)).thenReturn(Optional.of(sampleTransaction));
 
         assertThrows(SecurityException.class, () -> {
@@ -77,7 +77,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    void testGetTransactionById_ThrowsNoSuchElementException_WhenNotFound() {
+    public void testGetTransactionByIdWhenNotFound() {
         when(tranRepo.findById(99)).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class, () -> {
@@ -88,7 +88,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    void testUpdateTransactionStatus_Success() {
+    public void testUpdateTransactionStatusWhenSuccessful() {
         when(tranRepo.findById(500)).thenReturn(Optional.of(sampleTransaction));
         when(tranRepo.save(any(Transaction.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -100,7 +100,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    void testUpdateTransactionStatus_ThrowsSecurityException_WhenUserIsNotSeller() {
+    public void testUpdateTransactionStatusWhenUserIsNotSeller() {
         when(tranRepo.findById(500)).thenReturn(Optional.of(sampleTransaction));
 
         assertThrows(SecurityException.class, () -> {
@@ -111,7 +111,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    void testUpdateTransactionStatus_ThrowsIllegalStateException_WhenMovingBackwardFromCompleted() {
+    public void testUpdateTransactionStatusWhenMovingBackwardFromCompleted() {
         sampleTransaction.setStatus(TransactionStatus.SUCCESS);
         when(tranRepo.findById(500)).thenReturn(Optional.of(sampleTransaction));
 
@@ -123,7 +123,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    void testGetUserTransactions_ReturnsCombinedHistory() {
+    public void testGetUserTransactions() {
         List<Transaction> mockList = Arrays.asList(sampleTransaction);
         when(tranRepo.findByBuyerIdOrSellerId(1, 1)).thenReturn(mockList);
 
@@ -135,7 +135,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    void testGetUserPurchaseTransactions_ReturnsOnlyPurchases() {
+    public void testGetUserPurchaseTransactions() {
         List<Transaction> mockList = Arrays.asList(sampleTransaction);
         when(tranRepo.findByBuyerId(1)).thenReturn(mockList);
 
@@ -147,7 +147,7 @@ public class TransactionServiceTest {
     }
 
     @Test
-    void testGetUserSaleTransactions_ReturnsOnlySales() {
+    public void testGetUserSaleTransactions() {
         List<Transaction> mockList = Arrays.asList(sampleTransaction);
         when(tranRepo.findBySellerId(2)).thenReturn(mockList);
 

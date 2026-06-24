@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TransactionTest {
 
     @Test
-    void testRelationship() {
+    public void testRelationship() {
         Transaction transaction = new Transaction();
         OrderDetails item = new OrderDetails();
 
@@ -22,7 +22,7 @@ class TransactionTest {
     }
 
     @Test
-    void testGettersAndSetters() {
+    public void testGettersAndSetters() {
         Transaction transaction = new Transaction();
         BigDecimal amount = new BigDecimal("150.50");
 
@@ -34,7 +34,7 @@ class TransactionTest {
     }
 
     @Test
-    void testOnCreate() {
+    public void testOnCreate() {
         Transaction transaction = new Transaction();
         assertThat(transaction.getCreatedAt()).isNull();
 

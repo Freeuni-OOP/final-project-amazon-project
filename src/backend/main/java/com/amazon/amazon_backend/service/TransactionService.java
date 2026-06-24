@@ -18,6 +18,12 @@ import static com.amazon.amazon_backend.utility.TransactionConverter.*;
 @Service
 public class TransactionService {
 
+    private static final String ERR_MSG1 = "Transaction not found with ID: ";
+    private static final String ERR_MSG2 = "Access Denied: You do not have permission to view this transaction.";
+    private static final String ERR_MSG3 = "Access Denied: Only the seller assigned to this transaction can modify its status.";
+    private static final String ERR_MSG4 = "Invalid Operation: A completed transaction cannot be modified.";
+    private static final String ERR_MSG5 = "Invalid Operation: A failed transaction cannot be modified.";
+
     @Autowired
     private TransactionRepository tranRepo;
 
@@ -35,12 +41,11 @@ public class TransactionService {
 
     public TransactionResponse getTransactionById(Integer userId, Integer transactionId){
         Transaction transaction = tranRepo.findById(transactionId)
-                .orElseThrow(() -> new NoSuchElementException("Transaction not found with ID: " + transactionId));
+                .orElseThrow(() -> new NoSuchElementException(ERR_MSG1 + transactionId));
 
         boolean isBuyer = transaction.getBuyer().getId().equals(userId);
         boolean isSeller = transaction.getSeller().getId().equals(userId);
-        String msg = "Access Denied: You do not have permission to view this transaction.";
-        permissionCheck(!isBuyer && !isSeller, msg);
+        permissionCheck(!isBuyer && !isSeller, ERR_MSG2);
 
         return toDetailedTranResp(transaction);
     }
@@ -76,11 +81,10 @@ public class TransactionService {
 
     public TransactionResponse updateTransactionStatus(Integer userId, Integer transactionId, TransactionStatus newStatus){
         Transaction transaction = tranRepo.findById(transactionId)
-                .orElseThrow(() -> new NoSuchElementException("Transaction not found with ID: " + transactionId));
+                .orElseThrow(() -> new NoSuchElementException(ERR_MSG1 + transactionId));
 
         boolean isSeller = transaction.getSeller().getId().equals(userId);
-        String msg = "Access Denied: Only the seller assigned to this transaction can modify its status.";
-        permissionCheck(!isSeller, msg);
+        permissionCheck(!isSeller, ERR_MSG3);
 
         statusChecks(transaction);
 
@@ -95,11 +99,11 @@ public class TransactionService {
      */
     private void statusChecks(Transaction transaction){
         if (transaction.getStatus() == TransactionStatus.SUCCESS) {
-            throw new IllegalStateException("Invalid Operation: A completed transaction cannot be modified.");
+            throw new IllegalStateException(ERR_MSG4);
         }
 
         if (transaction.getStatus() == TransactionStatus.FAILED) {
-            throw new IllegalStateException("Invalid Operation: A failed transaction cannot be modified.");
+            throw new IllegalStateException(ERR_MSG5);
         }
     }
 

@@ -44,7 +44,7 @@ public class TransactionRepositoryTest {
     }
 
     @Test
-    void findByBuyerIdOrSellerId_ShouldReturnCombinedHistory() {
+    public void testFindByBuyerIdOrSellerId() {
         User userBoth = entityManager.persist(createNthUser(++userCounter));
         Order order1 = entityManager.persist(new Order(buyer, 2, LocalDateTime.now()));
         Order order2 = entityManager.persist(new Order(userBoth, 6, LocalDateTime.now()));
@@ -63,7 +63,7 @@ public class TransactionRepositoryTest {
     }
 
     @Test
-    void findByBuyerId_ShouldReturnOnlyPurchases() {
+    public void testFindByBuyerId() {
         Transaction t = new Transaction(order, buyer, seller, BigDecimal.TEN, TransactionStatus.PENDING);
         entityManager.persist(t);
         entityManager.flush();
@@ -75,7 +75,7 @@ public class TransactionRepositoryTest {
     }
 
     @Test
-    void findBySellerId_ShouldReturnOnlySales() {
+    public void testFindBySellerId() {
         Transaction t = new Transaction(order, buyer, seller, BigDecimal.TEN, TransactionStatus.PENDING);
         entityManager.persist(t);
         entityManager.flush();
