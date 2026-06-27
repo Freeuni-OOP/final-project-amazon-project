@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64
+    container_name: amazon-container
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Am@z0nPr0ject#2026!
+    ports:
+      - "1433:1433"
+    networks:
+      - amazon-network
+    volumes:
+      - mssql-data:/var/opt/mssql
+
+  backend:
+    build: ./amazon_backend
+    ports:
+      - "8080:8080"
+    networks:
+      - amazon-network
+    environment:
+      - DB_URL=jdbc:sqlserver://db:1433;databaseName=master;encrypt=true;trustServerCertificate=true;
+      - DB_USER=sa
+      - DB_PASSWORD=Am@z0nPr0ject#2026!
+    depends_on:
+      - db
+
+  # 3. Your Frontend Service
+  frontend:
+    build: ./amazon_frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - amazon-network
+    environment:
+      - REACT_APP_API_URL=http://localhost:8080
+
+networks:
+  amazon-network:
+    driver: bridge
+
+volumes:
+  mssql-data:
