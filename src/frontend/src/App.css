@@ -113,6 +113,23 @@ body {
     background-color: var(--Orange-hover);
 }
 
+#categories{
+    display: flex;
+    gap: 30px;
+    background-color: var(--Orange);
+    padding: 20px;
+}
+
+#categories .category{
+    font-size: 1em;
+    color: var(--White);
+    cursor: pointer;
+}
+
+#categories .category:hover{
+    color: var(--Grayish-red);
+}
+
 #main-box {
     max-width: 1200px;
     margin: auto;
@@ -146,7 +163,7 @@ body {
 }
 
 .product .productName{
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 500;
     opacity: 0.8;
     color: var(--Very-dark-grayish-blue);
@@ -195,5 +212,11 @@ body {
     .navbar-btns {
         width: 100%;
         justify-content: space-between;
+    }
+
+    #categories{
+        display: flex;
+        flex-direction: column;
+        text-align: center;
     }
 }
