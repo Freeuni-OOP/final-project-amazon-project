@@ -1,10 +1,9 @@
-package com.amazon.amazon_backend.controllerTest;
+package com.amazon.amazon_backend.controller;
 
-import com.amazon.amazon_backend.controller.CategoryController;
 import com.amazon.amazon_backend.dto.CategoryResponse;
 import com.amazon.amazon_backend.service.CategoryService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.MediaType;
+import org.springframework.http.MediaType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

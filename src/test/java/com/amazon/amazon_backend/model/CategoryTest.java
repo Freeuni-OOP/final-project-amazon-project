@@ -1,6 +1,5 @@
-package com.amazon.amazon_backend.modelTest;
+package com.amazon.amazon_backend.model;
 
-import com.amazon.amazon_backend.model.Category;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

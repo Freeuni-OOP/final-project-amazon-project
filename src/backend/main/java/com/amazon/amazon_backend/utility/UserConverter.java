@@ -9,14 +9,13 @@ public class UserConverter {
             return null;
         }
 
-        UserResponse response = new UserResponse();
-        response.setId(user.getId());
-        response.setUsername(user.getUsername());
-        response.setEmail(user.getEmail());
-        response.setBalance(user.getBalance());
-        response.setGender(user.getGender());
-        response.setBirthday(user.getBirthDate());
-
-        return response;
+        return UserResponse.builder()
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .balance(user.getBalance())
+                .gender(user.getGender())
+                .birthDate(user.getBirthDate())
+                .build();
     }
 }

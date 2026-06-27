@@ -1,7 +1,6 @@
 package com.amazon.amazon_backend.model;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.webmvc.autoconfigure.WebMvcProperties;
 
 import java.time.LocalDateTime;
 
