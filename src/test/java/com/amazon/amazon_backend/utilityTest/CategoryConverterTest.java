@@ -23,8 +23,8 @@ public class CategoryConverterTest {
         CategoryResponse response = converter.toCategoryResponse(category);
 
         assertNotNull(response);
-        assertEquals("House", response.getCategory());
-        assertEquals(category.getCategoryName(), response.getCategory());
+        assertEquals("House", response.getCategoryName());
+        assertEquals(category.getCategoryName(), response.getCategoryName());
     }
 
     @Test
@@ -37,9 +37,9 @@ public class CategoryConverterTest {
         CategoryResponse response2 = converter.toCategoryResponse(category2);
         CategoryResponse response3 = converter.toCategoryResponse(category3);
 
-        assertNotEquals(category1.getCategoryName(), response2.getCategory());
-        assertNotEquals(category2.getCategoryName(), response3.getCategory());
-        assertNotEquals(category3.getCategoryName(), response1.getCategory());
+        assertNotEquals(category1.getCategoryName(), response2.getCategoryName());
+        assertNotEquals(category2.getCategoryName(), response3.getCategoryName());
+        assertNotEquals(category3.getCategoryName(), response1.getCategoryName());
     }
 
 }
