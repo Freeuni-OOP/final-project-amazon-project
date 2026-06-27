@@ -10,8 +10,8 @@ import java.util.List;
 
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findByBuyer(User buyer);
     List<Order> findByBuyer_Id(Integer userId);
-    List<Order> findByDateTime(LocalDateTime dateTime);
+    List<Order> findByDatetime(LocalDateTime dateTime);
 }

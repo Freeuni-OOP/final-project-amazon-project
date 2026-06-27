@@ -32,7 +32,7 @@ public class OrderTest {
         buyer.setId(205);
         order.setBuyer(buyer);
 
-        BigDecimal totalAmount=new BigDecimal("1999.37")
+        BigDecimal totalAmount=new BigDecimal("1999.37");
         order.setTotalAmount(totalAmount);
         LocalDateTime datetime=LocalDateTime.now();
         order.setDatetime(datetime);

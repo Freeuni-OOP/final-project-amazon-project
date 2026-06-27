@@ -1,14 +1,8 @@
 package com.amazon.amazon_backend.service;
 
 import com.amazon.amazon_backend.dto.OrderResponse;
-import com.amazon.amazon_backend.model.CartItem;
-import com.amazon.amazon_backend.model.Order;
-import com.amazon.amazon_backend.model.OrderDetails;
-import com.amazon.amazon_backend.model.User;
-import com.amazon.amazon_backend.repository.CartItemRepository;
-import com.amazon.amazon_backend.repository.OrderRepository;
-import com.amazon.amazon_backend.repository.ProductRepository;
-import com.amazon.amazon_backend.repository.UserRepository;
+import com.amazon.amazon_backend.model.*;
+import com.amazon.amazon_backend.repository.*;
 import com.amazon.amazon_backend.utility.OrderConverter;
 
 import jakarta.transaction.Transactional;
@@ -37,6 +31,8 @@ public class OrderService {
     @Autowired
     private CartItemRepository cartItemRepository;
 
+    @Autowired
+    private OrderDetailsRepository orderDetailsRepository;
     public List<OrderResponse> getOrders(Integer userId){
         return orderRepository.findByBuyer_Id(userId).stream()
                 .map(OrderConverter::toOrderResponse)
@@ -55,28 +51,54 @@ public class OrderService {
             throw new IllegalStateException("The cart is empty");
         }
 
-        Order order=new Order();
+
+        BigDecimal totalAmount = items.stream()
+                .map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        Order order = new Order();
         order.setBuyer(user);
+        order.setTotalAmount(totalAmount);
+        order.setDatetime(LocalDateTime.now());
+
+        Order savedOrder = orderRepository.save(order);
 
         List<OrderDetails> detailsList=items.stream().map(cartItem -> {
+            Product product=cartItem.getProduct();
+
+            if(product.getQuantity()<cartItem.getQuantity()){
+                throw new IllegalStateException("Not enough inventory for product: "+product.getProductName());
+            }
+
+            product.setQuantity(product.getQuantity()-cartItem.getQuantity());
+
+            BigDecimal price=cartItem.getProduct().getPrice();
+            BigDecimal amount=price.multiply(BigDecimal.valueOf(cartItem.getQuantity()));
+
+            Transaction itemTransaction=new Transaction();
+            itemTransaction.setBuyer(user);
+            itemTransaction.setSeller(product.getSeller());
+            itemTransaction.setTotalAmount(amount);
+            itemTransaction.setOrder(order);
+            itemTransaction.setCreatedAt(LocalDateTime.now());
+
             OrderDetails details=new OrderDetails();
             details.setOrder(order);
             details.setProduct(cartItem.getProduct());
             details.setQuantity(cartItem.getQuantity());
 
-            BigDecimal price=cartItem.getProduct().getPrice();
-            BigDecimal amount=price.multiply(BigDecimal.valueOf(cartItem.getQuantity()));
             details.setAmount(amount);
+            details.setOrder(order);
+            details.setQuantity(cartItem.getQuantity());
+            details.setProduct(product);
+            details.setTransaction(itemTransaction);
 
             return details;
         }).collect(Collectors.toList());
 
-        order.setOrderDetails(detailsList);
 
-        order.setDatetime(LocalDateTime.now());
-
-        Order savedOrder= orderRepository.save(order);
-
+        orderDetailsRepository.saveAll(detailsList);
+        savedOrder.setOrderDetails(detailsList);
+        
         cartItemRepository.deleteAll(items);
 
         return OrderConverter.toOrderResponse(savedOrder);
