@@ -38,15 +38,16 @@ public class CategoryControllerTest {
     @Test
     public void testGetByCategoryName_ShouldReturnCategory_WhenFound() throws Exception {
         String categoryName = "Books";
-        CategoryResponse mockResponse = new CategoryResponse(categoryName);
+        CategoryResponse mockResponse = new CategoryResponse(1, categoryName);
 
         when(service.getByCategoryName(categoryName)).thenReturn(mockResponse);
 
-        mockMvc.perform(get("/Category/name/" + categoryName)
+        mockMvc.perform(get("/categories/name/" + categoryName)
                         .accept(String.valueOf(MediaType.APPLICATION_JSON)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").exists())
-                .andExpect(jsonPath("$.Category").value(categoryName))
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.categoryName").value(categoryName))
                 .andDo(print());
     }
 
