@@ -1,9 +1,7 @@
 package com.amazon.amazon_backend.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -37,7 +35,7 @@ public class Transaction {
     private BigDecimal totalAmount;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "Payment_Status", nullable = false)
     private TransactionStatus status = TransactionStatus.PENDING;
 
     @Column(name = "Created_At", nullable = false)
@@ -45,6 +43,15 @@ public class Transaction {
 
     @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderDetails> items = new ArrayList<>();
+
+
+    public Transaction(Order order, User buyer, User seller, BigDecimal totalAmount, TransactionStatus status){
+        this.order = order;
+        this.buyer = buyer;
+        this.seller = seller;
+        this.totalAmount = totalAmount;
+        this.status = status;
+    }
 
 
     @PrePersist
