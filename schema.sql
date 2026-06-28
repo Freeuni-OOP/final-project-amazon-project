@@ -24,11 +24,18 @@ CREATE TABLE Categories (
 
 CREATE TABLE Products (
     Product_ID INTEGER IDENTITY(1,1) PRIMARY KEY,
+    Description VARCHAR(800) NOT NULL,
     Seller_ID INTEGER NOT NULL REFERENCES Users(ID),
     Category_ID INTEGER NOT NULL REFERENCES Categories(Category_ID),
-    ProductName VARCHAR(300) NOT NULL,
+    Product_Name VARCHAR(300) NOT NULL,
     Price NUMERIC(10, 2) NOT NULL,
-    Quantity INTEGER NOT NULL
+    Quantity INTEGER NOT NULL,
+);
+
+CREATE TABLE Images (
+    Image_ID INTEGER IDENTITY(1,1) PRIMARY KEY,
+    Product_ID INTEGER NOT NULL REFERENCES Products(Product_ID) ON DELETE CASCADE,
+    Img_Url VARCHAR(500) NOT NULL
 );
 
 CREATE TABLE Orders (

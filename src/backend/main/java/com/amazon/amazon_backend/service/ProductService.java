@@ -2,7 +2,8 @@ package com.amazon.amazon_backend.service;
 
 import com.amazon.amazon_backend.dto.ProductRequest;
 import com.amazon.amazon_backend.dto.ProductResponse;
-import com.amazon.amazon_backend.dto.ProductUpdateRequests.ImageUpdateRequest;
+import com.amazon.amazon_backend.dto.ProductUpdateRequests;
+import com.amazon.amazon_backend.dto.ProductUpdateRequests.ImagesUpdateRequest;
 import com.amazon.amazon_backend.dto.ProductUpdateRequests.NameDescriptionUpdateRequest;
 import com.amazon.amazon_backend.dto.ProductUpdateRequests.PriceUpdateRequest;
 import com.amazon.amazon_backend.dto.ProductUpdateRequests.QuantityUpdateRequest;
@@ -15,8 +16,10 @@ import com.amazon.amazon_backend.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.amazon.amazon_backend.model.Image;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -46,16 +49,22 @@ public class ProductService {
     public List<ProductResponse> getAllProducts() {
         List<Product> products = productRepository.findAll();
 
-        return products.stream().map(product -> new ProductResponse(
-                product.getProductId(),
-                product.getProductName(),
-                product.getDescription(),
-                product.getPrice(),
-                product.getQuantity(),
-                product.getImgUrl(),
-                product.getCategory() != null ? product.getCategory().getCategoryName() : "No Category",
-                product.getSeller() != null ? product.getSeller().getUsername() : "Unknown Seller"
-        )).collect(Collectors.toList());
+        return products.stream().map(product ->{
+                List<String> imageUrls = new ArrayList<>();
+                for (Image img : product.getImages()) {
+                    imageUrls.add(img.getImageUrl());
+                }
+                 return new ProductResponse(
+                        product.getProductId(),
+                        product.getProductName(),
+                        product.getDescription(),
+                        product.getPrice(),
+                        product.getQuantity(),
+                        imageUrls,
+                        product.getCategory() != null ? product.getCategory().getCategoryName() : "No Category",
+                        product.getSeller() != null ? product.getSeller().getUsername() : "Unknown Seller"
+                );
+        }).collect(Collectors.toList());
     }
 
     public ProductResponse getProductById(Integer id){
@@ -102,13 +111,6 @@ public class ProductService {
             throw new IllegalArgumentException("Quantity cannot be negative.");
         }
 
-        String imgUrl;
-        if(request.getImgUrl() == null || request.getImgUrl().isBlank()){
-            imgUrl =    DEFAULT_IMAGE_URL;
-        }else{
-            imgUrl = request.getImgUrl();
-        }
-
         Product product = Product.builder()
                 .productName(request.getProductName())
                 .description(request.getDescription())
@@ -116,8 +118,23 @@ public class ProductService {
                 .quantity(quantity)
                 .seller(seller)
                 .category(category)
-                .imgUrl(imgUrl)
+                .images(new ArrayList<>())
                 .build();
+
+        List<String> requestedImages = request.getImageUrls();
+        if (requestedImages == null || requestedImages.isEmpty()) {
+            product.getImages().add(new Image(null, product, DEFAULT_IMAGE_URL));
+        }
+        else {
+            if (requestedImages.size() > 5) {
+                throw new IllegalArgumentException("You can upload up to 5 images for a product");
+            }
+            for (String imageUrl : requestedImages) {
+                if (imageUrl != null && !imageUrl.isBlank()) {
+                    product.getImages().add(new Image(null, product, imageUrl));
+                }
+            }
+        }
 
         return toProductResponse(productRepository.save(product));
     }
@@ -148,15 +165,26 @@ public class ProductService {
         return toProductResponse(productRepository.save(product));
     }
 
-    public ProductResponse updateImage(Integer id, ImageUpdateRequest request) {
+    public ProductResponse updateImage(Integer id, ImagesUpdateRequest request) {
         Product product = findProduct(id);
-        String imgUrl;
-        if(request.getImgUrl() == null || request.getImgUrl().isBlank()){
-            imgUrl = DEFAULT_IMAGE_URL;
-        }else{
-            imgUrl = request.getImgUrl();
+
+        product.getImages().clear();
+
+        List<String> requestedImages = request.getImageUrls();
+        if (requestedImages == null || requestedImages.isEmpty()) {
+            product.getImages().add(new Image(null, product, DEFAULT_IMAGE_URL));
         }
-        product.setImgUrl(imgUrl);
+        else {
+            if (requestedImages.size() > 5) {
+                throw new IllegalArgumentException("You can upload up to 5 images for a product");
+            }
+            for (String imageUrl : requestedImages) {
+                if (imageUrl != null && !imageUrl.isBlank()) {
+                    product.getImages().add(new Image(null, product, imageUrl));
+                }
+            }
+        }
+
         return toProductResponse(productRepository.save(product));
     }
 

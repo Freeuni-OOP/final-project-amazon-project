@@ -1,9 +1,11 @@
 package com.amazon.amazon_backend.dto;
 
 import com.amazon.amazon_backend.model.Category;
+import com.amazon.amazon_backend.model.Image;
 import com.amazon.amazon_backend.model.User;
 import lombok.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -14,7 +16,7 @@ public class ProductResponse {
     private String description;
     private BigDecimal price;
     private Integer quantity;
-    private String imgUrl;
+    private List<String> imageUrls;
     private String categoryName;
     private String sellerName;
 }

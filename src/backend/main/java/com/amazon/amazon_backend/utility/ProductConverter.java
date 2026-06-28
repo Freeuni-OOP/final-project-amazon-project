@@ -1,6 +1,7 @@
 package com.amazon.amazon_backend.utility;
 
 import com.amazon.amazon_backend.dto.ProductResponse;
+import com.amazon.amazon_backend.model.Image;
 import com.amazon.amazon_backend.model.Product;
 
 import java.util.ArrayList;
@@ -11,13 +12,20 @@ public class ProductConverter {
     public static ProductResponse toProductResponse(Product product){
         if(product == null)return null;
 
+        List<String> imageUrls = new ArrayList<>();
+        if (product.getImages() != null) {
+            for (Image img : product.getImages()) {
+                imageUrls.add(img.getImageUrl());
+            }
+        }
+
         return new ProductResponse(
                 product.getProductId(),
                 product.getProductName(),
                 product.getDescription(),
                 product.getPrice(),
                 product.getQuantity(),
-                product.getImgUrl(),
+                imageUrls,
                 product.getCategory().getCategoryName(),
                 product.getSeller().getUsername()
                 );
