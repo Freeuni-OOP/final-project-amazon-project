@@ -35,7 +35,7 @@ public class OrderService {
     private OrderDetailsRepository orderDetailsRepository;
 
     @Autowired
-    private TransactionRepository transactionRepository;
+    private TransactionService transactionService;
 
     public List<OrderResponse> getOrders(Integer userId){
         return orderRepository.findByBuyer_Id(userId).stream()
@@ -77,28 +77,20 @@ public class OrderService {
             productRepository.save(product);
 
             BigDecimal price=cartItem.getProduct().getPrice();
-            BigDecimal amount=price.multiply(BigDecimal.valueOf(cartItem.getQuantity()));
-
-            Transaction itemTransaction=new Transaction();
-            itemTransaction.setBuyer(user);
-            itemTransaction.setSeller(product.getSeller());
-            itemTransaction.setTotalAmount(amount);
-            itemTransaction.setOrder(savedOrder);
-            itemTransaction.setCreatedAt(LocalDateTime.now());
-            itemTransaction=transactionRepository.save(itemTransaction);
 
             OrderDetails details=new OrderDetails();
             details.setOrder(savedOrder);
             details.setQuantity(cartItem.getQuantity());
-            details.setAmount(amount);
+            details.setAmount(price);
             details.setProduct(product);
-            details.setTransaction(itemTransaction);
 
             return details;
         }).collect(Collectors.toList());
 
-
         orderDetailsRepository.saveAll(detailsList);
+
+        transactionService.createTransactionsForOrder(savedOrder, detailsList);
+
         savedOrder.setOrderDetails(detailsList);
         
         cartItemRepository.deleteAll(items);

@@ -4,6 +4,7 @@ import com.amazon.amazon_backend.dto.OrderResponse;
 import com.amazon.amazon_backend.model.*;
 import com.amazon.amazon_backend.repository.*;
 import com.amazon.amazon_backend.service.OrderService;
+import com.amazon.amazon_backend.service.TransactionService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,22 +16,28 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.util.*;
 
+import static org.mockito.ArgumentMatchers.any;
+
 @ExtendWith(MockitoExtension.class)
 public class OrderServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
     @Mock
     private CartItemRepository cartItemRepository;
+
     @Mock
     private OrderRepository orderRepository;
 
     @Mock
     private ProductRepository productRepository;
-    @Mock
-    private TransactionRepository transactionRepository;
+
     @Mock
     private OrderDetailsRepository orderDetailsRepository;
+
+    @Mock
+    private TransactionService transactionService;
 
     @InjectMocks
     private OrderService orderService;
@@ -43,7 +50,7 @@ public class OrderServiceTest {
 
         Product product = new Product();
         product.setPrice(BigDecimal.valueOf(100));
-        product.setQuantity(10); // ADDED: Must have enough inventory!
+        product.setQuantity(10);
 
         CartItem cartItem = new CartItem();
         cartItem.setProduct(product);
@@ -57,17 +64,21 @@ public class OrderServiceTest {
 
         Mockito.when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         Mockito.when(cartItemRepository.findByUser_Id(userId)).thenReturn(cartItems);
-        Mockito.when(orderRepository.save(Mockito.any(Order.class))).thenReturn(order);
+        Mockito.when(orderRepository.save(any(Order.class))).thenReturn(order);
 
-        Mockito.when(transactionRepository.save(Mockito.any(Transaction.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
+        Mockito.when(productRepository.save(any(Product.class))).thenReturn(product);
+
+        Mockito.doNothing().when(transactionService).createTransactionsForOrder(any(), Mockito.anyList());
 
         OrderResponse response = orderService.createOrder(userId);
 
         Assertions.assertNotNull(response);
+
         Mockito.verify(cartItemRepository, Mockito.times(1)).deleteAll(cartItems);
-        Mockito.verify(transactionRepository, Mockito.times(1)).save(Mockito.any(Transaction.class));
         Mockito.verify(orderDetailsRepository, Mockito.times(1)).saveAll(Mockito.anyList());
+        Mockito.verify(transactionService, Mockito.times(1)).createTransactionsForOrder(any(), Mockito.anyList());
+
+        Mockito.verify(productRepository, Mockito.times(1)).save(any(Product.class));
     }
 
     @Test
@@ -109,7 +120,7 @@ public class OrderServiceTest {
         Mockito.when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         Mockito.when(cartItemRepository.findByUser_Id(userId)).thenReturn(List.of(cartItem));
 
-        Mockito.when(orderRepository.save(Mockito.any(Order.class))).thenReturn(new Order());
+        Mockito.when(orderRepository.save(any(Order.class))).thenReturn(new Order());
 
         Assertions.assertThrows(IllegalStateException.class, () -> {
             orderService.createOrder(userId);
