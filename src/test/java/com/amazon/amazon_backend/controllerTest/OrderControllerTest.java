@@ -14,8 +14,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -41,7 +44,6 @@ public class OrderControllerTest {
     public void createOrder_ShouldReturnStatusOk() throws Exception {
         Integer userId = 1;
         OrderResponse mockResponse = new OrderResponse();
-
         mockResponse.setUserId(10);
         mockResponse.setTotalAmount(BigDecimal.valueOf(200));
 
@@ -53,6 +55,27 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$").exists())
                 .andExpect(jsonPath("$.userId").value(10))
                 .andExpect(jsonPath("$.totalAmount").value(200))
+                .andDo(print());
+    }
+
+    @Test
+    public void getOrdersById_ShouldReturnList() throws Exception {
+        Integer userId = 1;
+        OrderResponse orderResponse = new OrderResponse();
+        orderResponse.setUserId(userId);
+        orderResponse.setTotalAmount(BigDecimal.valueOf(150));
+
+        List<OrderResponse> mockList = Collections.singletonList(orderResponse);
+
+        // This matches your service method: orderService.getOrders(userId)
+        when(orderService.getOrders(userId)).thenReturn(mockList);
+
+        mockMvc.perform(get("/orders/user/" + userId)
+                        .accept(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$[0].userId").value(userId))
+                .andExpect(jsonPath("$[0].totalAmount").value(150))
                 .andDo(print());
     }
 }

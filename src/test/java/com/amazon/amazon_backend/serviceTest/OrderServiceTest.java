@@ -25,6 +25,13 @@ public class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
 
+    @Mock
+    private ProductRepository productRepository;
+    @Mock
+    private TransactionRepository transactionRepository;
+    @Mock
+    private OrderDetailsRepository orderDetailsRepository;
+
     @InjectMocks
     private OrderService orderService;
 
@@ -36,6 +43,7 @@ public class OrderServiceTest {
 
         Product product = new Product();
         product.setPrice(BigDecimal.valueOf(100));
+        product.setQuantity(10); // ADDED: Must have enough inventory!
 
         CartItem cartItem = new CartItem();
         cartItem.setProduct(product);
@@ -51,10 +59,15 @@ public class OrderServiceTest {
         Mockito.when(cartItemRepository.findByUser_Id(userId)).thenReturn(cartItems);
         Mockito.when(orderRepository.save(Mockito.any(Order.class))).thenReturn(order);
 
+        Mockito.when(transactionRepository.save(Mockito.any(Transaction.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
         OrderResponse response = orderService.createOrder(userId);
 
         Assertions.assertNotNull(response);
         Mockito.verify(cartItemRepository, Mockito.times(1)).deleteAll(cartItems);
+        Mockito.verify(transactionRepository, Mockito.times(1)).save(Mockito.any(Transaction.class));
+        Mockito.verify(orderDetailsRepository, Mockito.times(1)).saveAll(Mockito.anyList());
     }
 
     @Test
@@ -67,5 +80,61 @@ public class OrderServiceTest {
         Assertions.assertThrows(IllegalStateException.class, () -> {
             orderService.createOrder(userId);
         });
+    }
+
+    @Test
+    void createOrder_UserNotFound_ShouldThrowException() {
+        Integer userId = 99;
+        Mockito.when(userRepository.findById(userId)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(NoSuchElementException.class, () -> {
+            orderService.createOrder(userId);
+        });
+    }
+
+    @Test
+    void createOrder_NotEnoughInventory_ShouldThrowException() {
+        Integer userId = 1;
+        User user = new User();
+
+        Product product = new Product();
+        product.setProductName("Laptop");
+        product.setPrice(BigDecimal.valueOf(100));
+        product.setQuantity(1);
+
+        CartItem cartItem = new CartItem();
+        cartItem.setProduct(product);
+        cartItem.setQuantity(5);
+
+        Mockito.when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        Mockito.when(cartItemRepository.findByUser_Id(userId)).thenReturn(List.of(cartItem));
+
+        Mockito.when(orderRepository.save(Mockito.any(Order.class))).thenReturn(new Order());
+
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            orderService.createOrder(userId);
+        });
+    }
+
+    @Test
+    void getOrders_Success_ShouldReturnOrderResponseList() {
+        Integer userId = 1;
+
+        Order existingOrder = new Order();
+        existingOrder.setOrderId(50);
+        existingOrder.setTotalAmount(BigDecimal.valueOf(150.00));
+        existingOrder.setDatetime(java.time.LocalDateTime.now());
+
+        User buyer = new User();
+        buyer.setId(userId);
+        existingOrder.setBuyer(buyer);
+
+        Mockito.when(orderRepository.findByBuyer_Id(userId)).thenReturn(List.of(existingOrder));
+
+        List<OrderResponse> responses = orderService.getOrders(userId);
+
+        Assertions.assertNotNull(responses);
+        Assertions.assertEquals(1, responses.size());
+        Mockito.verify(orderRepository, Mockito.times(1)).findByBuyer_Id(userId);
     }
 }

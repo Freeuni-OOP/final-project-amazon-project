@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class OrderConverter {
+    private OrderConverter() {
+        throw new UnsupportedOperationException("Utility class");
+    }
 
     public static OrderDetailsResponse toOrderDetailsResponse(OrderDetails details){
         OrderDetailsResponse response=new OrderDetailsResponse();

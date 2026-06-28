@@ -33,6 +33,10 @@ public class OrderService {
 
     @Autowired
     private OrderDetailsRepository orderDetailsRepository;
+
+    @Autowired
+    private TransactionRepository transactionRepository;
+
     public List<OrderResponse> getOrders(Integer userId){
         return orderRepository.findByBuyer_Id(userId).stream()
                 .map(OrderConverter::toOrderResponse)
@@ -70,6 +74,7 @@ public class OrderService {
             }
 
             product.setQuantity(product.getQuantity()-cartItem.getQuantity());
+            productRepository.save(product);
 
             BigDecimal price=cartItem.getProduct().getPrice();
             BigDecimal amount=price.multiply(BigDecimal.valueOf(cartItem.getQuantity()));
@@ -78,17 +83,14 @@ public class OrderService {
             itemTransaction.setBuyer(user);
             itemTransaction.setSeller(product.getSeller());
             itemTransaction.setTotalAmount(amount);
-            itemTransaction.setOrder(order);
+            itemTransaction.setOrder(savedOrder);
             itemTransaction.setCreatedAt(LocalDateTime.now());
+            itemTransaction=transactionRepository.save(itemTransaction);
 
             OrderDetails details=new OrderDetails();
-            details.setOrder(order);
-            details.setProduct(cartItem.getProduct());
+            details.setOrder(savedOrder);
             details.setQuantity(cartItem.getQuantity());
-
             details.setAmount(amount);
-            details.setOrder(order);
-            details.setQuantity(cartItem.getQuantity());
             details.setProduct(product);
             details.setTransaction(itemTransaction);
 
