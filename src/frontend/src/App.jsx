@@ -1,49 +1,39 @@
 import {useEffect, useState} from "react";
-import './index.css';
+import './App.css';
+import ProductList from "./components/ProductList.jsx";
+import MainPage from "./components/MainPage.jsx";
+import {Route, Routes} from "react-router-dom";
 
 function App() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:8080/products')
-        .then(data => data.json())
-        .then(fetchedProducts => {
-            console.log(fetchedProducts); // <-- Look at this in your browser DevTools Console!
-            setProducts(fetchedProducts);
-        })
-        .catch(() => alert("Products not found"));
+      const fetchInitialData = async () => {
+          try {
+              const [productsResponse] = await Promise.all([
+                  fetch('http://localhost:8080/products')
+              ]);
+
+              const productsData = await productsResponse.json();
+              setProducts(productsData);
+          } catch (error) {
+              console.error("Error fetching data:", error);
+          }
+      };
+
+      fetchInitialData();
   }, []);
 
   return (
-      <div>
-        <nav id="navbar">
-          <img src="../public/images/light-logo.png" alt=""/>
-          <input type="text" id="search-item" name="search" placeholder="Search Amazon ..."/>
-          <div className="navbar-btns">
-            <button className="sign-in">Sign In</button>
-            <button className="sign-up">Sign Up</button>
-          </div>
-        </nav>
+      <Routes>
+          <Route path="/" element={
+              <MainPage requestedProducts={<ProductList allProducts={products} />} />
+          }/>
 
-        <div id="main-box">
-          {products.map((product) => {
-            return (
-                <div key={product.productId} className="product">
-                    <img src={product.imgUrl} alt={product.productName}/>
-                    <p>Description: {product.description}</p>
-                    <p>Price: {product.price}</p>
-                    <p>Quantity: {product.quantity}</p>
-                    <p>Category: {product.categoryName}</p>
-                    <p>Seller: {product.sellerName}</p>
-                </div>
-            );
-          })}
-        </div>
-
-        <div id="footer">
-
-        </div>
-      </div>
+          <Route path="/category/:categoryName" element={
+              <MainPage requestedProducts={<ProductList allProducts={products} />} />
+          }/>
+      </Routes>
   );
 }
 

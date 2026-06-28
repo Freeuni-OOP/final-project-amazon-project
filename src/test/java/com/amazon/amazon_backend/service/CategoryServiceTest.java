@@ -36,11 +36,11 @@ public class CategoryServiceTest {
     public void testGetByCategoryName(){
         String categoryName1 = "Puzzles";
         Category category1 = new Category(categoryName1);
-        CategoryResponse response1 = new CategoryResponse(categoryName1);
+        CategoryResponse response1 = new CategoryResponse(1, categoryName1);
 
         String categoryName2 = "Sport";
         Category category2 = new Category(categoryName2);
-        CategoryResponse response2 = new CategoryResponse(categoryName2);
+        CategoryResponse response2 = new CategoryResponse(2, categoryName2);
 
         when(categoryRepository.findByCategoryName(categoryName1)).thenReturn(Optional.of(category1));
         when(categoryRepository.findByCategoryName(categoryName2)).thenReturn(Optional.of(category2));
@@ -51,8 +51,8 @@ public class CategoryServiceTest {
             CategoryResponse realResponse1 = categoryService.getByCategoryName(categoryName1);
 
             assertNotNull(realResponse1);
-            assertTrue(categoryName1.equals(realResponse1.getCategory()));
-            assertFalse(categoryName2.equals(realResponse1.getCategory()));
+            assertTrue(categoryName1.equals(realResponse1.getCategoryName()));
+            assertFalse(categoryName2.equals(realResponse1.getCategoryName()));
         }
 
         try (MockedStatic<CategoryConverter> converter = Mockito.mockStatic(CategoryConverter.class)){
@@ -61,8 +61,8 @@ public class CategoryServiceTest {
             CategoryResponse realResponse2 = categoryService.getByCategoryName(categoryName2);
 
             assertNotNull(realResponse2);
-            assertTrue(categoryName2.equals(realResponse2.getCategory()));
-            assertFalse(categoryName1.equals(realResponse2.getCategory()));
+            assertTrue(categoryName2.equals(realResponse2.getCategoryName()));
+            assertFalse(categoryName1.equals(realResponse2.getCategoryName()));
         }
 
     }
