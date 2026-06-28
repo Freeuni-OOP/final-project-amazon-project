@@ -6,9 +6,11 @@ import com.amazon.amazon_backend.model.Category;
 import com.amazon.amazon_backend.model.Product;
 import com.amazon.amazon_backend.model.User;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.util.Optional;
@@ -16,6 +18,9 @@ import java.util.Optional;
 @Slf4j
 @Component
 public class ProductRepositorySeeder implements CommandLineRunner {
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
@@ -40,18 +45,19 @@ public class ProductRepositorySeeder implements CommandLineRunner {
         User seller = list.get();
 
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         File file = new File("src/backend/main/resources/products.json");
         ItemData data = objectMapper.readValue(file, ItemData.class);
 
         for (Item product : data.getProducts()) {
-            if (product.getQuantity() == 0){
+            if (product.getQuantity() == 0) {
                 product.setQuantity(1);
             }
 
             Category category;
             Optional<Category> categories = categoryRepository.findByCategoryName(product.getCategory());
-            if (!categories.isPresent()){
+            if (!categories.isPresent()) {
                 product.setCategory("Other");
                 categories = categoryRepository.findByCategoryName(product.getCategory());
             }
