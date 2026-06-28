@@ -1,4 +1,4 @@
-package com.amazon.amazon_backend.serviceTest;
+package com.amazon.amazon_backend.service;
 
 import com.amazon.amazon_backend.dto.TransactionResponse;
 import com.amazon.amazon_backend.model.Transaction;
