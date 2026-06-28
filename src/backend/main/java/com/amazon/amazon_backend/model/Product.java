@@ -1,9 +1,12 @@
 package com.amazon.amazon_backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Products")
@@ -39,17 +42,18 @@ public class Product {
     @Column(name = "Quantity", nullable = false)
     private Integer quantity;
 
-    @Column (name = "Img_Url", length = 500)
-    private String imgUrl;
+    @OneToMany(mappedBy = "product")
+    @Size(max = 5, message = "You can upload up to 5 images for a product")
+    private List<Image> images = new ArrayList<>();
 
-    public Product(String description, User seller, Category category, String productName, BigDecimal price, Integer quantity, String imgUrl) {
+    public Product(String description, User seller, Category category, String productName, BigDecimal price, Integer quantity,  List<Image> images) {
         this.description = description;
         this.seller = seller;
         this.category = category;
         this.productName = productName;
         this.price = price;
         this.quantity = quantity;
-        this.imgUrl = imgUrl;
+        this.images = images != null ? images : new ArrayList<>();
     }
 
 }

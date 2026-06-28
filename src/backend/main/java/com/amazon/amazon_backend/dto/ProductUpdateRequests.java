@@ -1,11 +1,13 @@
 package com.amazon.amazon_backend.dto;
 
 
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class ProductUpdateRequests {
     @Data
@@ -25,8 +27,9 @@ public class ProductUpdateRequests {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class ImageUpdateRequest{
-        private String imgUrl;
+    public static class ImagesUpdateRequest{
+        @Size(max = 5, message = "You can upload up to 5 images for a product")
+        private List<String> imageUrls;
     }
 
     @Data
