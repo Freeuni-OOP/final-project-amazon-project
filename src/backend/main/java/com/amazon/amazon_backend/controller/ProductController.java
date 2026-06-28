@@ -2,7 +2,7 @@ package com.amazon.amazon_backend.controller;
 
 import com.amazon.amazon_backend.dto.ProductRequest;
 import com.amazon.amazon_backend.dto.ProductResponse;
-import com.amazon.amazon_backend.dto.ProductUpdateRequests.ImageUpdateRequest;
+import com.amazon.amazon_backend.dto.ProductUpdateRequests.ImagesUpdateRequest;
 import com.amazon.amazon_backend.dto.ProductUpdateRequests.NameDescriptionUpdateRequest;
 import com.amazon.amazon_backend.dto.ProductUpdateRequests.PriceUpdateRequest;
 import com.amazon.amazon_backend.dto.ProductUpdateRequests.QuantityUpdateRequest;
@@ -72,7 +72,7 @@ public class ProductController {
     }
 
     @PatchMapping("/{id}/image")
-    public ProductResponse updateImage(@PathVariable Integer id, @RequestBody ImageUpdateRequest request) {
+    public ProductResponse updateImage(@PathVariable Integer id, @RequestBody ImagesUpdateRequest request) {
         return productService.updateImage(id, request);
     }
 
