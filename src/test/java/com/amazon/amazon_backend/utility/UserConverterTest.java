@@ -19,12 +19,7 @@ class UserConverterTest {
         user.setBalance(BigDecimal.valueOf(250.50));
         user.setPassEncrypted("hashed_string");
 
-        UserResponse response = UserResponse.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .balance(user.getBalance())
-                .build();
+        UserResponse response = UserConverter.toUserResponse(user);
 
         assertNotNull(response);
         assertEquals(99, response.getId());
