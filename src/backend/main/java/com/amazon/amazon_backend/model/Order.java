@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,13 +25,16 @@ public class Order {
     private User buyer;
 
     @Column(name="Total_Amount", nullable = false)
-    private double totalAmount;
+    private BigDecimal totalAmount;
 
     @Column(name="Order_Date", nullable = false)
     private LocalDateTime datetime;
 
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderDetails> orderDetails;
+
     public Order(User buyer,
-                 double totalAmount,
+                 BigDecimal totalAmount,
                  LocalDateTime datetime){
 
         this.buyer=buyer;
@@ -37,3 +42,4 @@ public class Order {
         this.datetime=datetime;
     }
 }
+
