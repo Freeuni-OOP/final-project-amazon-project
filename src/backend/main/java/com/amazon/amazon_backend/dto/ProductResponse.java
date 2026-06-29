@@ -19,4 +19,5 @@ public class ProductResponse {
     private List<String> imageUrls;
     private String categoryName;
     private String sellerName;
+    private BigDecimal averageRating;
 }

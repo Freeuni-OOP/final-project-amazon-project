@@ -30,6 +30,7 @@ CREATE TABLE Products (
     Product_Name VARCHAR(300) NOT NULL,
     Price NUMERIC(10, 2) NOT NULL,
     Quantity INTEGER NOT NULL,
+    Average_Rating DECIMAL(3,2) DEFAULT 0.00
 );
 
 CREATE TABLE Images (
@@ -76,4 +77,12 @@ CREATE TABLE Images (
         Comment_STR VARCHAR(500) NOT NULL,
         Product_ID INTEGER NOT NULL REFERENCES Products(Product_ID) ON DELETE CASCADE,
         User_ID INTEGER NOT NULL REFERENCES Users(ID)
+    )
+
+    CREATE TABLE Ratings (
+        Rating_ID INTEGER IDENTITY(1, 1) PRIMARY KEY,
+        User_ID INTEGER NOT NULL,
+        Product_ID INTEGER NOT NULL,
+        Stars INTEGER NOT NULL CHECK(Stars BETWEEN 1 AND 5),
+        Created_At DATETIME2 NOT NULL DEFAULT GETDATE()
     )

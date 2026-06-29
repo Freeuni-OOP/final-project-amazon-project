@@ -62,7 +62,8 @@ public class ProductService {
                         product.getQuantity(),
                         imageUrls,
                         product.getCategory() != null ? product.getCategory().getCategoryName() : "No Category",
-                        product.getSeller() != null ? product.getSeller().getUsername() : "Unknown Seller"
+                        product.getSeller() != null ? product.getSeller().getUsername() : "Unknown Seller",
+                         product.getAverageRating()
                 );
         }).collect(Collectors.toList());
     }
@@ -119,6 +120,7 @@ public class ProductService {
                 .seller(seller)
                 .category(category)
                 .images(new ArrayList<>())
+                .averageRating(BigDecimal.ZERO)
                 .build();
 
         List<String> requestedImages = request.getImageUrls();
