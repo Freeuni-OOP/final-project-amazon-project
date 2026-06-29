@@ -1,9 +1,8 @@
-package com.amazon.amazon_backend.serviceTest;
+package com.amazon.amazon_backend.service;
 
 import com.amazon.amazon_backend.dto.CategoryResponse;
 import com.amazon.amazon_backend.model.Category;
 import com.amazon.amazon_backend.repository.CategoryRepository;
-import com.amazon.amazon_backend.service.CategoryService;
 import com.amazon.amazon_backend.utility.CategoryConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

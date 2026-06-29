@@ -1,4 +1,4 @@
-package com.amazon.amazon_backend.repositoryTest;
+package com.amazon.amazon_backend.repository;
 
 import com.amazon.amazon_backend.model.Order;
 import com.amazon.amazon_backend.model.Transaction;
