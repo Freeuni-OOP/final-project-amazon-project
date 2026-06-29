@@ -12,11 +12,11 @@ public class RatingConverter {
         }
 
         return RatingResponse.builder()
-                .ratingId(rating.getRating_Id())
+                .ratingId(rating.getRatingId())
                 .userId(rating.getUser().getId())
                 .productId(rating.getProduct().getProductId())
                 .stars(rating.getStars())
-                .createdAt(rating.getCreated_At())
+                .createdAt(rating.getCreatedAt())
                 .newAverageRating(newAverageRating)
                 .totalRatingsCount(totalRatingsCount)
                 .build();

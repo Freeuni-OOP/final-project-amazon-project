@@ -17,7 +17,7 @@ public class Rating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="Rating_ID")
-    private Integer rating_Id;
+    private Integer ratingId;
 
     @ManyToOne
     @JoinColumn(name="User_ID", nullable = false)
@@ -31,7 +31,7 @@ public class Rating {
     private Integer stars;
 
     @Column(name="Created_At")
-    private LocalDateTime created_At;
+    private LocalDateTime createdAt;
 
     public Rating(User user,
                   Product product,
@@ -41,7 +41,7 @@ public class Rating {
         this.user=user;
         this.product=product;
         this.stars=stars;
-        this.created_At=created_At;
+        this.createdAt=created_At;
     }
 
 }
