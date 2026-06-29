@@ -9,7 +9,7 @@ services:
       - ACCEPT_EULA=Y
       - MSSQL_SA_PASSWORD=Am@z0nPr0ject#2026!
     ports:
-      - "1433:1433"
+      - "1434:1433"
     networks:
       - amazon-network
     volumes:
@@ -28,7 +28,6 @@ services:
     depends_on:
       - db
 
-  # 3. Your Frontend Service
   frontend:
     build: ./amazon_frontend
     ports:
