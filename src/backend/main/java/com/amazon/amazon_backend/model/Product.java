@@ -42,7 +42,7 @@ public class Product {
     @Column(name = "Quantity", nullable = false)
     private Integer quantity;
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Size(max = 5, message = "You can upload up to 5 images for a product")
     private List<Image> images = new ArrayList<>();
 

@@ -41,14 +41,14 @@ public class TransactionRepositoryTest {
         buyer = entityManager.persist(user1);
         seller = entityManager.persist(user2);
 
-        order = entityManager.persist(new Order(user1, 5, LocalDateTime.now()));
+        order = entityManager.persist(new Order(user1, new BigDecimal(5), LocalDateTime.now()));
     }
 
     @Test
     public void testFindByBuyerIdOrSellerId() {
         User userBoth = entityManager.persist(createNthUser(++userCounter));
-        Order order1 = entityManager.persist(new Order(buyer, 2, LocalDateTime.now()));
-        Order order2 = entityManager.persist(new Order(userBoth, 6, LocalDateTime.now()));
+        Order order1 = entityManager.persist(new Order(buyer, new BigDecimal(2), LocalDateTime.now()));
+        Order order2 = entityManager.persist(new Order(userBoth, new BigDecimal(6), LocalDateTime.now()));
 
         Transaction tran1 = new Transaction(order1, buyer, userBoth, BigDecimal.TEN, TransactionStatus.PENDING);
         entityManager.persist(tran1);
