@@ -3,6 +3,7 @@ package com.amazon.amazon_backend.dto;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -12,7 +13,7 @@ public class CartItemResponse {
     private Integer productId;
     private String productName;
     private BigDecimal price;
-    private String imgUrl;
+    private List<String> imageUrls;
     private Integer quantity;
 
 }
