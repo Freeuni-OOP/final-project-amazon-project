@@ -1,12 +1,10 @@
-package com.amazon.amazon_backend.repositoryTest;
+package com.amazon.amazon_backend.repository;
 
 import com.amazon.amazon_backend.model.Category;
-import com.amazon.amazon_backend.repository.CategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
