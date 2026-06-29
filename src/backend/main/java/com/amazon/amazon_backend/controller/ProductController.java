@@ -7,9 +7,13 @@ import com.amazon.amazon_backend.dto.ProductUpdateRequests.NameDescriptionUpdate
 import com.amazon.amazon_backend.dto.ProductUpdateRequests.PriceUpdateRequest;
 import com.amazon.amazon_backend.dto.ProductUpdateRequests.QuantityUpdateRequest;
 import com.amazon.amazon_backend.service.ProductService;
+import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -45,8 +49,21 @@ public class ProductController {
         return productService.searchProductsBySellerId(sellerId);
     }
 
-    @PostMapping
-    public ProductResponse createProduct(@RequestBody ProductRequest request) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ProductResponse createProduct(@RequestPart("product") ProductRequest request, @RequestPart(value = "images") MultipartFile[] imageFiles) {
+
+        List<String> fileNames = new ArrayList<>();
+
+        for (MultipartFile file : imageFiles) {
+            if (!file.isEmpty()) {
+                fileNames.add("/photos/" + file.getOriginalFilename());
+            }
+        }
+
+        if (!fileNames.isEmpty()) {
+            request.setImageUrls(fileNames);
+        }
+
         return productService.createProduct(request);
     }
 
@@ -71,8 +88,18 @@ public class ProductController {
         return productService.updateQuantity(id, request);
     }
 
-    @PatchMapping("/{id}/image")
-    public ProductResponse updateImage(@PathVariable Integer id, @RequestBody ImagesUpdateRequest request) {
+    @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ProductResponse updateImage(@PathVariable Integer id, @RequestPart("image") MultipartFile[] imageFiles) {
+        List<String> fileNames = new ArrayList<>();
+        for (MultipartFile file : imageFiles) {
+            if (!file.isEmpty()) {
+                fileNames.add("/photos/" + file.getOriginalFilename());
+            }
+        }
+
+        ImagesUpdateRequest request = new ImagesUpdateRequest();
+        request.setImageUrls(fileNames);
+
         return productService.updateImage(id, request);
     }
 
@@ -80,5 +107,4 @@ public class ProductController {
     public ProductResponse updateNameAndDescription(@PathVariable Integer id, @RequestBody NameDescriptionUpdateRequest request) {
         return productService.updateNameAndDescription(id, request);
     }
-
 }
