@@ -1,5 +1,4 @@
 package com.amazon.amazon_backend.repository;
-
 import com.amazon.amazon_backend.Item;
 import com.amazon.amazon_backend.ItemData;
 import com.amazon.amazon_backend.model.Category;
@@ -7,9 +6,7 @@ import com.amazon.amazon_backend.model.Image;
 import com.amazon.amazon_backend.model.Product;
 import com.amazon.amazon_backend.model.User;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -20,18 +17,16 @@ import java.util.Optional;
 @Slf4j
 @Component
 public class ProductRepositorySeeder implements CommandLineRunner {
-
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final ImageRepository imageRepository;
 
-    public ProductRepositorySeeder(CategoryRepository categoryRepository, ProductRepository productRepository, UserRepository userRepository){
+    public ProductRepositorySeeder(CategoryRepository categoryRepository, ProductRepository productRepository, UserRepository userRepository, ImageRepository imageRepository){
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
         this.userRepository = userRepository;
+        this.imageRepository = imageRepository;
     }
 
     @Override
@@ -75,23 +70,16 @@ public class ProductRepositorySeeder implements CommandLineRunner {
                     .images(new ArrayList<>())
                     .build();
 
-            if (product.getImages() != null) {
-                for (String url : product.getImages()) {
-                    if (url != null && !url.isBlank()) {
-                        Image newImg = new Image(null, newProduct, url);
-                        newProduct.getImages().add(newImg);
-                    }
-                }
-            }
+            Product savedProduct = productRepository.save(newProduct);
 
-            if (newProduct.getImages().isEmpty()) {
-                Image newImg = new Image(null, newProduct, "/photos/No-image-placeholder.png");
-                newProduct.getImages().add(newImg);
+            ArrayList<Image> imagesForNewProduct = new ArrayList<>();
+            for(int i = 0; i < product.getImages().length; i++){
+                Image newImage = new Image(newProduct, product.getImages()[i]);
+                imagesForNewProduct.add(newImage);
+                imageRepository.save(newImage);
             }
-
-            productRepository.save(newProduct);
+            savedProduct.setImages(imagesForNewProduct);
         }
-
     }
 
 }

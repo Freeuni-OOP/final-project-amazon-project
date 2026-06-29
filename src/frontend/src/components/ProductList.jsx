@@ -9,7 +9,7 @@ function ProductList({allProducts}){
         <div id="main-box">
             {productsRequested.map((product) => (
                 <div key={product.productId} className="product">
-                    <img src={product.imgUrl} alt=""/>
+                    <img src={product.imageUrls?.[0] || "http://localhost:8080/photos/No-image-placeholder.png"} alt=""/>
                     <p className="productName">{product.productName}</p>
                     <p className="price">Price: {product.price}$</p>
                     <p className="quantity">Quantity: {product.quantity}</p>
