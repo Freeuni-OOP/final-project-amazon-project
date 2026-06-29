@@ -4,7 +4,6 @@ import com.amazon.amazon_backend.model.Order;
 import com.amazon.amazon_backend.model.Transaction;
 import com.amazon.amazon_backend.model.TransactionStatus;
 import com.amazon.amazon_backend.model.User;
-import com.amazon.amazon_backend.repository.TransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

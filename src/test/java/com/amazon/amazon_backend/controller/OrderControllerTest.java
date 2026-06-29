@@ -1,6 +1,5 @@
-package com.amazon.amazon_backend.controllerTest;
+package com.amazon.amazon_backend.controller;
 
-import com.amazon.amazon_backend.controller.OrderController;
 import com.amazon.amazon_backend.dto.OrderResponse;
 import com.amazon.amazon_backend.service.OrderService;
 import org.junit.jupiter.api.BeforeEach;

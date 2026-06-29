@@ -1,9 +1,8 @@
-package com.amazon.amazon_backend.utilityTest;
+package com.amazon.amazon_backend.utility;
 
 import com.amazon.amazon_backend.dto.OrderDetailsResponse;
 import com.amazon.amazon_backend.dto.OrderResponse;
 import com.amazon.amazon_backend.model.*;
-import com.amazon.amazon_backend.utility.OrderConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
