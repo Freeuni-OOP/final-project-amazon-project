@@ -27,7 +27,8 @@ public class ProductConverter {
                 product.getQuantity(),
                 imageUrls,
                 product.getCategory().getCategoryName(),
-                product.getSeller().getUsername()
+                product.getSeller().getUsername(),
+                product.getAverageRating()
                 );
     }
 

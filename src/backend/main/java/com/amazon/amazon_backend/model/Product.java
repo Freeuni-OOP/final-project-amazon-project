@@ -46,6 +46,10 @@ public class Product {
     @Size(max = 5, message = "You can upload up to 5 images for a product")
     private List<Image> images = new ArrayList<>();
 
+    @Builder.Default
+    @Column(name="Average_Rating", precision = 3, scale = 2)
+    private BigDecimal averageRating=BigDecimal.ZERO;
+
     public Product(String description, User seller, Category category, String productName, BigDecimal price, Integer quantity,  List<Image> images) {
         this.description = description;
         this.seller = seller;
@@ -54,6 +58,7 @@ public class Product {
         this.price = price;
         this.quantity = quantity;
         this.images = images != null ? images : new ArrayList<>();
+        this.averageRating=BigDecimal.ZERO;
     }
 
 }
