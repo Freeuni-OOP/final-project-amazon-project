@@ -1,8 +1,7 @@
-package com.amazon.amazon_backend.repositoryTest;
+package com.amazon.amazon_backend.repository;
 
 import com.amazon.amazon_backend.model.Order;
 import com.amazon.amazon_backend.model.User;
-import com.amazon.amazon_backend.repository.OrderRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

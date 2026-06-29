@@ -1,10 +1,8 @@
-package com.amazon.amazon_backend.serviceTest;
+package com.amazon.amazon_backend.service;
 
 import com.amazon.amazon_backend.dto.OrderResponse;
 import com.amazon.amazon_backend.model.*;
 import com.amazon.amazon_backend.repository.*;
-import com.amazon.amazon_backend.service.OrderService;
-import com.amazon.amazon_backend.service.TransactionService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
