@@ -3,6 +3,7 @@ package com.amazon.amazon_backend.repository;
 import com.amazon.amazon_backend.Item;
 import com.amazon.amazon_backend.ItemData;
 import com.amazon.amazon_backend.model.Category;
+import com.amazon.amazon_backend.model.Image;
 import com.amazon.amazon_backend.model.Product;
 import com.amazon.amazon_backend.model.User;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Slf4j
@@ -57,7 +59,30 @@ public class ProductRepositorySeeder implements CommandLineRunner {
             }
             category = categories.get();
 
-            Product newProduct = new Product(product.getDescription(), seller, category, product.getProductName(), product.getPrice(), product.getQuantity(), product.getImages()[0]);
+            Product newProduct = Product.builder()
+                    .productName(product.getProductName())
+                    .description(product.getDescription())
+                    .price(product.getPrice())
+                    .quantity(product.getQuantity())
+                    .seller(seller)
+                    .category(category)
+                    .images(new ArrayList<>())
+                    .build();
+
+            if (product.getImages() != null) {
+                for (String url : product.getImages()) {
+                    if (url != null && !url.isBlank()) {
+                        Image newImg = new Image(null, newProduct, url);
+                        newProduct.getImages().add(newImg);
+                    }
+                }
+            }
+
+            if (newProduct.getImages().isEmpty()) {
+                Image newImg = new Image(null, newProduct, "/photos/No-image-placeholder.png");
+                newProduct.getImages().add(newImg);
+            }
+
             productRepository.save(newProduct);
         }
 

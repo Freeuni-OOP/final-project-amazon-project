@@ -3,21 +3,31 @@ package com.amazon.amazon_backend.utility;
 import com.amazon.amazon_backend.dto.ProductResponse;
 import com.amazon.amazon_backend.model.CartItem;
 import com.amazon.amazon_backend.dto.CartItemResponse;
+import com.amazon.amazon_backend.model.Image;
 import com.amazon.amazon_backend.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CartItemConverter {
     public static CartItemResponse toCartItemResponse(CartItem cartItem){
         if(cartItem == null)return null;
 
+        Product product = cartItem.getProduct();
+        List<String> urls = new ArrayList<>();
+
+        if (product.getImages() != null) {
+            for (Image img : product.getImages()) {
+                urls.add(img.getImageUrl());
+            }
+        }
         return new CartItemResponse(
                 cartItem.getId(),
                 cartItem.getProduct().getProductId(),
                 cartItem.getProduct().getProductName(),
                 cartItem.getProduct().getPrice(),
-                cartItem.getProduct().getImgUrl(),
+                urls,
                 cartItem.getQuantity()
         );
     }
