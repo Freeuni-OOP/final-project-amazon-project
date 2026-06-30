@@ -65,12 +65,18 @@ body {
 }
 
 #navbar img {
-    height: 40px;
+    height: 70px;
     cursor: pointer;
 }
 
-#search-item {
+#navbar form {
     width: 70%;
+    display: flex;
+    justtify-content: space-between;
+}
+
+#navbar .search-item {
+    width: 100%;
     margin: 0px 20px;
     padding: 10px 15px;
     border: none;
@@ -207,6 +213,16 @@ body {
     #search-item {
         width: 100%;
         order: 3;
+    }
+
+    #navbar form{
+        width: 100%;
+    }
+
+    #navbar .search-item{
+        width: 100%;
+        margin: 0;
+        box-sizing: border-box;
     }
 
     .navbar-btns {

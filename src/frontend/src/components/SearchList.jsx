@@ -1,9 +1,9 @@
 import '../App.css';
 import {useParams} from 'react-router-dom';
 
-function ProductList({allProducts}){
-    const {categoryName} = useParams();
-    const productsRequested = categoryName ? allProducts.filter(product => product.categoryName.toLowerCase() === categoryName.toLowerCase()) : allProducts;
+function SearchList({allProducts}){
+    const {query} = useParams();
+    const productsRequested = allProducts.filter(product => (product.categoryName.toLowerCase().includes(query.toLowerCase()) || product.productName.toLowerCase().includes(query.toLowerCase())));
 
     return (
         <div id="main-box">
@@ -19,6 +19,7 @@ function ProductList({allProducts}){
             ))}
         </div>
     );
+
 }
 
-export default ProductList;
+export default SearchList;
