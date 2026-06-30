@@ -1,6 +1,7 @@
 import '../App.css';
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import Navbar from "./Navbar.jsx";
 
 function MainPage({requestedProducts}){
     const navigate = useNavigate();
@@ -25,14 +26,7 @@ function MainPage({requestedProducts}){
 
     return (
         <div>
-            <nav id="navbar">
-                <img src="/images/dark-logo.png" alt=""/>
-                <input type="text" id="search-item" name="search" placeholder="Search Amazon ..."/>
-                <div className="navbar-btns">
-                    <button className="sign-in">Sign In</button>
-                    <button className="sign-up">Sign Up</button>
-                </div>
-            </nav>
+            <Navbar/>
 
             <div id="categories">
                 {categories.map((category) => {

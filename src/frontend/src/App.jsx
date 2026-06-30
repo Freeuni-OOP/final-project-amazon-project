@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
 import './App.css';
-import ProductList from "./components/ProductList.jsx";
+import CategoryList from "./components/CategoryList.jsx";
 import MainPage from "./components/MainPage.jsx";
 import {Route, Routes} from "react-router-dom";
+import SearchList from "./components/SearchList.jsx";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -27,11 +28,15 @@ function App() {
   return (
       <Routes>
           <Route path="/" element={
-              <MainPage requestedProducts={<ProductList allProducts={products} />} />
+              <MainPage requestedProducts={<CategoryList allProducts={products} />} />
           }/>
 
           <Route path="/category/:categoryName" element={
-              <MainPage requestedProducts={<ProductList allProducts={products} />} />
+              <MainPage requestedProducts={<CategoryList allProducts={products} />} />
+          }/>
+
+          <Route path="/search/:query" element={
+              <MainPage requestedProducts={<SearchList allProducts={products} />} />
           }/>
       </Routes>
   );
