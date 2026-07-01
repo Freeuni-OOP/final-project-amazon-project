@@ -31,7 +31,7 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public List<CommentResponse> getCommentsByProduct(Integer productId){
-        List<Comment> comments = commentRepository.findByProduct_ProductId(productId);
+        List<Comment> comments = commentRepository.findByProduct_ProductIdOrderByCreatedAtDesc(productId);
         return toCommentResponseList(comments);
     }
 

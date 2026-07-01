@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
     List<Comment> findByProduct_ProductId(Integer productId);
+    List<Comment> findByProduct_ProductIdOrderByCreatedAtDesc(Integer productProductId);
     List<Comment> findByUserId(Integer userId);
     boolean existsByUserId(Integer userId);
     boolean existsByProduct_productId(Integer productId);
