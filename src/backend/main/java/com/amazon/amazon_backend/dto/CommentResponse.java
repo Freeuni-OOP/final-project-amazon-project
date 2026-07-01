@@ -2,6 +2,8 @@ package com.amazon.amazon_backend.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Builder
@@ -10,7 +12,7 @@ import lombok.*;
 public class CommentResponse {
     private Integer commentId;
     private String commentString;
-    private Integer productId;
+    private LocalDateTime createdAt;
     private Integer userId;
     private String username;
 }

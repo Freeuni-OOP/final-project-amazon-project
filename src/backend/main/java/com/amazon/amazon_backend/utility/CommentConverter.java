@@ -12,8 +12,8 @@ public class CommentConverter {
         return CommentResponse.builder()
                 .commentId(comment.getCommentId())
                 .commentString(comment.getCommentStr())
+                .createdAt(comment.getCreatedAt())
                 .username(comment.getUser().getUsername())
-                .productId(comment.getProduct().getProductId())
                 .userId(comment.getUser().getId())
                 .build();
     }
