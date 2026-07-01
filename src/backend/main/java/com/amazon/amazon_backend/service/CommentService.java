@@ -8,7 +8,6 @@ import com.amazon.amazon_backend.model.User;
 import com.amazon.amazon_backend.repository.CommentRepository;
 import com.amazon.amazon_backend.repository.ProductRepository;
 import com.amazon.amazon_backend.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +19,15 @@ import static com.amazon.amazon_backend.utility.CommentConverter.toCommentRespon
 @Service
 public class CommentService {
 
-    @Autowired
-    private CommentRepository commentRepository;
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
-    private UserRepository userRepository;
+    private final CommentRepository commentRepository;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
+
+    public CommentService(CommentRepository commentRepository, ProductRepository productRepository, UserRepository userRepository){
+        this.commentRepository = commentRepository;
+        this.productRepository = productRepository;
+        this.userRepository = userRepository;
+    }
 
     @Transactional(readOnly = true)
     public List<CommentResponse> getCommentsByProduct(Integer productId){
