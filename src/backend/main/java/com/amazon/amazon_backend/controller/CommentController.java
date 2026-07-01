@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/products/{productId}/comments")
+@CrossOrigin(origins = "http://localhost:5173")
 public class CommentController {
 
     private final CommentService commentService;
@@ -19,7 +20,7 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/{userId}")
+    @PostMapping("/create/{userId}")
     public ResponseEntity<CommentResponse> createComment(
             @PathVariable Integer productId,
             @PathVariable Integer userId,
