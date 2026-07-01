@@ -1,9 +1,27 @@
 import '../App.css';
 import {useParams} from 'react-router-dom';
+import {useEffect, useState} from "react";
 
-function CategoryList({allProducts}){
+function CategoryList(){
     const {categoryName} = useParams();
-    const productsRequested = categoryName ? allProducts.filter(product => product.categoryName.toLowerCase() === categoryName.toLowerCase()) : allProducts;
+    const [productsRequested, setProductsRequested] = useState([]);
+
+    useEffect(() => {
+        const fetchInitialData = async () => {
+            try {
+                const [productsResponse] = await Promise.all([
+                    fetch(`http://localhost:8080/products/category-name/${categoryName}`)
+                ]);
+
+                const productsData = await productsResponse.json();
+                setProductsRequested(productsData);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchInitialData();
+    }, [categoryName]);
 
     return (
         <div id="main-box">

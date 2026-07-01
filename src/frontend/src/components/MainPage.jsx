@@ -31,7 +31,7 @@ function MainPage({requestedProducts}){
             <div id="categories">
                 {categories.map((category) => {
                     return (
-                        <a onClick={() => navigate(`/category/${category.categoryName}`)}
+                        <a onClick={() => navigate(`/category-name/${category.categoryName}`)}
                            className="category">{category.categoryName}</a>
                     );
                 })}
