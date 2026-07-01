@@ -7,14 +7,21 @@ import com.amazon.amazon_backend.dto.ProductUpdateRequests.NameDescriptionUpdate
 import com.amazon.amazon_backend.dto.ProductUpdateRequests.PriceUpdateRequest;
 import com.amazon.amazon_backend.dto.ProductUpdateRequests.QuantityUpdateRequest;
 import com.amazon.amazon_backend.service.ProductService;
+import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/products")
-
+@CrossOrigin(origins = "http://localhost:5173")
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -45,8 +52,25 @@ public class ProductController {
         return productService.searchProductsBySellerId(sellerId);
     }
 
-    @PostMapping
-    public ProductResponse createProduct(@RequestBody ProductRequest request) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ProductResponse createProduct(@RequestPart("product") ProductRequest request, @RequestPart(value = "images") MultipartFile[] imageFiles) throws IOException {
+
+        List<String> fileNames = new ArrayList<>();
+        String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/photos/";
+
+        for (MultipartFile file : imageFiles) {
+            if (!file.isEmpty()) {
+                String uniqueID = UUID.randomUUID().toString();
+                String uniqueFileName = uniqueID + "_" + file.getOriginalFilename();
+                file.transferTo(new File(uploadDir + uniqueFileName));
+                fileNames.add("/photos/" + uniqueFileName);
+            }
+        }
+
+        if (!fileNames.isEmpty()) {
+            request.setImageUrls(fileNames);
+        }
+
         return productService.createProduct(request);
     }
 
@@ -71,8 +95,23 @@ public class ProductController {
         return productService.updateQuantity(id, request);
     }
 
-    @PatchMapping("/{id}/image")
-    public ProductResponse updateImage(@PathVariable Integer id, @RequestBody ImagesUpdateRequest request) {
+    @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ProductResponse updateImage(@PathVariable Integer id, @RequestPart("images") MultipartFile[] imageFiles) throws IOException {
+        List<String> fileNames = new ArrayList<>();
+        String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/photos/";
+
+        for (MultipartFile file : imageFiles) {
+            if (!file.isEmpty()) {
+                String uniqueID = UUID.randomUUID().toString();
+                String uniqueFileName = uniqueID + "_" + file.getOriginalFilename();
+                file.transferTo(new File(uploadDir + uniqueFileName));
+                fileNames.add("/photos/" + uniqueFileName);
+            }
+        }
+
+        ImagesUpdateRequest request = new ImagesUpdateRequest();
+        request.setImageUrls(fileNames);
+
         return productService.updateImage(id, request);
     }
 
@@ -80,5 +119,4 @@ public class ProductController {
     public ProductResponse updateNameAndDescription(@PathVariable Integer id, @RequestBody NameDescriptionUpdateRequest request) {
         return productService.updateNameAndDescription(id, request);
     }
-
 }
