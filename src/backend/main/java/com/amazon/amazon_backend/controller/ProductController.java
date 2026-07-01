@@ -13,12 +13,15 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/products")
-
+@CrossOrigin(origins = "http://localhost:5173")
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -50,13 +53,17 @@ public class ProductController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ProductResponse createProduct(@RequestPart("product") ProductRequest request, @RequestPart(value = "images") MultipartFile[] imageFiles) {
+    public ProductResponse createProduct(@RequestPart("product") ProductRequest request, @RequestPart(value = "images") MultipartFile[] imageFiles) throws IOException {
 
         List<String> fileNames = new ArrayList<>();
+        String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/photos/";
 
         for (MultipartFile file : imageFiles) {
             if (!file.isEmpty()) {
-                fileNames.add("/photos/" + file.getOriginalFilename());
+                String uniqueID = UUID.randomUUID().toString();
+                String uniqueFileName = uniqueID + "_" + file.getOriginalFilename();
+                file.transferTo(new File(uploadDir + uniqueFileName));
+                fileNames.add("/photos/" + uniqueFileName);
             }
         }
 
@@ -89,11 +96,16 @@ public class ProductController {
     }
 
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ProductResponse updateImage(@PathVariable Integer id, @RequestPart("image") MultipartFile[] imageFiles) {
+    public ProductResponse updateImage(@PathVariable Integer id, @RequestPart("images") MultipartFile[] imageFiles) throws IOException {
         List<String> fileNames = new ArrayList<>();
+        String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/photos/";
+
         for (MultipartFile file : imageFiles) {
             if (!file.isEmpty()) {
-                fileNames.add("/photos/" + file.getOriginalFilename());
+                String uniqueID = UUID.randomUUID().toString();
+                String uniqueFileName = uniqueID + "_" + file.getOriginalFilename();
+                file.transferTo(new File(uploadDir + uniqueFileName));
+                fileNames.add("/photos/" + uniqueFileName);
             }
         }
 
