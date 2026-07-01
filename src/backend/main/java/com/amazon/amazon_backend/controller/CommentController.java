@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products/{productId}/comments")
 @CrossOrigin(origins = "http://localhost:5173")
 public class CommentController {
 
@@ -20,7 +19,7 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/create/{userId}")
+    @PostMapping("/products/{productId}/comments/{userId}")
     public ResponseEntity<CommentResponse> createComment(
             @PathVariable Integer productId,
             @PathVariable Integer userId,
@@ -30,9 +29,15 @@ public class CommentController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping
+    @GetMapping("/products/{productId}/comments")
     public ResponseEntity<List<CommentResponse>> getProductComments(@PathVariable Integer productId) {
         List<CommentResponse> comments = commentService.getCommentsByProduct(productId);
+        return ResponseEntity.ok(comments);
+    }
+
+    @GetMapping("/user/{userId}/comments")
+    public ResponseEntity<List<CommentResponse>> getUserComments(@PathVariable Integer userId) {
+        List<CommentResponse> comments = commentService.getCommentsByUser(userId);
         return ResponseEntity.ok(comments);
     }
 

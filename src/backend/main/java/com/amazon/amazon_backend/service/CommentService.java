@@ -35,6 +35,12 @@ public class CommentService {
         return toCommentResponseList(comments);
     }
 
+    @Transactional(readOnly = true)
+    public List<CommentResponse> getCommentsByUser(Integer userId){
+        List<Comment> comments = commentRepository.findByUser_IdOrderByCreatedAtDesc(userId);
+        return toCommentResponseList(comments);
+    }
+
     @Transactional
     public CommentResponse addComment(Integer productId, Integer userId, CommentRequest request){
         Product product = productRepository.findById(productId)
