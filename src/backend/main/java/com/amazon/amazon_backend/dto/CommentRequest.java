@@ -11,13 +11,9 @@ import jakarta.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentRequest{
+
     @NotBlank(message = "Comment text cannot be empty or blank")
     @Size(max = 500, message = "Comment cannot exceed 500 characters")
     private String commentStr;
 
-    @NotNull(message = "Product ID is required")
-    private Integer productId;
-
-    @NotNull(message = "User ID is required")
-    private Integer userId;
 }
