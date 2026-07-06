@@ -2,7 +2,7 @@ import '../App.css';
 import { useState } from 'react';
 import {useNavigate} from "react-router-dom";
 
-function Navbar(){
+function Navbar({ isLoggedIn, onLogout }){
     const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
 
@@ -22,8 +22,21 @@ function Navbar(){
                        type="text" name="search" className="search-item" placeholder="Search Products ..."/>
             </form>
             <div className="navbar-btns">
-                <button className="sign-in">Sign In</button>
-                <button className="sign-up">Sign Up</button>
+                {isLoggedIn ? (
+                    <>
+                        <button className="profile-btn" onClick={() => navigate("/profile")}>
+                            My Account
+                        </button>
+                        <button className="sign-out-btn" onClick={onLogout}>
+                            Sign Out
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <button className="sign-in">Sign In</button>
+                        <button className="sign-up">Sign Up</button>
+                    </>
+                )}
             </div>
         </nav>
     );

@@ -3,9 +3,11 @@ import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import Navbar from "./Navbar.jsx";
 
-function MainPage({requestedProducts}){
+function MainPage({ children }){
     const navigate = useNavigate();
     const [categories, setCategories] = useState([]);
+
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
 
     useEffect(() => {
         const fetchInitialData = async () => {
@@ -26,7 +28,7 @@ function MainPage({requestedProducts}){
 
     return (
         <div>
-            <Navbar/>
+            <Navbar isLoggedIn={isLoggedIn} onLogout={() => setIsLoggedIn(false)} />
 
             <div id="categories">
                 {categories.map((category) => {
@@ -37,7 +39,9 @@ function MainPage({requestedProducts}){
                 })}
             </div>
 
-            {requestedProducts}
+            <main className="main-content-layout">
+                {children}
+            </main>
 
             <div id="footer">
 
