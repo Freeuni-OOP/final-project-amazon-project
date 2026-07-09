@@ -78,7 +78,7 @@ public class ProductServiceTest {
         when(commentRepository.findTop5ByProduct_ProductIdOrderByCommentIdDesc(any()))
                 .thenReturn(List.of());
 
-        when(transactionRepository.existsByBuyerIdAndProductIdAndStatus(any(), any(), any()))
+        when(transactionRepository.existsByBuyerIdAndItemsProductProductIdAndStatus(any(), any(), any()))
                 .thenReturn(false);
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
