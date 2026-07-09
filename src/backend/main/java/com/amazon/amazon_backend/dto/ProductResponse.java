@@ -20,4 +20,6 @@ public class ProductResponse {
     private String categoryName;
     private String sellerName;
     private BigDecimal averageRating;
+    private List<String> top5comments;
+    private boolean canReview;
 }

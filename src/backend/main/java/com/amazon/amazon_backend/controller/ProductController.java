@@ -6,17 +6,25 @@ import com.amazon.amazon_backend.dto.ProductUpdateRequests.ImagesUpdateRequest;
 import com.amazon.amazon_backend.dto.ProductUpdateRequests.NameDescriptionUpdateRequest;
 import com.amazon.amazon_backend.dto.ProductUpdateRequests.PriceUpdateRequest;
 import com.amazon.amazon_backend.dto.ProductUpdateRequests.QuantityUpdateRequest;
+import com.amazon.amazon_backend.dto.ReviewRequest;
 import com.amazon.amazon_backend.service.ProductService;
 import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @RestController
@@ -27,8 +35,8 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/{id}")
-    public ProductResponse getProductById(@PathVariable Integer id) {
-        return productService.getProductById(id);
+    public ProductResponse getProductById(@PathVariable Integer id, @RequestParam(required = false) Integer userId) {
+        return productService.getProductById(id, userId);
     }
 
     @GetMapping("/search")
@@ -74,6 +82,18 @@ public class ProductController {
         return productService.createProduct(request);
     }
 
+    @PostMapping("/{id}/reviews")
+    public ResponseEntity<String> addProductReview(@PathVariable Integer id, @RequestBody ReviewRequest request, @RequestParam Integer userId) {
+        try {
+            productService.addProductReview(id, userId, request.getComment_STR(), request.getRating());
+            return ResponseEntity.ok("Review added successfully!");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
     @GetMapping
     public List<ProductResponse> getAllProducts() {
         return productService.getAllProducts();
@@ -104,7 +124,11 @@ public class ProductController {
             if (!file.isEmpty()) {
                 String uniqueID = UUID.randomUUID().toString();
                 String uniqueFileName = uniqueID + "_" + file.getOriginalFilename();
-                file.transferTo(new File(uploadDir + uniqueFileName));
+
+                Path targetPath = Paths.get(uploadDir).resolve(uniqueFileName);
+                Files.createDirectories(targetPath.getParent());
+                Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+
                 fileNames.add("/photos/" + uniqueFileName);
             }
         }
