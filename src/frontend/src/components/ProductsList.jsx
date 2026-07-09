@@ -61,7 +61,7 @@ function ProductsList({allProducts}){
                     to={`/product/${product.productId}`}
                     key={product.productId}
                     className="product-link"
-                    style={{ textDecoration: 'none', color: 'inherit' }} // აშორებს ხაზგასმას და ინარჩუნებს ტექსტის ფერს
+                    style={{ textDecoration: 'none', color: 'inherit' }}
                 >
                     <div className="product">
                         <img src={product.imageUrls?.[0] || "http://localhost:8080/photos/No-image-placeholder.png"} alt=""/>
