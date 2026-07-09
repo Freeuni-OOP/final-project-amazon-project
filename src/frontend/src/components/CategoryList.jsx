@@ -10,10 +10,7 @@ function CategoryList(){
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
-                const [productsResponse] = await Promise.all([
-                    fetch(`http://localhost:8080/products/category-name/${categoryName}`)
-                ]);
-
+                const productsResponse = await fetch(`http://localhost:8080/products/category-name/${categoryName}`);
                 const productsData = await productsResponse.json();
                 setProductsRequested(productsData);
             } catch (error) {

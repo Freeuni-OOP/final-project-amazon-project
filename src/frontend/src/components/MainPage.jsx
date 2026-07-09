@@ -10,10 +10,7 @@ function MainPage({requestedProducts}){
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
-                const [categoryResponse] = await Promise.all([
-                    fetch('http://localhost:8080/categories')
-                ]);
-
+                const categoryResponse = await fetch('http://localhost:8080/categories');
                 const categoriesData = await categoryResponse.json();
                 setCategories(categoriesData);
             } catch (error) {
