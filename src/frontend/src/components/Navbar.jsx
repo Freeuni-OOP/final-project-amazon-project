@@ -22,8 +22,23 @@ function Navbar(){
                        type="text" name="search" className="search-item" placeholder="Search Products ..."/>
             </form>
             <div className="navbar-btns">
-                <button className="sign-in">Sign In</button>
-                <button className="sign-up">Sign Up</button>
+                <div className="navbar-btns">
+                    {/* Sign In ღილაკზე დაჭერისას გადავა /sign-in გვერდზე */}
+                    <button
+                        onClick={() => navigate('/sign-in')}
+                        className="sign-in"
+                    >
+                        Sign In
+                    </button>
+
+                    {/* Sign Up ღილაკზე დაჭერისას გადავა /sign-up გვერდზე */}
+                    <button
+                        onClick={() => navigate('/sign-up')}
+                        className="sign-up"
+                    >
+                        Sign Up
+                    </button>
+                </div>
             </div>
         </nav>
     );
