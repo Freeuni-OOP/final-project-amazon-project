@@ -2,6 +2,8 @@ import '../App.css';
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import Navbar from "./Navbar.jsx";
+import CategoriesComponent from "./CategoriesComponent.jsx";
+import FilterComponent from "./FilterComponent.jsx";
 
 function MainPage({ children }){
     const navigate = useNavigate();

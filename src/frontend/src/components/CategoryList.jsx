@@ -1,24 +1,27 @@
 import '../App.css';
 import {useParams} from 'react-router-dom';
+import {useEffect, useState} from "react";
+import ProductsList from "./ProductsList.jsx";
 
-function CategoryList({allProducts}){
+function CategoryList(){
     const {categoryName} = useParams();
-    const productsRequested = categoryName ? allProducts.filter(product => product.categoryName.toLowerCase() === categoryName.toLowerCase()) : allProducts;
+    const [productsRequested, setProductsRequested] = useState([]);
 
-    return (
-        <div id="main-box">
-            {productsRequested.map((product) => (
-                <div key={product.productId} className="product">
-                    <img src={product.imageUrls?.[0] || "http://localhost:8080/photos/No-image-placeholder.png"} alt=""/>
-                    <p className="productName">{product.productName}</p>
-                    <p className="price">Price: {product.price}$</p>
-                    <p className="quantity">Quantity: {product.quantity}</p>
-                    <p className="category">Category: {product.categoryName}</p>
-                    <p className="seller">Seller: {product.sellerName}</p>
-                </div>
-            ))}
-        </div>
-    );
+    useEffect(() => {
+        const fetchInitialData = async () => {
+            try {
+                const productsResponse = await fetch(`http://localhost:8080/products/category-name/${categoryName}`);
+                const productsData = await productsResponse.json();
+                setProductsRequested(productsData);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchInitialData();
+    }, [categoryName]);
+
+    return (<ProductsList allProducts={productsRequested} />);
 }
 
 export default CategoryList;

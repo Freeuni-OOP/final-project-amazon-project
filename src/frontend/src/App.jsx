@@ -5,6 +5,7 @@ import MainPage from "./components/MainPage.jsx";
 import {Route, Routes} from "react-router-dom";
 import SearchList from "./components/SearchList.jsx";
 import UserProfile from "./components/UserProfile.jsx";
+import ProductsList from "./components/ProductsList.jsx";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -29,11 +30,11 @@ function App() {
   return (
       <Routes>
           <Route path="/" element={
-              <MainPage children={<CategoryList allProducts={products} />} />
+              <MainPage children={<ProductsList allProducts={products} />} />
           }/>
 
-          <Route path="/category/:categoryName" element={
-              <MainPage children={<CategoryList allProducts={products} />} />
+          <Route path="/category-name/:categoryName" element={
+              <MainPage children={<CategoryList/>} />
           }/>
 
           <Route path="/search/:query" element={
