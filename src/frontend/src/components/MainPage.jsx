@@ -3,7 +3,6 @@ import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import Navbar from "./Navbar.jsx";
 import CategoriesComponent from "./CategoriesComponent.jsx";
-import FilterComponent from "./FilterComponent.jsx";
 
 function MainPage({ children }){
     const navigate = useNavigate();
@@ -31,23 +30,13 @@ function MainPage({ children }){
     return (
         <div>
             <Navbar isLoggedIn={isLoggedIn} onLogout={() => setIsLoggedIn(false)} />
-
-            <div id="categories">
-                {categories.map((category) => {
-                    return (
-                        <a onClick={() => navigate(`/category/${category.categoryName}`)}
-                           className="category">{category.categoryName}</a>
-                    );
-                })}
-            </div>
+            <CategoriesComponent />
 
             <main className="main-content-layout">
                 {children}
             </main>
 
-            <div id="footer">
-
-            </div>
+            <div className="footer"></div>
         </div>
     );
 

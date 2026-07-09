@@ -6,6 +6,7 @@ import {Route, Routes} from "react-router-dom";
 import SearchList from "./components/SearchList.jsx";
 import UserProfile from "./components/UserProfile.jsx";
 import ProductsList from "./components/ProductsList.jsx";
+import FilterComponent from "./components/FilterComponent.jsx";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -30,15 +31,30 @@ function App() {
   return (
       <Routes>
           <Route path="/" element={
-              <MainPage children={<ProductsList allProducts={products} />} />
+              <MainPage children={
+                  <>
+                      <FilterComponent/>
+                      <ProductsList allProducts={products} />
+                  </>
+              } />
           }/>
 
           <Route path="/category-name/:categoryName" element={
-              <MainPage children={<CategoryList/>} />
+              <MainPage children={
+                  <>
+                      <FilterComponent/>
+                      <CategoryList/>
+                  </>
+              } />
           }/>
 
           <Route path="/search/:query" element={
-              <MainPage children={<SearchList allProducts={products} />} />
+              <MainPage children={
+                  <>
+                      <FilterComponent/>
+                      <SearchList allProducts={products} />
+                  </>
+              } />
           }/>
 
           <Route path="/profile" element={
