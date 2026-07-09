@@ -25,7 +25,7 @@ function MainPage({requestedProducts}){
         <div>
             <Navbar/>
 
-            <div id="categories">
+            <div className="categories">
                 {categories.map((category) => {
                     return (
                         <a onClick={() => navigate(`/category-name/${category.categoryName}`)}
@@ -36,7 +36,7 @@ function MainPage({requestedProducts}){
 
             {requestedProducts}
 
-            <div id="footer">
+            <div className="footer">
 
             </div>
         </div>
