@@ -68,7 +68,7 @@ function Navbar(){
                 <button className="sign-up">Sign Up</button>
             </div>
             <div className="switch">
-                <div className="slider-bg-theme1 slider-bg">
+                <div className="slider-bg">
                     <button onClick={() => setIsDark(!isDark)} className="slider"></button>
                 </div>
             </div>
