@@ -301,6 +301,7 @@ body {
     padding: 40px 20px;
     text-align: center;
     margin-top: 40px;
+    width: 100%;
 }
 
 .footer-dark {
@@ -353,4 +354,15 @@ body {
         flex-direction: column;
         gap: 20px;
     }
+}
+
+.app-site-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f4f6f8;
+}
+
+.main-content-layout {
+    flex: 1;
 }

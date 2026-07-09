@@ -28,7 +28,7 @@ function MainPage({ children }){
     }, []);
 
     return (
-        <div>
+        <div className="app-site-wrapper">
             <Navbar isLoggedIn={isLoggedIn} onLogout={() => setIsLoggedIn(false)} />
             <CategoriesComponent />
 
