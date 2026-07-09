@@ -184,7 +184,7 @@ body {
 
 .filter {
     background-color: var(--Very-dark-grayish-blue);
-    padding: 20px;
+    padding: 12px;
     color: var(--White);
     display: flex;
     justify-content: space-between;

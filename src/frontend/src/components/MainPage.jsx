@@ -8,8 +8,8 @@ function MainPage({requestedProducts}){
     return (
         <div>
             <Navbar/>
-            <FilterComponent />
             <CategoriesComponent />
+            <FilterComponent />
             {requestedProducts}
 
             <div className="footer"></div>
