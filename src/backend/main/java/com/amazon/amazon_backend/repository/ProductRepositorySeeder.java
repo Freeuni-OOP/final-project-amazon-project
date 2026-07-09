@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.core.annotation.Order;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 @Slf4j
 @Component
+@Order(3)
 public class ProductRepositorySeeder implements CommandLineRunner {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
