@@ -40,22 +40,17 @@ export default function UserProfile() {
     }, [activeTab]);
 
 
-    const handleUpdateQuantity = (productId, newQty) => {
-        const originalItem = cartItems.find(item => item.productId === productId);
-        const originalQty = originalItem ? originalItem.quantity : 1;
-
-        setCartItems(prev => prev.map(item => item.productId === productId ? { ...item, quantity: newQty } : item));
+    const handleUpdateQuantity = (productId, newQty, onFailure) => {
+        if (newQty === '') {
+            setCartItems(prev => prev.map(item => item.productId === productId ? { ...item, quantity: '' } : item));
+            return;
+        }
 
         const requestBody = {
             userId: currentUserId,
             productId: productId,
             quantity: newQty
         };
-        console.log(cartItems);
-
-        console.log(currentUserId);
-        console.log(productId);
-        console.log(newQty);
 
         fetch('http://localhost:8080/cartItem/update', {
             method: 'POST',
@@ -63,15 +58,17 @@ export default function UserProfile() {
             body: JSON.stringify(requestBody)
         })
             .then(res => {
-                if (!res.ok) {
-                    throw new Error(`Server returned error status: ${res.status}`);
+                if (res.ok) {
+                    setCartItems(prev => prev.map(item => item.productId === productId ? { ...item, quantity: newQty } : item));
+                } else {
+                    if (onFailure) {
+                        onFailure("Not enough stock available");
+                    }
                 }
             })
             .catch(err => {
-                console.error("Error updating quantity on backend:", err);
-                setCartItems(prev => prev.map(item => item.productId === productId ? { ...item, quantity: originalQty } : item));
+                console.error("Backend update failed:", err);
             });
-
     };
 
     const handleRemoveItem = (cartItemId) => {

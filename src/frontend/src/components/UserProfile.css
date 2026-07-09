@@ -271,12 +271,11 @@
     color: #b12704;
 }
 
-/* Big Yellow Checkout Button */
 .checkout-action-btn {
     width: 100%;
     background-color: #ffd814;
     border: 1px solid #fcd200;
-    border-radius: 100px; /* Pill shape */
+    border-radius: 100px;
     padding: 12px;
     font-size: 0.95rem;
     cursor: pointer;
@@ -294,4 +293,36 @@
 .checkout-action-btn:active {
     background-color: #f0b800;
     box-shadow: none;
+}
+
+.cart-item-qty-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    position: relative;
+}
+
+.qty-error-label {
+    color: #ba1a1a;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: -0.1px;
+    background-color: #ffeaea;
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #ffdad9;
+    animation: slideInUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(-4px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
