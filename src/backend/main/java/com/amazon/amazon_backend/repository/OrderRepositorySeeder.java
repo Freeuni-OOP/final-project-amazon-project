@@ -31,6 +31,7 @@ public class OrderRepositorySeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        if(orderRepository.findAll().size()>1)return;
         Date date = new Date();
         User tempBot = new User("TempBot", "TempBot@gmail.com", "TempBotPassword", null, date);
         userRepository.save(tempBot);
@@ -42,7 +43,6 @@ public class OrderRepositorySeeder implements CommandLineRunner {
             log.error("Seeder needs at least 2 users and 4 products in the database");
             return;
         }
-        if(orderRepository.findAll().size()>1)return;
         User botUser = allUsers.stream()
                 .filter(u -> u.getUsername().toLowerCase().contains("bot"))
                 .findFirst()

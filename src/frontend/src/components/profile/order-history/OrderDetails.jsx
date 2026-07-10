@@ -34,7 +34,7 @@ function OrderDetails() {
     const isBuyer = currentUserId === orderData.userId;
 
     const getImageUrl = (url) => {
-        if (!url || url.trim() === "") return 'http://localhost:8080/pictures/No-image-placeholder.png';
+        if (!url || url.trim() === "") return  'http://localhost:8080/photos/No-image-placeholder.png';
         if (url.startsWith('http')) return url;
         return `http://localhost:8080${url}`;
     };
