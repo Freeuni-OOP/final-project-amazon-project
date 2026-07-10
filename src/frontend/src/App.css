@@ -634,4 +634,10 @@ body {
         flex-direction: column;
         text-align: center;
     }
+
+    .filter{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
 }
