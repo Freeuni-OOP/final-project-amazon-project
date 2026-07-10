@@ -54,7 +54,7 @@ public class ProductControllerTest {
     @Test
     public void testGetProductById_ShouldReturnProduct_WhenFound() throws Exception {
         Integer productId = 1;
-        ProductResponse mockResponse = new ProductResponse(productId, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+        ProductResponse mockResponse = new ProductResponse(productId, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(),List.of(), false);
 
         when(service.getProductById(productId, null)).thenReturn(mockResponse);
 
@@ -68,7 +68,7 @@ public class ProductControllerTest {
 
     @Test
     public void testSearchProductsByName_ShouldReturnProducts_WhenFound() throws Exception {
-        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(),List.of(), false);
 
         when(service.searchProductsByName("laptop")).thenReturn(List.of(mockResponse));
 
@@ -82,7 +82,7 @@ public class ProductControllerTest {
     @Test
     public void testGetProductsByCategoryId_ShouldReturnProducts_WhenFound() throws Exception {
         Integer categoryId = 1;
-        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), List.of(), false);
 
         when(service.searchProductsByCategoryId(categoryId)).thenReturn(List.of(mockResponse));
 
@@ -96,7 +96,7 @@ public class ProductControllerTest {
     @Test
     public void testGetProductsByCategoryName_ShouldReturnProducts_WhenFound() throws Exception {
         String categoryName = "Electronics";
-        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), categoryName, "sellerUser", BigDecimal.ZERO, List.of(), false);
+        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), categoryName, "sellerUser", BigDecimal.ZERO, List.of(),List.of(), false);
 
         when(service.searchProductsByCategoryName(categoryName)).thenReturn(List.of(mockResponse));
 
@@ -110,7 +110,7 @@ public class ProductControllerTest {
     @Test
     public void testGetProductsBySellerId_ShouldReturnProducts_WhenFound() throws Exception {
         Integer sellerId = 1;
-        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO,List.of(), List.of(), false);
 
         when(service.searchProductsBySellerId(sellerId)).thenReturn(List.of(mockResponse));
 
@@ -123,7 +123,7 @@ public class ProductControllerTest {
 
     @Test
     public void testGetAllProducts_ShouldReturnAllProducts() throws Exception {
-        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO,List.of(), List.of(), false);
 
         when(service.getAllProducts()).thenReturn(List.of(mockResponse));
 
@@ -137,7 +137,7 @@ public class ProductControllerTest {
     @Test
     public void testCreateProduct_ShouldReturnCreatedProduct1() throws Exception {
         ProductRequest request = new ProductRequest(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, 1, null, List.of("/photos/laptop.png"));
-        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO,List.of(), List.of(), false);
 
         when(service.createProduct(any(ProductRequest.class))).thenReturn(mockResponse);
 
@@ -180,7 +180,7 @@ public class ProductControllerTest {
     public void testUpdatePrice_ShouldReturnUpdatedProduct() throws Exception {
         Integer productId = 1;
         PriceUpdateRequest request = new PriceUpdateRequest(BigDecimal.valueOf(1199.99));
-        ProductResponse mockResponse = new ProductResponse(productId, "Laptop", "Description", BigDecimal.valueOf(1199.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+        ProductResponse mockResponse = new ProductResponse(productId, "Laptop", "Description", BigDecimal.valueOf(1199.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(),List.of(), false);
 
         when(service.updatePrice(productId, request)).thenReturn(mockResponse);
 
@@ -197,7 +197,7 @@ public class ProductControllerTest {
     public void testUpdateQuantity_ShouldReturnUpdatedProduct() throws Exception {
         Integer productId = 1;
         QuantityUpdateRequest request = new QuantityUpdateRequest(25);
-        ProductResponse mockResponse = new ProductResponse(productId, "Laptop", "Description", BigDecimal.valueOf(999.99), 25, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+        ProductResponse mockResponse = new ProductResponse(productId, "Laptop", "Description", BigDecimal.valueOf(999.99), 25, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(),List.of(), false);
 
         when(service.updateQuantity(productId, request)).thenReturn(mockResponse);
 
@@ -214,7 +214,7 @@ public class ProductControllerTest {
     public void testUpdateImage_ShouldReturnUpdatedProduct() throws Exception {
         Integer productId = 1;
         ImagesUpdateRequest request = new ImagesUpdateRequest(List.of("/photos/new-laptop.png"));
-        ProductResponse mockResponse = new ProductResponse(productId, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/new-laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+        ProductResponse mockResponse = new ProductResponse(productId, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/new-laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(),List.of(), false);
 
         when(service.updateImage(eq(productId), any(ImagesUpdateRequest.class))).thenReturn(mockResponse);
 
@@ -245,7 +245,7 @@ public class ProductControllerTest {
     public void testUpdateNameAndDescription_ShouldReturnUpdatedProduct() throws Exception {
         Integer productId = 1;
         NameDescriptionUpdateRequest request = new NameDescriptionUpdateRequest("Gaming Laptop", "Updated description");
-        ProductResponse mockResponse = new ProductResponse(productId, "Gaming Laptop", "Updated description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+        ProductResponse mockResponse = new ProductResponse(productId, "Gaming Laptop", "Updated description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(),List.of(), false);
 
         when(service.updateNameAndDescription(productId, request)).thenReturn(mockResponse);
 

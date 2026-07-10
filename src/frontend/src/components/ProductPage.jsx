@@ -41,10 +41,13 @@ function ProductPage() {
     }, [id]);
 
     const handleReviewSubmitted = (newComment) => {
+        const newRatingValue = newComment.rating || 0;
+
         setProduct({
             ...product,
             canReview: false,
-            top5comments: [newComment, ...(product.top5comments || [])]
+            top5comments: [newComment, ...(product.top5comments || [])],
+            top5ratings: [newRatingValue, ...(product.top5ratings || [])]
         });
     };
 
@@ -56,6 +59,16 @@ function ProductPage() {
                 <span className="rating-text-count">
                     ({rating ? Number(rating).toFixed(1) : "0.0"} out of 5)
                 </span>
+            </span>
+        );
+    };
+
+    const renderIndividualStars = (rating) => {
+        const roundedRating = Math.min(5, Math.max(0, Math.round(rating || 0)));
+        return (
+            <span>
+                <span className="star-filled">{"★".repeat(roundedRating)}</span>
+                <span className="star-empty">{"☆".repeat(5 - roundedRating)}</span>
             </span>
         );
     };
@@ -85,12 +98,10 @@ function ProductPage() {
                     </div>
                 </div>
 
-
                 <ProductDetailsInfo product={product} />
             </div>
 
             <div className="comments-section">
-
                 <ReviewSection
                     productId={id}
                     currentUserId={currentUserId}
@@ -102,19 +113,28 @@ function ProductPage() {
 
                 {product.top5comments && product.top5comments.length > 0 ? (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                        {product.top5comments.map((comment, index) => (
-                            <div key={index} className="comment-card">
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                                    <div className="comment-user-avatar"></div>
-                                    <span className="comment-user-name">
-                                        {"Amazon Customer"}
-                                    </span>
+                        {product.top5comments.map((comment, index) => {
+                            const currentCommentRating = product.top5ratings?.[index] || 0;
+
+                            return (
+                                <div key={index} className="comment-card" style={{ padding: '15px', borderBottom: '1px solid #eee' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                                        <div className="comment-user-avatar"></div>
+                                        <span className="comment-user-name" style={{ fontWeight: 'bold' }}>
+                                              {comment.reviewerName || "Amazon Customer"}
+                                        </span>
+
+                                        {renderIndividualStars(currentCommentRating)}
+                                    </div>
+
+                                    <p className="comment-body-text" style={{ margin: '5px 0', color: '#333' }}>
+                                        {typeof comment === 'string'
+                                            ? comment
+                                            : (comment.comment_STR || comment.comment || "No text available")}
+                                    </p>
                                 </div>
-                                <p className="comment-body-text">
-                                    {typeof comment === 'string' ? comment : "No text available"}
-                                </p>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 ) : (
                     <p className="no-comments-text">No reviews yet for this product. Be the first to review!</p>

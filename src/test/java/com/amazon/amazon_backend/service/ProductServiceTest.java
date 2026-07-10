@@ -68,7 +68,7 @@ public class ProductServiceTest {
         seller = new User();
         category = new Category("Electronics");
         product = new Product("Description", seller, category, "Laptop", BigDecimal.valueOf(999.99), 10, new ArrayList<>());
-        response = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+        response = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), List.of(), false);
     }
 
     @Test
@@ -230,7 +230,7 @@ public class ProductServiceTest {
             converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(), anyBoolean()))
                     .thenAnswer(invocation -> {
                         Product savedProduct = invocation.getArgument(0);
-                        return new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), savedProduct.getQuantity(), List.of("/photos/No-image-placeholder.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+                        return new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), savedProduct.getQuantity(), List.of("/photos/No-image-placeholder.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), List.of(), false);
                     });
 
             ProductResponse result = productService.createProduct(request);
@@ -257,7 +257,7 @@ public class ProductServiceTest {
                                 urls.add(img.getImageUrl());
                             }
                         }
-                        return new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, urls, "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+                        return new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, urls, "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), List.of(), false);
                     });
 
             ProductResponse result = productService.createProduct(request);
@@ -285,7 +285,7 @@ public class ProductServiceTest {
                                 urls.add(img.getImageUrl());
                             }
                         }
-                        return new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, urls, "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+                        return new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, urls, "Electronics", "sellerUser", BigDecimal.ZERO, List.of(),List.of(), false);
                     });
 
             ProductResponse result = productService.createProduct(request);
@@ -393,7 +393,7 @@ public class ProductServiceTest {
         when(productRepository.findById(1)).thenReturn(Optional.of(product));
         when(productRepository.save(product)).thenReturn(product);
 
-        ProductResponse updatedResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(1199.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+        ProductResponse updatedResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(1199.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), List.of(), false);
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
             converter.when(() -> ProductConverter.toProductResponse(product, List.of(), false)).thenReturn(updatedResponse);
@@ -420,7 +420,7 @@ public class ProductServiceTest {
         when(productRepository.findById(1)).thenReturn(Optional.of(product));
         when(productRepository.save(product)).thenReturn(product);
 
-        ProductResponse updatedResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 25, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+        ProductResponse updatedResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 25, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(),List.of(), false);
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
             converter.when(() -> ProductConverter.toProductResponse(product, List.of(), false)).thenReturn(updatedResponse);
@@ -447,7 +447,7 @@ public class ProductServiceTest {
         when(productRepository.findById(1)).thenReturn(Optional.of(product));
         when(productRepository.save(product)).thenReturn(product);
 
-        ProductResponse updatedResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/new-laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+        ProductResponse updatedResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/new-laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(),List.of(), false);
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
             converter.when(() -> ProductConverter.toProductResponse(product, List.of(), false)).thenReturn(updatedResponse);
@@ -472,7 +472,7 @@ public class ProductServiceTest {
                         for (Image img : product.getImages()) {
                             urls.add(img.getImageUrl());
                         }
-                        return new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, urls, "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+                        return new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, urls, "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), List.of(), false);
                     });
 
             ProductResponse result = productService.updateImage(1, request);
@@ -504,7 +504,7 @@ public class ProductServiceTest {
         when(productRepository.findById(1)).thenReturn(Optional.of(product));
         when(productRepository.save(product)).thenReturn(product);
 
-        ProductResponse updatedResponse = new ProductResponse(1, "Gaming Laptop", "Updated description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
+        ProductResponse updatedResponse = new ProductResponse(1, "Gaming Laptop", "Updated description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), List.of(), false);
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
             converter.when(() -> ProductConverter.toProductResponse(product, List.of(), false)).thenReturn(updatedResponse);
