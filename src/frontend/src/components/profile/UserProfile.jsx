@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import AccountOverview from './user-info/AccountOverview.jsx';
 import TabButton from "./TabButton.jsx";
 import './UserProfile.css';
 import MyCart from "./cart-page/MyCart.jsx";
 import MyProducts from "./user-products/MyProducts.jsx";
+import OrderHistory from "./order-history/OrderHistory.jsx";
+import MyComments from "./user-comments/MyComments.jsx"
 
 export default function UserProfile() {
     const location = useLocation();
@@ -14,6 +16,7 @@ export default function UserProfile() {
         username: 'Loading...', email: 'Loading...', balance: 0.00, gender: '', birthDate: ''
     });
     const [cartItems, setCartItems] = useState([]);
+    const [comments, setComments]=useState([]);
 
     const storedUser = localStorage.getItem('user');
     const userObj = storedUser ? JSON.parse(storedUser) : null;
@@ -21,6 +24,7 @@ export default function UserProfile() {
 
     useEffect(() => {
         if (activeTab === 'profile') {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setLoading(true);
             fetch(`http://localhost:8080/users/${currentUserId}`)
                 .then(res => res.json())
@@ -41,6 +45,14 @@ export default function UserProfile() {
                     setLoading(false);
                 });
         }
+
+        if(activeTab==='comments'){
+            setLoading(true);
+            fetch(`http://localhost:8080/user/${currentUserId}/comments`)
+            .then(res=>res.json())
+            .then(data => { setComments(data); setLoading(false); })
+            .catch(err => { console.error(err); setLoading(false); });
+            }
 
     }, [activeTab]);
 
@@ -93,7 +105,10 @@ export default function UserProfile() {
             case 'profile':
                 return <AccountOverview userInfo={userInfo} />;
             case 'comments':
-                return <div><h3>My Written Comments</h3></div>;
+                return <>
+                <h3>My Written Comments</h3>
+                <MyComments comments={comments} loading={loading} />
+                </>;
             case 'cart':
                 return <MyCart
                     cartItems={cartItems}
@@ -103,8 +118,8 @@ export default function UserProfile() {
                 />;
             case 'products':
                 return <MyProducts/>
-            case 'transactions':
-                return <div><h3>Order History</h3></div>;
+           case 'transactions':
+               return <OrderHistory />;
             default:
                 return <div>Select an option from the menu.</div>;
         }
@@ -113,7 +128,7 @@ export default function UserProfile() {
     return (
         <div className="dashboard-layout-container">
             <div className="dashboard-sidebar">
-                <h2>My Account</h2>
+                <h2 className="my-account-header">My Account</h2>
                 <TabButton activeTab={activeTab} setActiveTab={setActiveTab} tab={'profile'} name={'Personal Info'}/>
                 <TabButton activeTab={activeTab} setActiveTab={setActiveTab} tab={'cart'} name={'My Cart'}/>
                 <TabButton activeTab={activeTab} setActiveTab={setActiveTab} tab={'products'} name={'My Products'}/>

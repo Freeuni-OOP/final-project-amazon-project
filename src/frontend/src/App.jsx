@@ -12,6 +12,8 @@ import ProductPage from "./components/ProductPage.jsx";
 import FilterComponent from "./components/FilterComponent.jsx";
 import EditProductPage from "./components/edit-product/EditProductPage.jsx";
 import AddProductPage from "./components/create-product/AddProductPage.jsx";
+import OrderHistory from "./components/profile/order-history/OrderHistory.jsx";
+import OrderDetails from "./components/profile/order-history/OrderDetails.jsx";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -79,6 +81,9 @@ function App() {
 
           <Route path="/product/:id" element={
               <MainPage children={<ProductPage />} />
+          }/>
+          <Route path="/order-details/:orderId" element={
+           <MainPage children={<OrderDetails />} />
           }/>
       </Routes>
   );

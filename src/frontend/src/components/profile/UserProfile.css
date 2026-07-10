@@ -15,7 +15,7 @@
     flex-shrink: 0;
 }
 
-.dashboard-sidebar h2 {
+.my-account-header {
     font-size: 1.5rem;
     color: #111;
     border-bottom: 2px solid #febd69;
@@ -544,4 +544,104 @@
 
 .my-products-list::-webkit-scrollbar-thumb:hover {
     background-color: #a0a0a0;
+}
+
+
+.profile-orders-tab h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    color: #111;
+}
+
+.order-history-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.order-history-tabs .nav-btn {
+    border-left: none;
+    border-radius: 0;
+    padding: 10px 16px;
+}
+
+.order-history-tabs .nav-btn.active {
+    border-left: none;
+    border-bottom: 2px solid #e47911;
+    background-color: transparent;
+    padding-left: 16px;
+}
+
+.order-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.order-history-row-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #e7e7e7;
+    border-radius: 8px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease;
+}
+
+.order-history-row-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.order-history-info h4 {
+    margin: 0 0 6px 0;
+    font-size: 1.05rem;
+    color: #111;
+}
+
+.order-history-meta {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #565959;
+}
+
+.order-history-price {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #b12704;
+}
+
+.empty-orders-container {
+    text-align: center;
+    padding: 60px 20px;
+    color: #555;
+}
+
+.light-btn{
+    color: var(--Light-gray);
+}
+
+.light-text{
+    color: var(--Light-gray);
+}
+
+@media (max-width: 700px) {
+    .dashboard-layout-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 50px;
+    }
+
+    .dashboard-sidebar{
+        width: 100%;
+    }
+
+    .dashboard-main-content{
+        width: 100%;
+    }
 }
