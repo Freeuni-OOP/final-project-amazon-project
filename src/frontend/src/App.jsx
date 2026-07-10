@@ -7,6 +7,7 @@ import SearchList from "./components/SearchList.jsx";
 import UserProfile from "./components/UserProfile.jsx";
 import ProductsList from "./components/ProductsList.jsx";
 import FilterComponent from "./components/FilterComponent.jsx";
+import EditProductPage from "./components/EditProductPage.jsx";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -59,6 +60,10 @@ function App() {
 
           <Route path="/profile" element={
               <MainPage children={<UserProfile />} />
+          }/>
+
+          <Route path="/edit-product/:id" element={
+              <EditProductPage />
           }/>
       </Routes>
   );

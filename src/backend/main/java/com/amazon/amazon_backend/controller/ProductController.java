@@ -7,7 +7,6 @@ import com.amazon.amazon_backend.dto.ProductUpdateRequests.NameDescriptionUpdate
 import com.amazon.amazon_backend.dto.ProductUpdateRequests.PriceUpdateRequest;
 import com.amazon.amazon_backend.dto.ProductUpdateRequests.QuantityUpdateRequest;
 import com.amazon.amazon_backend.service.ProductService;
-import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -98,7 +97,7 @@ public class ProductController {
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ProductResponse updateImage(@PathVariable Integer id, @RequestPart("images") MultipartFile[] imageFiles) throws IOException {
         List<String> fileNames = new ArrayList<>();
-        String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/photos/";
+        String uploadDir = System.getProperty("user.dir") + "/src/backend/main/resources/static/photos/";
 
         for (MultipartFile file : imageFiles) {
             if (!file.isEmpty()) {

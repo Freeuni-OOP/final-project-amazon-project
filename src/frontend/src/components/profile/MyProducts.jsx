@@ -25,13 +25,24 @@ export default function MyProducts() {
         fetchSellerProducts();
     }, [sellerId]);
 
-    const handleEditProduct = (productId) => {
-        alert(`ToDo: Open edit modal/page for product ID: ${productId}`);
-    };
+    const handleDeleteProduct = async (productId) => {
+        const confirmDelete = window.confirm("Are you sure you want to delete this listing permanently?");
+        if (!confirmDelete) return;
 
-    const handleDeleteProduct = (productId) => {
-        if (window.confirm("Are you sure you want to delete this listing from the market?")) {
-            alert(`ToDo: Delete API call for product ID: ${productId}`);
+        try {
+            const response = await fetch(`http://localhost:8080/products/${productId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                setProducts(prevProducts => prevProducts.filter(p => p.productId !== productId));
+                alert("Listing deleted successfully.");
+            } else {
+                alert("Failed to delete product parameters from server.");
+            }
+        } catch (error) {
+            console.error("Error during deletion request:", error);
+            alert("Network connection failure during deletion.");
         }
     };
 
@@ -50,7 +61,7 @@ export default function MyProducts() {
             {!loading && products.length > 0 && (
                 <div className="vendor-products-grid">
                     {products.map((product) => (
-                        <MyProduct product={product} handleEditProduct={handleEditProduct} handleDeleteProduct={handleDeleteProduct}/>
+                        <MyProduct product={product} handleDeleteProduct={handleDeleteProduct}/>
                     ))}
                 </div>
             )}

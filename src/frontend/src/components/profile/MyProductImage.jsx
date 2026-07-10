@@ -2,12 +2,15 @@ import React from "react";
 
 export default function MyProductImage({ product }){
 
-    const hasImages = product.imageUrls && product.imageUrls.length > 0;
-    const firstImageUrl = hasImages ? product.imageUrls[0] : "https://via.placeholder.com/150";
+    const getImageUrl = (url) => {
+        if (!url) return 'http://localhost:8080/photos/No-image-placeholder.png';
+        if (url.startsWith('http')) return url;
+        return `http://localhost:8080${url}`;
+    };
 
     return (
         <img
-            src={firstImageUrl}
+            src={getImageUrl(product.imageUrls?.[0])}
             alt={product.productName}
             className="vendor-product-img"
         />

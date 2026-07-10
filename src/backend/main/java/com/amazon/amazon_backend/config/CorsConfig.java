@@ -1,4 +1,4 @@
-package com.amazon.amazon_backend;
+package com.amazon.amazon_backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
