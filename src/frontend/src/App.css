@@ -322,6 +322,15 @@ body.body-dark{
     color: white;
 }
 
+.profile-btn{
+    transition: all 0.3s;
+}
+
+.profile-btn:hover{
+    background-color: var(--Very-dark-blue);
+    color: var(--Light-gray);
+}
+
 @media (max-width: 700px) {
     .navbar {
         flex-direction: column;
@@ -731,6 +740,12 @@ body.body-dark{
     margin: 6px 0 14px 0;
 }
 
+.navbar-btns{
+    display:flex;
+    justify-content: space-between;
+    margin-right: 10px;
+}
+
 .related-product-btn {
     display: block;
     text-align: center;
@@ -778,7 +793,9 @@ body.body-dark{
 
     .navbar-btns {
         width: 100%;
-        justify-content: space-between;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
     }
 
     .categories{
