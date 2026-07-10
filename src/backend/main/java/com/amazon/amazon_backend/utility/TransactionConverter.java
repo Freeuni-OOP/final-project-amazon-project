@@ -54,7 +54,7 @@ public class TransactionConverter {
 
     public static List<TransactionResponse> tranListToTranRespList(List<Transaction> transactions){
         return transactions.stream()
-                .map(TransactionConverter::toTranResp)
+                .map(TransactionConverter::toDetailedTranResp)
                 .collect(Collectors.toList());
     }
 }
