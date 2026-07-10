@@ -66,17 +66,17 @@ class RatingServiceTest {
         // Given
         when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
         when(productRepository.findById(100)).thenReturn(Optional.of(sampleProduct));
-        when(ratingRepository.findByUserAndProduct(sampleUser, sampleProduct)).thenReturn(Optional.empty());
+        when(ratingRepository.findByUser_IdAndProduct_ProductId(sampleUser.getId(), sampleProduct.getProductId())).thenReturn(Optional.empty());
 
         Rating savedRating = new Rating(sampleUser, sampleProduct, 5, LocalDateTime.now());
         savedRating.setRatingId(77);
         when(ratingRepository.save(any(Rating.class))).thenReturn(savedRating);
 
-        when(ratingRepository.calculateAverageRatingByProduct(sampleProduct)).thenReturn(5.0);
+        when(ratingRepository.calculateAverageRatingByProduct(sampleProduct.getProductId())).thenReturn(5.0);
 
         List<Rating> productRatingsList = new ArrayList<>();
         productRatingsList.add(savedRating);
-        when(ratingRepository.findByProduct(sampleProduct)).thenReturn(productRatingsList);
+        when(ratingRepository.findByProduct_ProductId(sampleProduct.getProductId())).thenReturn(productRatingsList);
 
         // When
         RatingResponse response = ratingService.addOrUpdateRating(sampleRequest);
@@ -100,14 +100,10 @@ class RatingServiceTest {
 
         when(userRepository.findById(1)).thenReturn(Optional.of(sampleUser));
         when(productRepository.findById(100)).thenReturn(Optional.of(sampleProduct));
-        when(ratingRepository.findByUserAndProduct(sampleUser, sampleProduct)).thenReturn(Optional.of(existingRating));
+        when(ratingRepository.findByUser_IdAndProduct_ProductId(sampleUser.getId(), sampleProduct.getProductId())).thenReturn(Optional.of(existingRating));
 
         when(ratingRepository.save(existingRating)).thenReturn(existingRating);
-        when(ratingRepository.calculateAverageRatingByProduct(sampleProduct)).thenReturn(5.0);
-
-        List<Rating> productRatingsList = new ArrayList<>();
-        productRatingsList.add(existingRating);
-        when(ratingRepository.findByProduct(sampleProduct)).thenReturn(productRatingsList);
+        when(ratingRepository.calculateAverageRatingByProduct(sampleProduct.getProductId())).thenReturn(5.0);
 
         // When
         RatingResponse response = ratingService.addOrUpdateRating(sampleRequest);
@@ -150,7 +146,7 @@ class RatingServiceTest {
         });
 
         assertEquals("Product not found with ID:100", exception.getMessage());
-        verify(ratingRepository, never()).findByUserAndProduct(any(), any());
+        verify(ratingRepository, never()).findByUser_IdAndProduct_ProductId(any(), any());
         verify(ratingRepository, never()).save(any(Rating.class));
     }
 }

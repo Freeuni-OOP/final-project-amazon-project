@@ -28,7 +28,7 @@ public class ProductConverterTest {
         image.setProduct(product);
         product.getImages().add(image);
 
-        ProductResponse response = ProductConverter.toProductResponse(product);
+        ProductResponse response = ProductConverter.toProductResponse(product, List.of(), false);
 
         assertNotNull(response);
         assertEquals(product.getProductId(), response.getProductId());
@@ -53,8 +53,8 @@ public class ProductConverterTest {
         Category category2 = new Category("Sport");
         Product product2 = new Product("Description2", seller2, category2, "Football", BigDecimal.valueOf(29.99), 15, new ArrayList<>());
 
-        ProductResponse response1 = ProductConverter.toProductResponse(product1);
-        ProductResponse response2 = ProductConverter.toProductResponse(product2);
+        ProductResponse response1 = ProductConverter.toProductResponse(product1, List.of(), false);
+        ProductResponse response2 = ProductConverter.toProductResponse(product2, List.of(), false);
 
         assertNotEquals(product1.getProductName(), response2.getProductName());
         assertNotEquals(product2.getQuantity(), response1.getQuantity());
@@ -64,7 +64,7 @@ public class ProductConverterTest {
 
     @Test
     public void testToProductResponseReturnsNullWhenProductIsNull() {
-        assertNull(ProductConverter.toProductResponse(null));
+        assertNull(ProductConverter.toProductResponse(null, List.of(), false));
     }
 
     @Test

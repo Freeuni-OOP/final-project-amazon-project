@@ -15,13 +15,18 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.math.BigDecimal;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -49,9 +54,9 @@ public class ProductControllerTest {
     @Test
     public void testGetProductById_ShouldReturnProduct_WhenFound() throws Exception {
         Integer productId = 1;
-        ProductResponse mockResponse = new ProductResponse(productId, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO);
+        ProductResponse mockResponse = new ProductResponse(productId, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
 
-        when(service.getProductById(productId)).thenReturn(mockResponse);
+        when(service.getProductById(productId, null)).thenReturn(mockResponse);
 
         mockMvc.perform(get("/products/" + productId)
                         .accept(MediaType.APPLICATION_JSON))
@@ -63,7 +68,7 @@ public class ProductControllerTest {
 
     @Test
     public void testSearchProductsByName_ShouldReturnProducts_WhenFound() throws Exception {
-        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO);
+        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
 
         when(service.searchProductsByName("laptop")).thenReturn(List.of(mockResponse));
 
@@ -77,7 +82,7 @@ public class ProductControllerTest {
     @Test
     public void testGetProductsByCategoryId_ShouldReturnProducts_WhenFound() throws Exception {
         Integer categoryId = 1;
-        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO);
+        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
 
         when(service.searchProductsByCategoryId(categoryId)).thenReturn(List.of(mockResponse));
 
@@ -91,7 +96,7 @@ public class ProductControllerTest {
     @Test
     public void testGetProductsByCategoryName_ShouldReturnProducts_WhenFound() throws Exception {
         String categoryName = "Electronics";
-        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), categoryName, "sellerUser", BigDecimal.ZERO);
+        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), categoryName, "sellerUser", BigDecimal.ZERO, List.of(), false);
 
         when(service.searchProductsByCategoryName(categoryName)).thenReturn(List.of(mockResponse));
 
@@ -105,7 +110,7 @@ public class ProductControllerTest {
     @Test
     public void testGetProductsBySellerId_ShouldReturnProducts_WhenFound() throws Exception {
         Integer sellerId = 1;
-        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO);
+        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
 
         when(service.searchProductsBySellerId(sellerId)).thenReturn(List.of(mockResponse));
 
@@ -118,7 +123,7 @@ public class ProductControllerTest {
 
     @Test
     public void testGetAllProducts_ShouldReturnAllProducts() throws Exception {
-        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO);
+        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
 
         when(service.getAllProducts()).thenReturn(List.of(mockResponse));
 
@@ -130,15 +135,29 @@ public class ProductControllerTest {
     }
 
     @Test
-    public void testCreateProduct_ShouldReturnCreatedProduct() throws Exception {
+    public void testCreateProduct_ShouldReturnCreatedProduct1() throws Exception {
         ProductRequest request = new ProductRequest(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, 1, null, List.of("/photos/laptop.png"));
-        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO);
+        ProductResponse mockResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
 
-        when(service.createProduct(ArgumentMatchers.any(ProductRequest.class))).thenReturn(mockResponse);
+        when(service.createProduct(any(ProductRequest.class))).thenReturn(mockResponse);
 
-        mockMvc.perform(post("/products")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request))
+        MockMultipartFile emptyFile = new MockMultipartFile(
+                "images",
+                "",
+                MediaType.APPLICATION_OCTET_STREAM_VALUE,
+                new byte[0]
+        );
+
+        MockMultipartFile mockProductPart = new MockMultipartFile(
+                "product",
+                "",
+                MediaType.APPLICATION_JSON_VALUE,
+                objectMapper.writeValueAsString(request).getBytes()
+        );
+
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/products")
+                        .file(mockProductPart)
+                        .file(emptyFile)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.productName").value("Laptop"))
@@ -161,7 +180,7 @@ public class ProductControllerTest {
     public void testUpdatePrice_ShouldReturnUpdatedProduct() throws Exception {
         Integer productId = 1;
         PriceUpdateRequest request = new PriceUpdateRequest(BigDecimal.valueOf(1199.99));
-        ProductResponse mockResponse = new ProductResponse(productId, "Laptop", "Description", BigDecimal.valueOf(1199.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO);
+        ProductResponse mockResponse = new ProductResponse(productId, "Laptop", "Description", BigDecimal.valueOf(1199.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
 
         when(service.updatePrice(productId, request)).thenReturn(mockResponse);
 
@@ -178,7 +197,7 @@ public class ProductControllerTest {
     public void testUpdateQuantity_ShouldReturnUpdatedProduct() throws Exception {
         Integer productId = 1;
         QuantityUpdateRequest request = new QuantityUpdateRequest(25);
-        ProductResponse mockResponse = new ProductResponse(productId, "Laptop", "Description", BigDecimal.valueOf(999.99), 25, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO);
+        ProductResponse mockResponse = new ProductResponse(productId, "Laptop", "Description", BigDecimal.valueOf(999.99), 25, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
 
         when(service.updateQuantity(productId, request)).thenReturn(mockResponse);
 
@@ -195,13 +214,27 @@ public class ProductControllerTest {
     public void testUpdateImage_ShouldReturnUpdatedProduct() throws Exception {
         Integer productId = 1;
         ImagesUpdateRequest request = new ImagesUpdateRequest(List.of("/photos/new-laptop.png"));
-        ProductResponse mockResponse = new ProductResponse(productId, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/new-laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO);
+        ProductResponse mockResponse = new ProductResponse(productId, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/new-laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
 
-        when(service.updateImage(productId, request)).thenReturn(mockResponse);
+        when(service.updateImage(eq(productId), any(ImagesUpdateRequest.class))).thenReturn(mockResponse);
 
-        mockMvc.perform(patch("/products/" + productId + "/image")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request))
+        MockMultipartFile requestPart = new MockMultipartFile(
+                "request",
+                "",
+                MediaType.APPLICATION_JSON_VALUE,
+                objectMapper.writeValueAsString(request).getBytes()
+        );
+
+        MockMultipartFile emptyFile = new MockMultipartFile(
+                "images",
+                "",
+                MediaType.APPLICATION_OCTET_STREAM_VALUE,
+                new byte[0]
+        );
+
+        mockMvc.perform(MockMvcRequestBuilders.multipart(HttpMethod.PATCH, "/products/" + productId + "/image")
+                        .file(requestPart)
+                        .file(emptyFile)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.imageUrls[0]").value("/photos/new-laptop.png"))
@@ -212,7 +245,7 @@ public class ProductControllerTest {
     public void testUpdateNameAndDescription_ShouldReturnUpdatedProduct() throws Exception {
         Integer productId = 1;
         NameDescriptionUpdateRequest request = new NameDescriptionUpdateRequest("Gaming Laptop", "Updated description");
-        ProductResponse mockResponse = new ProductResponse(productId, "Gaming Laptop", "Updated description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO);
+        ProductResponse mockResponse = new ProductResponse(productId, "Gaming Laptop", "Updated description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
 
         when(service.updateNameAndDescription(productId, request)).thenReturn(mockResponse);
 

@@ -1,15 +1,17 @@
 package com.amazon.amazon_backend.utility;
 
 import com.amazon.amazon_backend.dto.ProductResponse;
+import com.amazon.amazon_backend.model.Comment;
 import com.amazon.amazon_backend.model.Image;
 import com.amazon.amazon_backend.model.Product;
+import com.amazon.amazon_backend.repository.CommentRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductConverter {
 
-    public static ProductResponse toProductResponse(Product product){
+    public static ProductResponse toProductResponse(Product product, List<String> top5Comments, boolean canReview){
         if(product == null)return null;
 
         List<String> imageUrls = new ArrayList<>();
@@ -28,7 +30,9 @@ public class ProductConverter {
                 imageUrls,
                 product.getCategory().getCategoryName(),
                 product.getSeller().getUsername(),
-                product.getAverageRating()
+                product.getAverageRating(),
+                top5Comments,
+                canReview
                 );
     }
 
@@ -37,7 +41,7 @@ public class ProductConverter {
         if (products == null) return responseList;
 
         for (Product product : products) {
-            responseList.add(toProductResponse(product));
+            responseList.add(toProductResponse(product, List.of(), false));
         }
 
         return responseList;

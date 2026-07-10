@@ -39,5 +39,6 @@ public class Comment {
         this.commentStr = commentStr;
         this.product = product;
         this.user = user;
+        this.createdAt = LocalDateTime.now();
     }
 }
