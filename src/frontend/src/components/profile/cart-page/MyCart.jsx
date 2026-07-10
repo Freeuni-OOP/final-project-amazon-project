@@ -32,7 +32,6 @@ export default function MyCart({ cartItems, loading, onUpdateQuantity, onRemoveI
                 await response.json();
 
                 alert("🎉 Order created successfully!");
-                navigate('/profile', { state: { defaultTab: 'transactions' } });
             } else {
                 alert("Checkout failed. Please check product stock metrics or your balance.");
             }

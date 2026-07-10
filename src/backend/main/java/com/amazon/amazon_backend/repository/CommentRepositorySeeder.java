@@ -3,10 +3,12 @@ package com.amazon.amazon_backend.repository;
 import com.amazon.amazon_backend.model.Comment;
 import com.amazon.amazon_backend.model.Product;
 import com.amazon.amazon_backend.model.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @Order(5)
 public class CommentRepositorySeeder implements CommandLineRunner {
