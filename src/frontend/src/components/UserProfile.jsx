@@ -3,6 +3,7 @@ import AccountOverview from './profile/AccountOverview.jsx';
 import TabButton from "./profile/TabButton.jsx";
 import './UserProfile.css';
 import MyCart from "./profile/MyCart.jsx";
+// import { useAuth } from '../context/AuthContext';    // ToDo: uncomment this when authentication is ready
 
 export default function UserProfile() {
     const [activeTab, setActiveTab] = useState('profile');
@@ -12,7 +13,9 @@ export default function UserProfile() {
     });
     const [cartItems, setCartItems] = useState([]);
 
-    const currentUserId = 1;
+    // const { user } = useAuth();        // ToDo: uncomment this when authentication is ready
+    // const currentUserId = user?.id;    // ToDo: uncomment this when authentication is ready
+    const currentUserId = 1;      // ToDo: remove this line when authentication is ready
 
     useEffect(() => {
         if (activeTab === 'profile') {
