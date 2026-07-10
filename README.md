@@ -11,22 +11,22 @@ OOP ფინალური პროექტი
 6. Docker
 
 # Application Features:
-1. On this application user can buy and sell items.
-   In order to achieve that user needs to 'sign in' or 'sign up'
+1. On this application users can buy listed items and sell their own products directly from their profile.
+   In order to achieve that user needs to 'sign in' or 'sign up':
    1. While 'sign up' User needs to enter his/her unique 'username', password, email, BirthDate and Gender;
    2. User's password should be at least 8 characters long, should contain alphabet letters, at least one number
       and uppercase letter
    3. While 'sign in' User needs to enter his/her email and password;
-2. After 'sign up' User has some balance of money, which she/he can spend with buying items
-   or increase with selling something;
-3. If user wants to buy anything she/he can save items in cart on following condition:
-   1. You can not save more than 50 different items in cart but you can have more than 50 units of same item;
-4. While shopping you can sort items in price increasing or decreasing order,
-   on addition to that you can also have price range for that items;
-5. After buying items saved in your cart, you can see those items in your orders and transactions;
-6. If user wants to sell anything, she/he can upload that product with images (max 5 images) and additional info.
-   If no image is added, website adds default image.
-7. On website you can also change themes: default is light theme, but you can change it to dark;
+2. After 'sign up' User is assigned a default balance of $1000, which she/he can spend on purchases
+   or increase through selling items;
+3. If user wants to purchase anything she/he should save items in cart on following condition -
+   user can not save more than 50 unique items in cart but user can have more than 50 units of same item;
+4. While shopping, user can sort items by price in ascending or descending order.
+   In addition to that, user can filter items by a specific price range;
+5. Once user buys the items in her/his cart, user can view them in her/his order history and transaction list;
+6. If user wants to sell anything, she/he can upload a new product with images (max of 5) and additional info.
+   If no image is added, website assigns a default image to that item.
+7. "The website also allows user to change display modes: the default is light mode, but user can easily switch to dark mode;
 
 # For launching the project you need to follow these steps:
 1. If you have not downloaded node.js in your computer yet: visit page "https://nodejs.org/en/download"
