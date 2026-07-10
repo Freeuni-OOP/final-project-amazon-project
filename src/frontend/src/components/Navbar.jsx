@@ -49,6 +49,7 @@ function Navbar(){
         document.querySelector('.comments-main-title')?.classList.toggle("light-text", darkMode);
         document.querySelector('.comment-card')?.classList.toggle("light-text", darkMode);
         document.querySelector('.no-comments-text')?.classList.toggle("light-text", darkMode);
+        document.querySelector('.my-account-header')?.classList.toggle("light-text", darkMode);
 
         document.querySelectorAll('.quantity, .category, .seller').forEach((element) => {
             element.classList.toggle("dark-product-txt", darkMode);
@@ -64,6 +65,10 @@ function Navbar(){
 
         document.querySelectorAll('.product').forEach((element) => {
             element.classList.toggle("product-dark", darkMode);
+        });
+
+        document.querySelectorAll('.nav-btn').forEach((element) => {
+           element.classList.toggle("light-btn", darkMode);
         });
     }
 
@@ -89,7 +94,7 @@ function Navbar(){
             </form>
             <div className="navbar-btns">
                 {user ? (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'spaceBetween', alignItems: 'center', gap: '15px' }}>
                         <span style={{ color: 'white', fontWeight: 'bold' }}>
                             Hello, {user.username}
                         </span>

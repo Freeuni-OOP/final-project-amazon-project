@@ -15,7 +15,7 @@
     flex-shrink: 0;
 }
 
-.dashboard-sidebar h2 {
+.my-account-header {
     font-size: 1.5rem;
     color: #111;
     border-bottom: 2px solid #febd69;
@@ -544,4 +544,30 @@
 
 .my-products-list::-webkit-scrollbar-thumb:hover {
     background-color: #a0a0a0;
+}
+
+.light-btn{
+    color: var(--Light-gray);
+}
+
+.light-text{
+    color: var(--Light-gray);
+}
+
+@media (max-width: 700px) {
+    .dashboard-layout-container{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 50px;
+    }
+
+    .dashboard-sidebar{
+        width: 100%;
+    }
+
+    .dashboard-main-content{
+        width: 100%;
+    }
 }
