@@ -522,3 +522,26 @@
     font-style: italic;
     font-size: 0.8rem;
 }
+
+.my-products-list {
+    max-height: calc(100vh - 400px);
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.my-products-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.my-products-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.my-products-list::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+.my-products-list::-webkit-scrollbar-thumb:hover {
+    background-color: #a0a0a0;
+}

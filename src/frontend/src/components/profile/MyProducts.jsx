@@ -59,7 +59,7 @@ export default function MyProducts() {
             )}
 
             {!loading && products.length > 0 && (
-                <div className="vendor-products-grid">
+                <div className="my-products-list">
                     {products.map((product) => (
                         <MyProduct product={product} handleDeleteProduct={handleDeleteProduct}/>
                     ))}
