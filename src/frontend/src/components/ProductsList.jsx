@@ -29,6 +29,10 @@ function ProductsList({allProducts}){
     }, [sortWith, minValue, maxValue]);
 
     const filteredProducts = [...allProducts].filter((product) => {
+        if (product.quantity === 0){
+            return false;
+        }
+
         if (minValue === 0 && maxValue === Infinity) {
             return true;
         }
