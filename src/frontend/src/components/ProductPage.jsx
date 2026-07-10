@@ -55,8 +55,9 @@ function ProductPage() {
         const roundedRating = Math.min(5, Math.max(0, Math.round(rating || 0)));
         return (
             <span className="rating-stars-wrapper">
-                {"★".repeat(roundedRating)}{"☆".repeat(5 - roundedRating)}
-                <span className="rating-text-count">
+                <span className="star-filled">{"★".repeat(roundedRating)}</span>
+                <span className="star-empty">{"☆".repeat(5 - roundedRating)}</span>
+                <span className="rating-text-count" style={{ marginLeft: '5px', color: '#555', fontSize: '14px' }}>
                     ({rating ? Number(rating).toFixed(1) : "0.0"} out of 5)
                 </span>
             </span>

@@ -784,7 +784,7 @@ body.body-dark{
 }
 
 .star-filled {
-    color: #febd69;
+    color: #febd69 !important;
     font-size: 18px;
     margin-right: 2px;
 }
