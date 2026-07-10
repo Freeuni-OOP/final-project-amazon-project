@@ -51,6 +51,16 @@ export default function OrderHistory() {
         if (!dateString) return "";
         return dateString.replace('T', ' ').substring(0, 16);
     };
+    const getOrderPrice = (order) => {
+        if (activeTab === 'my-orders') {
+            return Number(order.totalAmount || order.totalPrice || 0);
+        } else {
+            const myItems = (order.items || []).filter(item => Number(item.sellerId) === currentUserId);
+            if (myItems.length === 0) return Number(order.totalAmount || order.totalPrice || 0);
+
+            return myItems.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+        }
+    };
 
     const indexOfLastOrder = currentPage * itemsPerPage;
     const indexOfFirstOrder = indexOfLastOrder - itemsPerPage;
@@ -93,7 +103,7 @@ export default function OrderHistory() {
                                         : `Buyer: ${order.username || "Unknown"}`}
                                 </p>
                             </div>
-                            <p className="order-history-price">${Number(order.totalAmount || order.totalPrice).toFixed(2)}</p>
+                            <p className="order-history-price">${getOrderPrice(order).toFixed(2)}</p>
                         </div>
                     ))}
                 </div>
