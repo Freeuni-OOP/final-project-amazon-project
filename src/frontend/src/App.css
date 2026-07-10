@@ -140,7 +140,6 @@ body {
     background-color: var(--Very-dark-grayish-blue);
 }
 
-#categories{
 .switch{
     display: flex;
     align-items: center;
@@ -448,9 +447,9 @@ body {
     text-decoration: underline;
     color: var(--Orange);
 
-    .filter {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
+        .filter {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
 }
