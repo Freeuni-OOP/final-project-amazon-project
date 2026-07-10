@@ -15,5 +15,4 @@ public class CartItemResponse {
     private BigDecimal price;
     private List<String> imageUrls;
     private Integer quantity;
-
 }

@@ -9,26 +9,25 @@ function ProductDetailsInfo({product}) {
     const currentUserId = userObj?.id || localStorage.getItem('userId');
 
     const handleAddToCart = async () => {
-        if (!currentUserId) {
-            alert("Please Sign In to add products to your cart! 🛒");
+        if (!currentUserId || currentQuantity <= 0) {
+            if (!currentUserId) alert("Please Sign In to add products to your cart! 🛒");
             return;
         }
 
-        if (currentQuantity <= 0) return;
-
         try {
-            const response = await fetch(`http://localhost:8080/cart/add?userId=${currentUserId}&productId=${product.productId}`, {
+            const response = await fetch(`http://localhost:8080/cartItem/add`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userId: currentUserId, productId: product.productId, quantity: 1 })
             });
 
-            if (!response.ok) throw new Error("Product was not added to Cart");
+            if (!response.ok) throw new Error();
 
             setCurrentQuantity(prev => prev - 1);
-            alert("Product successfully added to cart! 🛒");
 
-        } catch (error) {
-            console.error("Error adding to cart:", error);
+            alert("Product successfully added to cart! 🛒");
+        }
+        catch {
             alert("Error adding product to cart.");
         }
     };
