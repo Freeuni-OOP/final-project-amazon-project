@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import AccountOverview from './user-info/AccountOverview.jsx';
 import TabButton from "./TabButton.jsx";
@@ -23,6 +23,7 @@ export default function UserProfile() {
 
     useEffect(() => {
         if (activeTab === 'profile') {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setLoading(true);
             fetch(`http://localhost:8080/users/${currentUserId}`)
                 .then(res => res.json())
@@ -126,7 +127,7 @@ export default function UserProfile() {
     return (
         <div className="dashboard-layout-container">
             <div className="dashboard-sidebar">
-                <h2>My Account</h2>
+                <h2 className="my-account-header">My Account</h2>
                 <TabButton activeTab={activeTab} setActiveTab={setActiveTab} tab={'profile'} name={'Personal Info'}/>
                 <TabButton activeTab={activeTab} setActiveTab={setActiveTab} tab={'cart'} name={'My Cart'}/>
                 <TabButton activeTab={activeTab} setActiveTab={setActiveTab} tab={'products'} name={'My Products'}/>
