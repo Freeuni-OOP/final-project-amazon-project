@@ -10,7 +10,7 @@ export default function CartItem({ item, onUpdateQuantity, onRemoveItem }){
 
     const imageUrl = item.imageUrls && item.imageUrls.length > 0
         ? item.imageUrls[0]
-        : 'https://via.placeholder.com/80?text=No+Image';
+        : "http://localhost:8080/photos/No-image-placeholder.png";
 
     return (
         <div key={item.id} className="cart-item-row-card">
