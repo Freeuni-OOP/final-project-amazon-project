@@ -82,7 +82,7 @@ public class ProductServiceTest {
                 .thenReturn(false);
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(any(), anyList(), anyBoolean()))
+            converter.when(() -> ProductConverter.toProductResponse(any(), anyList(), anyList(), anyBoolean()))
                     .thenReturn(response);
 
             ProductResponse result = productService.getProductById(1, 1);
@@ -170,7 +170,7 @@ public class ProductServiceTest {
         when(imageRepository.saveAll(any())).thenReturn(List.of());
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(), anyBoolean()))
+            converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(), anyList(),anyBoolean()))
                     .thenReturn(response);
 
             ProductResponse result = productService.createProduct(request);
@@ -189,7 +189,7 @@ public class ProductServiceTest {
         when(imageRepository.saveAll(any())).thenReturn(List.of());
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(), anyBoolean()))
+            converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(), anyList(), anyBoolean()))
                     .thenReturn(response);
 
             ProductResponse result = productService.createProduct(request);
@@ -209,7 +209,7 @@ public class ProductServiceTest {
         when(imageRepository.saveAll(any())).thenReturn(List.of()); // ⚡
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(), anyBoolean()))
+            converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(), anyList(),anyBoolean()))
                     .thenReturn(response);
 
             ProductResponse result = productService.createProduct(request);
@@ -227,7 +227,7 @@ public class ProductServiceTest {
         when(imageRepository.saveAll(any())).thenReturn(List.of()); // ⚡
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(), anyBoolean()))
+            converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(),anyList(), anyBoolean()))
                     .thenAnswer(invocation -> {
                         Product savedProduct = invocation.getArgument(0);
                         return new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), savedProduct.getQuantity(), List.of("/photos/No-image-placeholder.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), List.of(), false);
@@ -248,7 +248,7 @@ public class ProductServiceTest {
         when(imageRepository.saveAll(any())).thenReturn(List.of()); // ⚡
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(), anyBoolean()))
+            converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(),anyList(), anyBoolean()))
                     .thenAnswer(invocation -> {
                         Product savedProduct = invocation.getArgument(0);
                         List<String> urls = new ArrayList<>();
@@ -276,7 +276,7 @@ public class ProductServiceTest {
         when(imageRepository.saveAll(any())).thenReturn(List.of()); // ⚡
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(), anyBoolean()))
+            converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(),anyList(), anyBoolean()))
                     .thenAnswer(invocation -> {
                         Product savedProduct = invocation.getArgument(0);
                         List<String> urls = new ArrayList<>();
@@ -396,7 +396,7 @@ public class ProductServiceTest {
         ProductResponse updatedResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(1199.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), List.of(), false);
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(product, List.of(), false)).thenReturn(updatedResponse);
+            converter.when(() -> ProductConverter.toProductResponse(product, List.of(), List.of(), false)).thenReturn(updatedResponse);
 
             ProductResponse result = productService.updatePrice(1, request);
             assertEquals(BigDecimal.valueOf(1199.99), product.getPrice());
@@ -423,7 +423,7 @@ public class ProductServiceTest {
         ProductResponse updatedResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 25, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(),List.of(), false);
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(product, List.of(), false)).thenReturn(updatedResponse);
+            converter.when(() -> ProductConverter.toProductResponse(product, List.of(), List.of(), false)).thenReturn(updatedResponse);
 
             ProductResponse result = productService.updateQuantity(1, request);
             assertEquals(25, product.getQuantity());
@@ -450,7 +450,7 @@ public class ProductServiceTest {
         ProductResponse updatedResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/new-laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(),List.of(), false);
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(product, List.of(), false)).thenReturn(updatedResponse);
+            converter.when(() -> ProductConverter.toProductResponse(product, List.of(), List.of(), false)).thenReturn(updatedResponse);
 
             ProductResponse result = productService.updateImage(1, request);
             assertEquals(1, result.getImageUrls().size());
@@ -466,7 +466,7 @@ public class ProductServiceTest {
         when(productRepository.save(product)).thenAnswer(invocation -> invocation.getArgument(0));
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(product, List.of(), false))
+            converter.when(() -> ProductConverter.toProductResponse(product, List.of(), List.of(),false))
                     .thenAnswer(invocation -> {
                         List<String> urls = new ArrayList<>();
                         for (Image img : product.getImages()) {
@@ -507,7 +507,7 @@ public class ProductServiceTest {
         ProductResponse updatedResponse = new ProductResponse(1, "Gaming Laptop", "Updated description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), List.of(), false);
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(product, List.of(), false)).thenReturn(updatedResponse);
+            converter.when(() -> ProductConverter.toProductResponse(product, List.of(), List.of(),false)).thenReturn(updatedResponse);
 
             ProductResponse result = productService.updateNameAndDescription(1, request);
             assertEquals("Gaming Laptop", product.getProductName());
