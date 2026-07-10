@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ReviewRequest {
     private String comment_STR;
     private Integer rating;
