@@ -63,6 +63,17 @@ public class ProductService {
                     .map(Comment::getCommentStr)
                     .toList();
 
+               BigDecimal avgRating = product.getAverageRating();
+               if (avgRating == null || avgRating.compareTo(BigDecimal.ZERO) == 0) {
+                   Double calculatedAvg = ratingRepository.calculateAverageRatingByProduct(product.getProductId());
+                   if (calculatedAvg != null) {
+                       avgRating = BigDecimal.valueOf(calculatedAvg);
+                   }
+                   else {
+                    avgRating = BigDecimal.ZERO;
+                   }
+               }
+
                 return new ProductResponse(
                         product.getProductId(),
                         product.getProductName(),
@@ -72,7 +83,7 @@ public class ProductService {
                         imageUrls,
                         product.getCategory() != null ? product.getCategory().getCategoryName() : "No Category",
                         product.getSeller() != null ? product.getSeller().getUsername() : "Unknown Seller",
-                        product.getAverageRating(),
+                        avgRating,
                         top5CommentsText,
                         false
                 );
@@ -87,6 +98,13 @@ public class ProductService {
                 .map(Comment::getCommentStr)
                 .toList();
 
+        BigDecimal avgRating = product.getAverageRating();
+        if (avgRating == null || avgRating.compareTo(BigDecimal.ZERO) == 0) {
+            Double calculatedAvg = ratingRepository.calculateAverageRatingByProduct(id);
+            if (calculatedAvg != null) {
+                product.setAverageRating(BigDecimal.valueOf(calculatedAvg));
+            }
+        }
 
         boolean hasPurchased = false;
         if (currentUserId != null) {

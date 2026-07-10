@@ -36,7 +36,12 @@ function ReviewSection({ productId, currentUserId, canReview, onReviewSubmitted 
 
             setSuccess(true);
             setComment("");
-            onReviewSubmitted(comment);
+
+            onReviewSubmitted({
+                comment: comment,
+                rating: rating,
+                reviewerName: "You"
+            });
 
         } catch (err) {
             setError("Failed to submit review. Please try again.");

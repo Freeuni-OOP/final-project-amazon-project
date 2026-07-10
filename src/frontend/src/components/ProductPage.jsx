@@ -40,7 +40,7 @@ function ProductPage() {
         setProduct({
             ...product,
             canReview: false,
-            top5comments: [newComment, ...(product.top5comments || [])].slice(0, 5)
+            top5comments: [newComment, ...(product.top5comments || [])]
         });
     };
 
@@ -77,7 +77,7 @@ function ProductPage() {
                     <hr style={{ border: '0', borderTop: '1px solid #e7e7e7', margin: '20px 0' }} />
                     <div className="rating-section" style={{ padding: '0 10px' }}>
                         <h3 className="rating-title">Product Rating</h3>
-                        {renderStars(product.averageRating)}
+                        {renderStars(product.rating || product.averageRating)}
                     </div>
                 </div>
 
@@ -98,12 +98,16 @@ function ProductPage() {
                 {product.top5comments && product.top5comments.length > 0 ? (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
                         {product.top5comments.map((comment, index) => (
-                            <div key={index} className="comment-card" style={{ padding: '15px', borderRadius: '8px' }}>
+                            <div key={index} className="comment-card" style={{ padding: '15px', borderRadius: '8px', border: '1px solid #e7e7e7', backgroundColor: '#fff' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                                    <div className="comment-user-avatar" style={{ width: '25px', height: '25px', borderRadius: '50%' }}></div>
-                                    <span className="comment-user-name">Amazon Customer</span>
+                                    <div className="comment-user-avatar" style={{ width: '25px', height: '25px', borderRadius: '50%', backgroundColor: '#ddd' }}></div>
+                                    <span className="comment-user-name" style={{ fontWeight: '600' }}>
+                        {"Amazon Customer"}
+                    </span>
                                 </div>
-                                <p className="comment-body-text" style={{ lineHeight: '1.4' }}>{comment}</p>
+                                <p className="comment-body-text" style={{ lineHeight: '1.4', margin: 0, color: '#333' }}>
+                                    {typeof comment === 'string' ? comment : "No text available"}
+                                </p>
                             </div>
                         ))}
                     </div>

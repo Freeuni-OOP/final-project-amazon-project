@@ -7,6 +7,7 @@ import com.amazon.amazon_backend.dto.ProductUpdateRequests.NameDescriptionUpdate
 import com.amazon.amazon_backend.dto.ProductUpdateRequests.PriceUpdateRequest;
 import com.amazon.amazon_backend.dto.ProductUpdateRequests.QuantityUpdateRequest;
 import com.amazon.amazon_backend.dto.ReviewRequest;
+import com.amazon.amazon_backend.repository.CommentRepository;
 import com.amazon.amazon_backend.service.ProductService;
 import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,32 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private CommentRepository commentRepository;
+
     @GetMapping("/{id}")
     public ProductResponse getProductById(@PathVariable Integer id, @RequestParam(required = false) Integer userId) {
-        return productService.getProductById(id, userId);
+        ProductResponse response = productService.getProductById(id, userId);
+
+        if (response != null) {
+            var comments = commentRepository.findByProduct_ProductId(id);
+            List<String> commentTexts = new ArrayList<>();
+
+            if (comments != null) {
+                for (var com : comments) {
+                    if (com != null && com.getCommentStr() != null) {
+                        commentTexts.add(com.getCommentStr());
+                    }
+
+                    if (commentTexts.size() >= 5) {
+                        break;
+                    }
+                }
+            }
+            response.setTop5comments(commentTexts);
+        }
+
+        return response;
     }
 
     @GetMapping("/search")

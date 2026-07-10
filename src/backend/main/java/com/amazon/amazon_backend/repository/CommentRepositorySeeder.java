@@ -23,17 +23,21 @@ public class CommentRepositorySeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if (productRepository.existsById(1) && userRepository.existsById(1)) {
-            Product sampleProduct = productRepository.findById(1).orElse(null);
-            User sampleUser = userRepository.findById(1).orElse(null);
+        var allProducts = productRepository.findAll();
+        var allUsers = userRepository.findAll();
 
-            if (commentRepository.count() == 0) {
-                commentRepository.save(new Comment("Great quality for the price! Will definitely buy again.", sampleProduct, sampleUser));
-                commentRepository.save(new Comment("Fits perfectly, but the color is slightly darker.", sampleProduct, sampleUser));
-                commentRepository.save(new Comment("Super soft material, highly recommend!", sampleProduct, sampleUser));
-                commentRepository.save(new Comment("Decent product, took a bit long to arrive.", sampleProduct, sampleUser));
+        if (!allProducts.isEmpty() && !allUsers.isEmpty()) {
 
-            }
+            Product sampleProduct = allProducts.get(0);
+            User sampleUser = allUsers.get(0);
+
+            commentRepository.save(new Comment("Great quality for the price! Will definitely buy again.", sampleProduct, sampleUser));
+            commentRepository.save(new Comment("Fits perfectly, but the color is slightly darker.", sampleProduct, sampleUser));
+            commentRepository.save(new Comment("Super soft material, highly recommend!", sampleProduct, sampleUser));
+            commentRepository.save(new Comment("Decent product, took a bit long to arrive.", sampleProduct, sampleUser));
+        } else {
+            System.out.println("Error seeding comments");
         }
     }
+
 }

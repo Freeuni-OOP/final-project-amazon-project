@@ -83,7 +83,6 @@ public class ProductRepositorySeeder implements CommandLineRunner {
                 imageRepository.save(newImage);
             }
             savedProduct.setImages(imagesForNewProduct);
-            productRepository.save(savedProduct);
         }
     }
 
