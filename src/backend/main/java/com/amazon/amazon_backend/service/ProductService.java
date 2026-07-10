@@ -288,8 +288,11 @@ public class ProductService {
             }
 
             Double average = ratingRepository.calculateAverageRatingByProduct(id);
-
-            product.setAverageRating(BigDecimal.valueOf(average));
+            if (average != null) {
+                product.setAverageRating(BigDecimal.valueOf(average));
+            } else {
+                product.setAverageRating(BigDecimal.ZERO);
+            }
         }
         productRepository.save(product);
     }
