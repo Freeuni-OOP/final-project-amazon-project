@@ -3,6 +3,7 @@ import AccountOverview from './profile/AccountOverview.jsx';
 import TabButton from "./profile/TabButton.jsx";
 import './UserProfile.css';
 import MyCart from "./profile/MyCart.jsx";
+import MyProducts from "./profile/MyProducts.jsx";
 // import { useAuth } from '../context/AuthContext';    // ToDo: uncomment this when authentication is ready
 
 export default function UserProfile() {
@@ -100,7 +101,7 @@ export default function UserProfile() {
                     onRemoveItem={handleRemoveItem}
                 />;
             case 'products':
-                return <div><h3>My Selling Products</h3></div>;     // ToDo: by me
+                return <MyProducts/>                                // ToDo: by me
             case 'transactions':
                 return <div><h3>Order History</h3></div>;           // ToDo: by Mariami
             default:
