@@ -41,16 +41,16 @@ class RatingRepositoryTest {
     void shouldFindRatingsByUser() {
         // Given
         List<Rating> expectedRatings = Arrays.asList(sampleRating);
-        when(ratingRepository.findByUser(sampleUser)).thenReturn(expectedRatings);
+        when(ratingRepository.findByUser_Id(sampleUser.getId())).thenReturn(expectedRatings);
 
         // When
-        List<Rating> result = ratingRepository.findByUser(sampleUser);
+        List<Rating> result = ratingRepository.findByUser_Id(sampleUser.getId());
 
         // Then
         assertNotNull(result, "Result should not be null");
         assertEquals(1, result.size(), "Result size should be 1");
         assertEquals(sampleUser, result.get(0).getUser(), "User in rating should match");
-        verify(ratingRepository, times(1)).findByUser(sampleUser);
+        verify(ratingRepository, times(1)).findByUser_Id(sampleUser.getId());
     }
 
     @Test
@@ -58,32 +58,32 @@ class RatingRepositoryTest {
     void shouldFindRatingsByProduct() {
         // Given
         List<Rating> expectedRatings = Arrays.asList(sampleRating);
-        when(ratingRepository.findByProduct(sampleProduct)).thenReturn(expectedRatings);
+        when(ratingRepository.findByProduct_ProductId(sampleProduct.getProductId())).thenReturn(expectedRatings);
 
         // When
-        List<Rating> result = ratingRepository.findByProduct(sampleProduct);
+        List<Rating> result = ratingRepository.findByProduct_ProductId(sampleProduct.getProductId());
 
         // Then
         assertNotNull(result, "Result should not be null");
         assertEquals(1, result.size(), "Result size should be 1");
         assertEquals(sampleProduct, result.get(0).getProduct(), "Product in rating should match");
-        verify(ratingRepository, times(1)).findByProduct(sampleProduct);
+        verify(ratingRepository, times(1)).findByProduct_ProductId(sampleProduct.getProductId());
     }
 
     @Test
     @DisplayName("Should mock finding a specific rating by user and product")
     void shouldFindRatingByUserAndProduct() {
         // Given
-        when(ratingRepository.findByUserAndProduct(sampleUser, sampleProduct))
+        when(ratingRepository.findByUser_IdAndProduct_ProductId(sampleUser.getId(), sampleProduct.getProductId()))
                 .thenReturn(Optional.of(sampleRating));
 
         // When
-        Optional<Rating> result = ratingRepository.findByUserAndProduct(sampleUser, sampleProduct);
+        Optional<Rating> result = ratingRepository.findByUser_IdAndProduct_ProductId(sampleUser.getId(), sampleProduct.getProductId());
 
         // Then
         assertTrue(result.isPresent(), "Rating should be present");
         assertEquals(5, result.get().getStars(), "Stars should be 5");
-        verify(ratingRepository, times(1)).findByUserAndProduct(sampleUser, sampleProduct);
+        verify(ratingRepository, times(1)).findByUser_IdAndProduct_ProductId(sampleUser.getId(), sampleProduct.getProductId());
     }
 
     @Test
@@ -91,29 +91,29 @@ class RatingRepositoryTest {
     void shouldCalculateAverageRatingByProduct() {
         // Given
         Double expectedAverage = 4.5;
-        when(ratingRepository.calculateAverageRatingByProduct(sampleProduct)).thenReturn(expectedAverage);
+        when(ratingRepository.calculateAverageRatingByProduct(sampleProduct.getProductId())).thenReturn(expectedAverage);
 
         // When
-        Double result = ratingRepository.calculateAverageRatingByProduct(sampleProduct);
+        Double result = ratingRepository.calculateAverageRatingByProduct(sampleProduct.getProductId());
 
         // Then
         assertNotNull(result, "Result should not be null");
         assertEquals(4.5, result, "Average rating should be 4.5");
-        verify(ratingRepository, times(1)).calculateAverageRatingByProduct(sampleProduct);
+        verify(ratingRepository, times(1)).calculateAverageRatingByProduct(sampleProduct.getProductId());
     }
 
     @Test
     @DisplayName("Should mock returning 0.0 when no ratings exist for a product")
     void shouldReturnZeroWhenNoRatingsExist() {
         // Given
-        when(ratingRepository.calculateAverageRatingByProduct(sampleProduct)).thenReturn(0.0);
+        when(ratingRepository.calculateAverageRatingByProduct(sampleProduct.getProductId())).thenReturn(0.0);
 
         // When
-        Double result = ratingRepository.calculateAverageRatingByProduct(sampleProduct);
+        Double result = ratingRepository.calculateAverageRatingByProduct(sampleProduct.getProductId());
 
         // Then
         assertNotNull(result, "Result should not be null");
         assertEquals(0.0, result, "Should return 0.0 for empty ratings");
-        verify(ratingRepository, times(1)).calculateAverageRatingByProduct(sampleProduct);
+        verify(ratingRepository, times(1)).calculateAverageRatingByProduct(sampleProduct.getProductId());
     }
 }

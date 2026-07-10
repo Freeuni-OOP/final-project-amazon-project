@@ -13,6 +13,7 @@ import java.util.Date;
 @Component
 @Order(1)
 @RequiredArgsConstructor
+@Order(1)
 public class UserRepositorySeeder implements CommandLineRunner {
 
     private final UserRepository userRepository;

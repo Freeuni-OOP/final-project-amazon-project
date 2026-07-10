@@ -4,8 +4,11 @@ import CategoryList from "./components/CategoryList.jsx";
 import MainPage from "./components/MainPage.jsx";
 import {Route, Routes} from "react-router-dom";
 import SearchList from "./components/SearchList.jsx";
+import SignInPage from "./components/SignInPage.jsx"
+import SignUpPage from "./components/SignUpPage.jsx"
 import UserProfile from "./components/profile/UserProfile.jsx";
 import ProductsList from "./components/ProductsList.jsx";
+import ProductPage from "./components/ProductPage.jsx";
 import FilterComponent from "./components/FilterComponent.jsx";
 import EditProductPage from "./components/edit-product/EditProductPage.jsx";
 import AddProductPage from "./components/create-product/AddProductPage.jsx";
@@ -32,6 +35,9 @@ function App() {
 
   return (
       <Routes>
+          <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+
           <Route path="/" element={
               <MainPage children={
                   <>
@@ -69,6 +75,10 @@ function App() {
 
           <Route path="/create-product" element={
               <AddProductPage />
+          }/>
+
+          <Route path="/product/:id" element={
+              <MainPage children={<ProductPage />} />
           }/>
       </Routes>
   );

@@ -37,7 +37,7 @@ public class RatingService {
         Product product = productRepository.findById(ratingRequest.getProductId())
                 .orElseThrow(()->new RuntimeException("Product not found with ID:"+ratingRequest.getProductId()));
 
-        Optional<Rating> existingRatings=ratingRepository.findByUserAndProduct(user, product);
+        Optional<Rating> existingRatings=ratingRepository.findByUser_IdAndProduct_ProductId(user.getId(), product.getProductId());
 
         Rating rating;
         if(existingRatings.isPresent()){
@@ -50,14 +50,14 @@ public class RatingService {
 
         Rating savedRating=ratingRepository.save(rating);
 
-        Double avg=ratingRepository.calculateAverageRatingByProduct(product);
+        Double avg=ratingRepository.calculateAverageRatingByProduct(product.getProductId());
 
         BigDecimal newAverage=BigDecimal.valueOf(avg).setScale(2, RoundingMode.HALF_UP);
 
         product.setAverageRating(newAverage);
         productRepository.save(product);
 
-        long totalRatingsCount=ratingRepository.findByProduct(product).size();
+        long totalRatingsCount=ratingRepository.findByProduct_ProductId(product.getProductId()).size();
 
         return RatingConverter.toRatingResponse(savedRating, newAverage, totalRatingsCount);
     }

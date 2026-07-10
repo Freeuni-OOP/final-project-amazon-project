@@ -14,6 +14,7 @@ import org.springframework.core.annotation.Order;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.math.BigDecimal;
 
 @Slf4j
 @Component
@@ -70,6 +71,7 @@ public class ProductRepositorySeeder implements CommandLineRunner {
                     .seller(seller)
                     .category(category)
                     .images(new ArrayList<>())
+                    .averageRating(BigDecimal.ZERO)
                     .build();
 
             Product savedProduct = productRepository.save(newProduct);

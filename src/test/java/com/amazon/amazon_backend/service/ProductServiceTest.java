@@ -10,15 +10,15 @@ import com.amazon.amazon_backend.model.Category;
 import com.amazon.amazon_backend.model.Image;
 import com.amazon.amazon_backend.model.Product;
 import com.amazon.amazon_backend.model.User;
-import com.amazon.amazon_backend.repository.CategoryRepository;
-import com.amazon.amazon_backend.repository.ProductRepository;
-import com.amazon.amazon_backend.repository.UserRepository;
+import com.amazon.amazon_backend.repository.*;
 import com.amazon.amazon_backend.utility.ProductConverter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
@@ -31,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class ProductServiceTest {
 
     @Mock
@@ -41,6 +42,15 @@ public class ProductServiceTest {
 
     @Mock
     private CategoryRepository categoryRepository;
+
+    @Mock
+    private CommentRepository commentRepository;
+
+    @Mock
+    private TransactionRepository transactionRepository;
+
+    @Mock
+    private ImageRepository imageRepository;
 
     @InjectMocks
     private ProductService productService;
@@ -58,17 +68,25 @@ public class ProductServiceTest {
         seller = new User();
         category = new Category("Electronics");
         product = new Product("Description", seller, category, "Laptop", BigDecimal.valueOf(999.99), 10, new ArrayList<>());
-        response = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO);
+        response = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
     }
 
     @Test
     public void testGetProductById() {
         when(productRepository.findById(1)).thenReturn(Optional.of(product));
 
-        try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(product)).thenReturn(response);
+        when(commentRepository.findTop5ByProduct_ProductIdOrderByCommentIdDesc(any()))
+                .thenReturn(List.of());
 
-            ProductResponse result = productService.getProductById(1);
+        when(transactionRepository.existsByBuyerIdAndItemsProductProductIdAndStatus(any(), any(), any()))
+                .thenReturn(false);
+
+        try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
+            converter.when(() -> ProductConverter.toProductResponse(any(), anyList(), anyBoolean()))
+                    .thenReturn(response);
+
+            ProductResponse result = productService.getProductById(1, 1);
+
             assertNotNull(result);
             assertEquals("Laptop", result.getProductName());
         }
@@ -78,7 +96,7 @@ public class ProductServiceTest {
     public void testGetProductByIdThrowsWhenNotFound() {
         when(productRepository.findById(99)).thenReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> productService.getProductById(99));
+        assertThrows(NoSuchElementException.class, () -> productService.getProductById(99, 1));
     }
 
     @Test
@@ -149,9 +167,11 @@ public class ProductServiceTest {
         when(userRepository.findById(1)).thenReturn(Optional.of(seller));
         when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
         when(productRepository.save(any(Product.class))).thenReturn(product);
+        when(imageRepository.saveAll(any())).thenReturn(List.of());
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(any(Product.class))).thenReturn(response);
+            converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(), anyBoolean()))
+                    .thenReturn(response);
 
             ProductResponse result = productService.createProduct(request);
             assertNotNull(result);
@@ -166,9 +186,11 @@ public class ProductServiceTest {
         when(userRepository.findById(1)).thenReturn(Optional.of(seller));
         when(categoryRepository.findByCategoryName("Electronics")).thenReturn(Optional.of(category));
         when(productRepository.save(any(Product.class))).thenReturn(product);
+        when(imageRepository.saveAll(any())).thenReturn(List.of());
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(any(Product.class))).thenReturn(response);
+            converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(), anyBoolean()))
+                    .thenReturn(response);
 
             ProductResponse result = productService.createProduct(request);
             assertNotNull(result);
@@ -184,9 +206,11 @@ public class ProductServiceTest {
         when(userRepository.findById(1)).thenReturn(Optional.of(seller));
         when(categoryRepository.findByCategoryName("Other")).thenReturn(Optional.of(otherCategory));
         when(productRepository.save(any(Product.class))).thenReturn(product);
+        when(imageRepository.saveAll(any())).thenReturn(List.of()); // ⚡
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(any(Product.class))).thenReturn(response);
+            converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(), anyBoolean()))
+                    .thenReturn(response);
 
             ProductResponse result = productService.createProduct(request);
             assertNotNull(result);
@@ -200,12 +224,13 @@ public class ProductServiceTest {
         when(userRepository.findById(1)).thenReturn(Optional.of(seller));
         when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
         when(productRepository.save(any(Product.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(imageRepository.saveAll(any())).thenReturn(List.of()); // ⚡
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(any(Product.class)))
+            converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(), anyBoolean()))
                     .thenAnswer(invocation -> {
                         Product savedProduct = invocation.getArgument(0);
-                        return new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), savedProduct.getQuantity(), List.of("/photos/No-image-placeholder.png"), "Electronics", "sellerUser", BigDecimal.ZERO);
+                        return new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), savedProduct.getQuantity(), List.of("/photos/No-image-placeholder.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
                     });
 
             ProductResponse result = productService.createProduct(request);
@@ -220,16 +245,19 @@ public class ProductServiceTest {
         when(userRepository.findById(1)).thenReturn(Optional.of(seller));
         when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
         when(productRepository.save(any(Product.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(imageRepository.saveAll(any())).thenReturn(List.of()); // ⚡
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(any(Product.class)))
+            converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(), anyBoolean()))
                     .thenAnswer(invocation -> {
                         Product savedProduct = invocation.getArgument(0);
                         List<String> urls = new ArrayList<>();
-                        for (Image img : savedProduct.getImages()) {
-                            urls.add(img.getImageUrl());
+                        if (savedProduct.getImages() != null) {
+                            for (Image img : savedProduct.getImages()) {
+                                urls.add(img.getImageUrl());
+                            }
                         }
-                        return new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, urls, "Electronics", "sellerUser", BigDecimal.ZERO);
+                        return new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, urls, "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
                     });
 
             ProductResponse result = productService.createProduct(request);
@@ -245,16 +273,19 @@ public class ProductServiceTest {
         when(userRepository.findById(1)).thenReturn(Optional.of(seller));
         when(categoryRepository.findById(1)).thenReturn(Optional.of(category));
         when(productRepository.save(any(Product.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(imageRepository.saveAll(any())).thenReturn(List.of()); // ⚡
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(any(Product.class)))
+            converter.when(() -> ProductConverter.toProductResponse(any(Product.class), anyList(), anyBoolean()))
                     .thenAnswer(invocation -> {
                         Product savedProduct = invocation.getArgument(0);
                         List<String> urls = new ArrayList<>();
-                        for (Image img : savedProduct.getImages()) {
-                            urls.add(img.getImageUrl());
+                        if (savedProduct.getImages() != null) {
+                            for (Image img : savedProduct.getImages()) {
+                                urls.add(img.getImageUrl());
+                            }
                         }
-                        return new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, urls, "Electronics", "sellerUser", BigDecimal.ZERO);
+                        return new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, urls, "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
                     });
 
             ProductResponse result = productService.createProduct(request);
@@ -362,10 +393,10 @@ public class ProductServiceTest {
         when(productRepository.findById(1)).thenReturn(Optional.of(product));
         when(productRepository.save(product)).thenReturn(product);
 
-        ProductResponse updatedResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(1199.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO);
+        ProductResponse updatedResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(1199.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(product)).thenReturn(updatedResponse);
+            converter.when(() -> ProductConverter.toProductResponse(product, List.of(), false)).thenReturn(updatedResponse);
 
             ProductResponse result = productService.updatePrice(1, request);
             assertEquals(BigDecimal.valueOf(1199.99), product.getPrice());
@@ -389,10 +420,10 @@ public class ProductServiceTest {
         when(productRepository.findById(1)).thenReturn(Optional.of(product));
         when(productRepository.save(product)).thenReturn(product);
 
-        ProductResponse updatedResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 25, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO);
+        ProductResponse updatedResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 25, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(product)).thenReturn(updatedResponse);
+            converter.when(() -> ProductConverter.toProductResponse(product, List.of(), false)).thenReturn(updatedResponse);
 
             ProductResponse result = productService.updateQuantity(1, request);
             assertEquals(25, product.getQuantity());
@@ -416,10 +447,10 @@ public class ProductServiceTest {
         when(productRepository.findById(1)).thenReturn(Optional.of(product));
         when(productRepository.save(product)).thenReturn(product);
 
-        ProductResponse updatedResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/new-laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO);
+        ProductResponse updatedResponse = new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, List.of("/photos/new-laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(product)).thenReturn(updatedResponse);
+            converter.when(() -> ProductConverter.toProductResponse(product, List.of(), false)).thenReturn(updatedResponse);
 
             ProductResponse result = productService.updateImage(1, request);
             assertEquals(1, result.getImageUrls().size());
@@ -435,13 +466,13 @@ public class ProductServiceTest {
         when(productRepository.save(product)).thenAnswer(invocation -> invocation.getArgument(0));
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(product))
+            converter.when(() -> ProductConverter.toProductResponse(product, List.of(), false))
                     .thenAnswer(invocation -> {
                         List<String> urls = new ArrayList<>();
                         for (Image img : product.getImages()) {
                             urls.add(img.getImageUrl());
                         }
-                        return new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, urls, "Electronics", "sellerUser", BigDecimal.ZERO);
+                        return new ProductResponse(1, "Laptop", "Description", BigDecimal.valueOf(999.99), 10, urls, "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
                     });
 
             ProductResponse result = productService.updateImage(1, request);
@@ -473,10 +504,10 @@ public class ProductServiceTest {
         when(productRepository.findById(1)).thenReturn(Optional.of(product));
         when(productRepository.save(product)).thenReturn(product);
 
-        ProductResponse updatedResponse = new ProductResponse(1, "Gaming Laptop", "Updated description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO);
+        ProductResponse updatedResponse = new ProductResponse(1, "Gaming Laptop", "Updated description", BigDecimal.valueOf(999.99), 10, List.of("/photos/laptop.png"), "Electronics", "sellerUser", BigDecimal.ZERO, List.of(), false);
 
         try (MockedStatic<ProductConverter> converter = Mockito.mockStatic(ProductConverter.class)) {
-            converter.when(() -> ProductConverter.toProductResponse(product)).thenReturn(updatedResponse);
+            converter.when(() -> ProductConverter.toProductResponse(product, List.of(), false)).thenReturn(updatedResponse);
 
             ProductResponse result = productService.updateNameAndDescription(1, request);
             assertEquals("Gaming Laptop", product.getProductName());
