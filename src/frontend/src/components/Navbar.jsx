@@ -10,6 +10,7 @@ function Navbar(){
     useEffect(()=>{
         const storedUser=localStorage.getItem('user');
             if(storedUser){
+                // eslint-disable-next-line react-hooks/set-state-in-effect
                 setUser(JSON.parse(storedUser));
             }
         },
@@ -39,6 +40,15 @@ function Navbar(){
         document.querySelector('.sign-up')?.classList.toggle("sign-up-dark", darkMode);
         document.querySelector('.navbar')?.classList.toggle("navbar-dark", darkMode);
         document.querySelector('body')?.classList.toggle("body-dark", darkMode);
+        document.querySelector('.product-title-text')?.classList.toggle("light-text", darkMode);
+        document.querySelector('.product-seller-text')?.classList.toggle("light-text", darkMode);
+        document.querySelector('.price-value')?.classList.toggle("light-text", darkMode);
+        document.querySelector('.description-title')?.classList.toggle("light-text", darkMode);
+        document.querySelector('.description-text')?.classList.toggle("light-text", darkMode);
+        document.querySelector('.rating-section')?.classList.toggle("light-text", darkMode);
+        document.querySelector('.comments-main-title')?.classList.toggle("light-text", darkMode);
+        document.querySelector('.comment-card')?.classList.toggle("light-text", darkMode);
+        document.querySelector('.no-comments-text')?.classList.toggle("light-text", darkMode);
 
         document.querySelectorAll('.quantity, .category, .seller').forEach((element) => {
             element.classList.toggle("dark-product-txt", darkMode);
@@ -72,7 +82,7 @@ function Navbar(){
 
     return (
         <nav className="navbar">
-            <img onClick={() => navigate("/")} src="/images/dark-logo.png" alt=""/>
+            <img onClick={() => navigate("/")} src="/images/dark-logo.png" alt="Logo"/>
             <form onSubmit={submit}>
                 <input value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
                        type="text" name="search" className="search-item" placeholder="Search Products ..."/>

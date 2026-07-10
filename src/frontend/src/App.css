@@ -321,44 +321,6 @@ body {
     color: white;
 }
 
-@media (max-width: 700px) {
-    .navbar {
-        flex-direction: column;
-        gap: 12px;
-        padding: 15px;
-    }
-
-    .navbar img{
-        height: 90px;
-    }
-
-    #search-item {
-        width: 100%;
-        order: 3;
-    }
-
-    .navbar form{
-        width: 100%;
-    }
-
-    .navbar .search-item{
-        width: 100%;
-        margin: 0;
-        box-sizing: border-box;
-    }
-
-    .navbar-btns {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .categories{
-        display: flex;
-        flex-direction: column;
-        text-align: center;
-    }
-}
-
 .auth-page-container {
     display: flex;
     flex-direction: column;
@@ -452,4 +414,230 @@ body {
             flex-direction: column;
             gap: 20px;
         }
+}
+
+.product-info-side{
+    flex: 1.5;
+}
+
+.product-title-text{
+    fontSize: 28px;
+    font-weight: 700;
+    color: var(--Very-dark-blue);
+    margin-bottom: 10px;
+    line-height: 1.2;
+}
+
+.product-seller-text{
+    color: var(--Very-dark-grayish-blue);
+    font-size: 15px;
+    margin: 0 0 15px 0;
+}
+
+.seller-name{
+    color: var(--Orange);
+    font-weight: 700;
+}
+
+.product-info-side hr{
+    border: none;
+    border-top: 1px solid var(--Light-gray);
+    margin: 15px 0;
+}
+
+.price-block{
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+.price-label{
+    font-size: 18px;
+    color: var(--Orange);
+    font-weight: bold;
+}
+
+.price-value{
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--Very-dark-blue);
+    margin-left: 5px;
+}
+
+.current-quantity{
+    font-size: 15px;
+    font-weight: 600;
+    margin: 10px 0 20px 0;
+}
+
+.description-block{
+    margin-top: 20px;
+}
+
+.description-text{
+    line-height: 1.5;
+}
+
+.amazon-primary-button{
+    width: 100%;
+    max-width: 250px;
+    padding: 13px 25px;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--White);
+    background-color: var(--Very-dark-desaturated-blue-2);
+    border: none;
+    border-radius: 100px;
+    box-shadow: var(--Very-dark-desaturated-blue-3);
+    transition: all 0.2s ease;
+    margin-top: 20px;
+}
+
+.light-text{
+    color: var(--Light-gray);
+}
+
+.light-button{
+    background-color: var(--Desaturated-dark-blue-hover-1);
+}
+
+.product-page-main{
+    display: flex;
+    gap: 40px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.product-images-side{
+    flex: 1;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-image-wrapper{
+    border: 1px solid var(--Light-gray);
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    background-color: var(--White);
+}
+
+.main-image-wrapper img{
+    width: 100%;
+    object-fit: contain;
+    max-height: 400px;
+}
+
+.thumbnail-list{
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.thumbnail-images{
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 2px;
+    background-color: var(--White);
+    box-sizing: border-box;
+}
+
+.thumbnail-img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+.product-images-side hr{
+    border: none;
+    border-top: 1px solid var(--Light-gray);
+    margin: 20px 0;
+}
+
+.rating-section{
+    padding: 0 10px;
+}
+
+.comments-section{
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    border-top: 1px solid var(--Light-gray);
+}
+
+.comment-card{
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--Light-gray);
+    background-color: var(--White);
+}
+
+.comment-user-avatar{
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: var(--Light-gray);
+}
+
+.comment-user-name{
+    font-weight: 600;
+}
+
+.comment-body-text{
+    line-height: 1.4;
+    margin: 0;
+    color: var(--Very-dark-grayish-blue);
+}
+
+
+
+@media (max-width: 700px) {
+    .navbar {
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px;
+    }
+
+    .navbar img{
+        height: 90px;
+    }
+
+    #search-item {
+        width: 100%;
+        order: 3;
+    }
+
+    .navbar form{
+        width: 100%;
+    }
+
+    .navbar .search-item{
+        width: 100%;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    .navbar-btns {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .categories{
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .filter{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
 }
