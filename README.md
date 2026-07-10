@@ -14,7 +14,9 @@ OOP ფინალური პროექტი
 1. On this application user can buy and sell items.
    In order to achieve that user needs to 'sign in' or 'sign up'
    1. While 'sign up' User needs to enter his/her unique 'username', password, email, BirthDate and Gender;
-   2. While 'sign in' User needs to enter his/her email and password;
+   2. User's password should be at least 8 characters long, should contain alphabet letters, at least one number
+      and uppercase letter
+   3. While 'sign in' User needs to enter his/her email and password;
 2. After 'sign up' User has some balance of money, which she/he can spend with buying items
    or increase with selling something;
 3. If user wants to buy anything she/he can save items in cart on following condition:
