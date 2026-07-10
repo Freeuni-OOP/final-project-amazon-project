@@ -5,6 +5,7 @@ import TabButton from "./TabButton.jsx";
 import './UserProfile.css';
 import MyCart from "./cart-page/MyCart.jsx";
 import MyProducts from "./user-products/MyProducts.jsx";
+import OrderHistory from "./order-history/OrderHistory.jsx";
 
 export default function UserProfile() {
     const location = useLocation();
@@ -103,8 +104,8 @@ export default function UserProfile() {
                 />;
             case 'products':
                 return <MyProducts/>
-            case 'transactions':
-                return <div><h3>Order History</h3></div>;
+           case 'transactions':
+               return <OrderHistory />;
             default:
                 return <div>Select an option from the menu.</div>;
         }

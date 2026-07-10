@@ -24,4 +24,15 @@ public class OrderController {
     public OrderResponse createOrder(@PathVariable Integer userId){
         return orderService.createOrder(userId);
     }
+
+    @GetMapping("/{orderId}")
+    public OrderResponse getOrderDetails(@PathVariable Integer orderId) {
+
+        return orderService.getOrderById(orderId);
+    }
+
+    @GetMapping("/sold/{userId}")
+    public List<OrderResponse> getSoldItems(@PathVariable Integer userId) {
+     return orderService.getSoldOrders(userId);
+    }
 }

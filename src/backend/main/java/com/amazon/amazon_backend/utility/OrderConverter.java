@@ -18,11 +18,21 @@ public class OrderConverter {
     public static OrderDetailsResponse toOrderDetailsResponse(OrderDetails details){
         OrderDetailsResponse response=new OrderDetailsResponse();
 
+
         response.setProductId(details.getProduct().getProductId());
         response.setPrice(details.getProduct().getPrice());
         response.setQuantity(details.getQuantity());
         response.setProductName(details.getProduct().getProductName());
         response.setAmount(details.getAmount());
+
+        if (details.getProduct().getSeller() != null) {
+            response.setSellerName(details.getProduct().getSeller().getUsername());
+        }
+        if (details.getProduct().getImages() != null && !details.getProduct().getImages().isEmpty()) {
+            response.setImgUrl(details.getProduct().getImages().get(0).getImageUrl());
+        } else {
+            response.setImgUrl("/photos/No-image-placeholder.png");
+        }
         if(details.getTransaction()!=null){
             response.setStatus(details.getTransaction().getStatus());
         }else{
@@ -34,6 +44,7 @@ public class OrderConverter {
 
     public static OrderResponse toOrderResponse(Order order){
         OrderResponse response=new OrderResponse();
+        response.setOrderId(order.getOrderId());
         response.setUserId(order.getBuyer().getId());
         response.setUsername(order.getBuyer().getUsername());
         response.setDateTime(order.getDatetime());

@@ -12,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderResponse {
+    private Integer orderId;
     private Integer userId;
     private String username;
     private LocalDateTime dateTime;
