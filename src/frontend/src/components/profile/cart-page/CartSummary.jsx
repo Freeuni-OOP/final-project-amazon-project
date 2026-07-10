@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function CartSummary({ cartItems, subtotal}){
+export default function CartSummary({ cartItems, subtotal, onCheckout, checkingOut }){
     return (
         <div className="cart-total-summary-card">
             <h4>Order Summary</h4>
@@ -17,8 +17,13 @@ export default function CartSummary({ cartItems, subtotal}){
                 <strong>Estimated Total:</strong>
                 <strong>${subtotal.toFixed(2)}</strong>
             </div>
-            <button className="checkout-action-btn" onClick={() => alert("ToDo: Checkout")}>
-                Proceed to Checkout
+            <button
+                type="button"
+                className="checkout-action-btn"
+                onClick={onCheckout}
+                disabled={checkingOut}
+            >
+                {checkingOut ? "Processing..." : "Proceed to Checkout"}
             </button>
         </div>
     );
