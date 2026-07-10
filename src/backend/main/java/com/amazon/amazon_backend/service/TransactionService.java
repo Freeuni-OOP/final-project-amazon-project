@@ -68,7 +68,7 @@ public class TransactionService {
                     order.getBuyer(),
                     seller,
                     totalForSeller,
-                    TransactionStatus.PENDING
+                    TransactionStatus.SUCCESS
             );
 
             for (OrderDetails item : sellerItems) {
