@@ -54,14 +54,14 @@ function SignUpPage() {
                 }
             }
         }catch(error){
-            console.error("Server is unreachable. Please try again later.");
+            console.error("Server is unreachable. Please try again later." + error);
         }
     };
 
     return (
         <div className="auth-page-container">
             <div style={{ marginBottom: '24px', cursor: 'pointer' }} onClick={() => navigate("/")}>
-                 <img src="/images/light-logo.png" alt="Logo" style={{ height: '150px'}}/>
+                 <img src="./images/light-logo.png" alt="Logo" style={{ height: '150px'}}/>
             </div>
 
             <div className="auth-card">
