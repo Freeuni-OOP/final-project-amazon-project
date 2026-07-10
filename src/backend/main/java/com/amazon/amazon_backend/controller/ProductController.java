@@ -71,7 +71,6 @@ public class ProductController {
     @GetMapping("/category/{categoryId}")
     public List<ProductResponse> getProductsByCategoryId(@PathVariable Integer categoryId) {
         return productService.searchProductsByCategoryId(categoryId);
-
     }
 
     @GetMapping("/category-name/{categoryName}")
