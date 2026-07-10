@@ -6,7 +6,9 @@ import NewProductForm from "./NewProductForm.jsx";
 
 export default function AddProductPage() {
     const navigate = useNavigate();
-    const currentUserId = 1; // ToDo:  remove the hardcoded value.
+    const storedUser = localStorage.getItem('user');
+    const userObj = storedUser ? JSON.parse(storedUser) : null;
+    const currentUserId = userObj?.id || localStorage.getItem('userId');
 
     const [formData, setFormData] = useState({
         productName: '',

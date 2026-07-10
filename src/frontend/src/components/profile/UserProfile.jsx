@@ -5,7 +5,6 @@ import TabButton from "./TabButton.jsx";
 import './UserProfile.css';
 import MyCart from "./cart-page/MyCart.jsx";
 import MyProducts from "./user-products/MyProducts.jsx";
-// import { useAuth } from '../context/AuthContext';    // ToDo: uncomment this when authentication is ready
 
 export default function UserProfile() {
     const location = useLocation();
@@ -16,9 +15,9 @@ export default function UserProfile() {
     });
     const [cartItems, setCartItems] = useState([]);
 
-    // const { user } = useAuth();        // ToDo: uncomment this when authentication is ready
-    // const currentUserId = user?.id;    // ToDo: uncomment this when authentication is ready
-    const currentUserId = 1;      // ToDo: remove this line when authentication is ready
+    const storedUser = localStorage.getItem('user');
+    const userObj = storedUser ? JSON.parse(storedUser) : null;
+    const currentUserId = userObj?.id || localStorage.getItem('userId');
 
     useEffect(() => {
         if (activeTab === 'profile') {
@@ -94,7 +93,7 @@ export default function UserProfile() {
             case 'profile':
                 return <AccountOverview userInfo={userInfo} />;
             case 'comments':
-                return <div><h3>My Written Comments</h3></div>;     // ToDo: by me
+                return <div><h3>My Written Comments</h3></div>;
             case 'cart':
                 return <MyCart
                     cartItems={cartItems}
@@ -103,9 +102,9 @@ export default function UserProfile() {
                     onRemoveItem={handleRemoveItem}
                 />;
             case 'products':
-                return <MyProducts/>                                // ToDo: by me
+                return <MyProducts/>
             case 'transactions':
-                return <div><h3>Order History</h3></div>;           // ToDo: by Mariami
+                return <div><h3>Order History</h3></div>;
             default:
                 return <div>Select an option from the menu.</div>;
         }
