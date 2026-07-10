@@ -300,4 +300,9 @@ public class ProductService {
         }
         productRepository.save(product);
     }
+
+    public List<ProductResponse> getSimilarProducts(Integer categoryId) {
+        List<Product> products = productRepository.findByCategory_CategoryId(categoryId);
+        return ProductConverter.toProductResponseList(products);
+    }
 }

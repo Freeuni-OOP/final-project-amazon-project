@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ReviewSection from './ReviewSection.jsx';
 import ProductDetailsInfo from './ProductDetailsInfo.jsx';
+import RelatedProducts from './RelatedProducts.jsx';
 
 function ProductPage() {
     const { id } = useParams();
@@ -15,6 +16,8 @@ function ProductPage() {
 
     useEffect(() => {
         const fetchProductData = async () => {
+            window.scrollTo(0, 0);
+
             try {
                 const url = currentUserId
                     ? `http://localhost:8080/products/${id}?userId=${currentUserId}`
@@ -33,6 +36,7 @@ function ProductPage() {
                 console.error("Error fetching product:", error);
             }
         };
+
         fetchProductData();
     }, [id]);
 
@@ -115,6 +119,12 @@ function ProductPage() {
                 ) : (
                     <p className="no-comments-text">No reviews yet for this product. Be the first to review!</p>
                 )}
+                <hr style={{ border: '0', borderTop: '1px solid #e7e7e7', margin: '40px 0' }}/>
+
+                <RelatedProducts
+                    currentProductId={id}
+                    productData={product}
+                />
             </div>
         </div>
     );
