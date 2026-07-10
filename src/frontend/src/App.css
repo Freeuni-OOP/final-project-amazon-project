@@ -801,6 +801,39 @@ body.body-dark{
     margin-left: 5px;
 }
 
+.comments-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.comment-card {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.comment-user-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.comment-user-name {
+    font-weight: bold;
+}
+
+.comment-body-text {
+    margin: 5px 0;
+    color: #333;
+}
+
+.section-divider {
+    border: 0;
+    border-top: 1px solid #e7e7e7;
+    margin: 40px 0;
+}
+
 @media (max-width: 700px) {
     .navbar {
         flex-direction: column;
