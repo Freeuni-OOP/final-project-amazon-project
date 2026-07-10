@@ -618,6 +618,8 @@
     text-align: center;
     padding: 60px 20px;
     color: #555;
+}
+
 .light-btn{
     color: var(--Light-gray);
 }
