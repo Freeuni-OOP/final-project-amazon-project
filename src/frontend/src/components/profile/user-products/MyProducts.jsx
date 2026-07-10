@@ -4,7 +4,9 @@ import MyProductsTabHeader from "./MyProductsTabHeader.jsx";
 import MyProduct from "./MyProduct.jsx";
 
 export default function MyProducts() {
-    const sellerId = 1;
+    const storedUser = localStorage.getItem('user');
+    const userObj = storedUser ? JSON.parse(storedUser) : null;
+    const sellerId = userObj?.id || localStorage.getItem('userId');
 
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
