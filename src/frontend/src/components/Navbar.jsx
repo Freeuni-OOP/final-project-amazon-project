@@ -1,17 +1,31 @@
 import '../App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {useNavigate} from "react-router-dom";
 
 function Navbar(){
     const [searchQuery, setSearchQuery] = useState('');
+    const [user, setUser]=useState(null);
     const navigate = useNavigate();
 
+    useEffect(()=>{
+        const storedUser=localStorage.getItem('user');
+            if(storedUser){
+                setUser(JSON.parse(storedUser));
+            }
+        },
+    []);
     const submit = (e) => {
         e.preventDefault();
         if (searchQuery.trim()) {
             setSearchQuery("");
             navigate(`/search/${searchQuery}`);
         }
+    }
+
+    const handleSignOut= () =>{
+        localStorage.removeItem('user');
+        setUser(null);
+        navigate('/sign-in');
     }
 
     return (
@@ -22,23 +36,30 @@ function Navbar(){
                        type="text" name="search" className="search-item" placeholder="Search Products ..."/>
             </form>
             <div className="navbar-btns">
-                <div className="navbar-btns">
-                    {/* Sign In ღილაკზე დაჭერისას გადავა /sign-in გვერდზე */}
+                {user ? (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                        <span style={{ color: 'white', fontWeight: 'bold' }}>
+                            Hello, {user.username}
+                        </span>
+                        <button onClick={handleSignOut} className="sign-out">
+                            Sign Out
+                        </button>
+                    </div>
+                    ):(
+                <>
                     <button
                         onClick={() => navigate('/sign-in')}
-                        className="sign-in"
-                    >
+                        className="sign-in">
                         Sign In
                     </button>
 
-                    {/* Sign Up ღილაკზე დაჭერისას გადავა /sign-up გვერდზე */}
                     <button
                         onClick={() => navigate('/sign-up')}
-                        className="sign-up"
-                    >
+                        className="sign-up">
                         Sign Up
                     </button>
-                </div>
+                </>
+                )}
             </div>
         </nav>
     );

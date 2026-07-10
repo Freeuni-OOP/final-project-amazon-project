@@ -1,5 +1,6 @@
 package com.amazon.amazon_backend.controller;
 
+import com.amazon.amazon_backend.dto.SignInRequest;
 import com.amazon.amazon_backend.dto.UserRequest;
 import com.amazon.amazon_backend.dto.UserResponse;
 import com.amazon.amazon_backend.dto.UserUpdateRequests;
@@ -34,6 +35,13 @@ public class UserController {
     public UserResponse createUser(@RequestBody UserRequest request) {
         return userService.createUser(request);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(java.util.Map.of("message", ex.getMessage()));
+    }
+    @PostMapping("/sign-in")
+    public UserResponse signInUser(@RequestBody SignInRequest request){return userService.signInUser(request);}
 
     @PatchMapping("/{id}/balance")
     public UserResponse updateBalance(@PathVariable Integer id, @RequestBody UserUpdateRequests.BalanceUpdateRequest request) {

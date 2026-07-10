@@ -119,6 +119,15 @@ body {
     background-color: var(--Orange-hover);
 }
 
+.sign-out {
+    background-color: transparent;
+    color: var(--White);
+    border: 1px solid var(--White) !important;
+}
+
+.sign-out:hover {
+    background-color: var(--Very-dark-grayish-blue);
+}
 
 #categories{
     display: flex;
