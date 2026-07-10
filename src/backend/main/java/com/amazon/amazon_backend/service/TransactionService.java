@@ -3,6 +3,7 @@ package com.amazon.amazon_backend.service;
 import com.amazon.amazon_backend.dto.TransactionResponse;
 import com.amazon.amazon_backend.model.*;
 import com.amazon.amazon_backend.repository.TransactionRepository;
+import com.amazon.amazon_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,9 @@ public class TransactionService {
 
     @Autowired
     private TransactionRepository tranRepo;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public List<TransactionResponse> getUserTransactions(Integer userId){
         return tranListToTranRespList(tranRepo.findByBuyerIdOrSellerId(userId, userId));
@@ -71,6 +75,8 @@ public class TransactionService {
                     TransactionStatus.SUCCESS
             );
 
+            transferMoney(order.getBuyer(), seller, totalForSeller);
+
             for (OrderDetails item : sellerItems) {
                 transaction.addItem(item);
             }
@@ -109,6 +115,18 @@ public class TransactionService {
 
     private void permissionCheck(boolean shouldThrow, String message){
         if(shouldThrow) throw new SecurityException(message);
+    }
+
+    public void transferMoney(User buyer, User seller, BigDecimal totalForSeller) throws RuntimeException {
+        pay(buyer, seller, totalForSeller);
+        userRepository.save(buyer);
+        userRepository.save(seller);
+    }
+
+    public void pay(User buyer, User seller, BigDecimal totalForSeller) throws RuntimeException {
+        if(buyer.getBalance().compareTo(totalForSeller) < 0) throw new RuntimeException("Insufficient balance");
+        buyer.setBalance(buyer.getBalance().subtract(totalForSeller));
+        seller.setBalance(seller.getBalance().add(totalForSeller));
     }
 
 }
