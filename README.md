@@ -35,7 +35,7 @@ OOP ფინალური პროექტი
 3. Open intelliJ terminal and run following command from the root directory:
    1. ```compose up db -d```
    2. Then wait a bit so that docker can start up
-4. Open AmazonBackendApplication.java and press <run button> on current file;
+4. Open AmazonBackendApplication.java and press run button on current file;
 5. After step 3 wait some time to make sure Backend is done doing setup tasks (max 5s);
     1. After step number 4 you should see new container running in your Docker;
 6. Then open up InteliJ terminal, stand on Frontend folder and run the command:
