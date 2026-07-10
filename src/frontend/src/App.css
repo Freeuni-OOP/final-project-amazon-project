@@ -140,8 +140,6 @@ body {
     background-color: var(--Very-dark-grayish-blue);
 }
 
-#categories{
-}
 .switch{
     display: flex;
     align-items: center;
@@ -359,12 +357,6 @@ body {
         flex-direction: column;
         text-align: center;
     }
-
-    .filter {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
 }
 
 .auth-page-container {
@@ -454,4 +446,10 @@ body {
 .auth-link:hover {
     text-decoration: underline;
     color: var(--Orange);
+
+        .filter {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
 }
