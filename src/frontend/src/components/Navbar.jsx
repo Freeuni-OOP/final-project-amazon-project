@@ -2,7 +2,7 @@ import '../App.css';
 import {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 
-function Navbar(){
+function Navbar({ isLoggedIn, onLogout }){
     const [searchQuery, setSearchQuery] = useState('');
     const [user, setUser]=useState(null);
     const navigate = useNavigate();
@@ -10,7 +10,6 @@ function Navbar(){
     useEffect(()=>{
         const storedUser=localStorage.getItem('user');
             if(storedUser){
-                // eslint-disable-next-line react-hooks/set-state-in-effect
                 setUser(JSON.parse(storedUser));
             }
         },
@@ -93,9 +92,14 @@ function Navbar(){
                         <span style={{ color: 'white', fontWeight: 'bold' }}>
                             Hello, {user.username}
                         </span>
-                        <button onClick={handleSignOut} className="sign-out">
-                            Sign Out
-                        </button>
+                        <div className="navbar-btns">
+                            <button className="profile-btn" onClick={() => navigate("/profile")}>
+                                My Account
+                            </button>
+                            <button onClick={handleSignOut} className="sign-out">
+                                Sign Out
+                            </button>
+                        </div>
                     </div>
                     ):(
                 <>

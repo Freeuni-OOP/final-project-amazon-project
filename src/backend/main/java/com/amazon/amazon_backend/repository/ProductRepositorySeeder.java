@@ -7,9 +7,9 @@ import com.amazon.amazon_backend.model.Product;
 import com.amazon.amazon_backend.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.core.annotation.Order;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 
 @Slf4j
 @Component
-@Order(1)
+@Order(3)
 public class ProductRepositorySeeder implements CommandLineRunner {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;

@@ -1,16 +1,40 @@
 import '../App.css';
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import Navbar from "./Navbar.jsx";
 import CategoriesComponent from "./CategoriesComponent.jsx";
-import FilterComponent from "./FilterComponent.jsx";
 
-function MainPage({requestedProducts}){
+function MainPage({ children }){
+    const navigate = useNavigate();
+    const [categories, setCategories] = useState([]);
+
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
+
+    useEffect(() => {
+        const fetchInitialData = async () => {
+            try {
+                const [categoryResponse] = await Promise.all([
+                    fetch('http://localhost:8080/categories')
+                ]);
+
+                const categoriesData = await categoryResponse.json();
+                setCategories(categoriesData);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchInitialData();
+    }, []);
 
     return (
-        <div>
-            <Navbar/>
+        <div className="app-site-wrapper">
+            <Navbar isLoggedIn={isLoggedIn} onLogout={() => setIsLoggedIn(false)} />
             <CategoriesComponent />
-            <FilterComponent />
-            {requestedProducts}
+
+            <main className="main-content-layout">
+                {children}
+            </main>
 
             <div className="footer"></div>
         </div>

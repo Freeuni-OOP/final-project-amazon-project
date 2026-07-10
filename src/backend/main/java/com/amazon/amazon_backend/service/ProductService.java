@@ -42,6 +42,9 @@ public class ProductService {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Autowired
+    CartItemRepository cartItemRepository;
+
     public ProductService(ProductRepository productRepository, CommentRepository commentRepository, TransactionRepository transactionRepository, RatingRepository ratingRepository) {
         this.productRepository = productRepository;
         this.commentRepository = commentRepository;
@@ -189,6 +192,7 @@ public class ProductService {
         if(!productRepository.existsById(id)){
             throw new NoSuchElementException("Product not found.");
         }
+        cartItemRepository.deleteByProduct_ProductId(id);
         productRepository.deleteById(id);
     }
 

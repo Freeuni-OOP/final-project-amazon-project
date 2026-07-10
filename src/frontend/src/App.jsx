@@ -6,8 +6,12 @@ import {Route, Routes} from "react-router-dom";
 import SearchList from "./components/SearchList.jsx";
 import SignInPage from "./components/SignInPage.jsx"
 import SignUpPage from "./components/SignUpPage.jsx"
+import UserProfile from "./components/profile/UserProfile.jsx";
 import ProductsList from "./components/ProductsList.jsx";
 import ProductPage from "./components/ProductPage.jsx";
+import FilterComponent from "./components/FilterComponent.jsx";
+import EditProductPage from "./components/edit-product/EditProductPage.jsx";
+import AddProductPage from "./components/create-product/AddProductPage.jsx";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -35,19 +39,46 @@ function App() {
           <Route path="/sign-up" element={<SignUpPage />} />
 
           <Route path="/" element={
-              <MainPage requestedProducts={<ProductsList allProducts={products} />} />
+              <MainPage children={
+                  <>
+                      <FilterComponent/>
+                      <ProductsList allProducts={products} />
+                  </>
+              } />
           }/>
 
           <Route path="/category-name/:categoryName" element={
-              <MainPage requestedProducts={<CategoryList/>} />
+              <MainPage children={
+                  <>
+                      <FilterComponent/>
+                      <CategoryList/>
+                  </>
+              } />
           }/>
 
           <Route path="/search/:query" element={
-              <MainPage requestedProducts={<SearchList allProducts={products} />} />
+              <MainPage children={
+                  <>
+                      <FilterComponent/>
+                      <SearchList allProducts={products} />
+                  </>
+              } />
+          }/>
+
+          <Route path="/profile" element={
+              <MainPage children={<UserProfile />} />
+          }/>
+
+          <Route path="/edit-product/:id" element={
+              <EditProductPage />
+          }/>
+
+          <Route path="/create-product" element={
+              <AddProductPage />
           }/>
 
           <Route path="/product/:id" element={
-              <MainPage requestedProducts={<ProductPage />} />
+              <MainPage children={<ProductPage />} />
           }/>
       </Routes>
   );

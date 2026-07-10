@@ -9,7 +9,6 @@ import com.amazon.amazon_backend.dto.ProductUpdateRequests.QuantityUpdateRequest
 import com.amazon.amazon_backend.dto.ReviewRequest;
 import com.amazon.amazon_backend.repository.CommentRepository;
 import com.amazon.amazon_backend.service.ProductService;
-import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -85,18 +84,23 @@ public class ProductController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ProductResponse createProduct(@RequestPart("product") ProductRequest request, @RequestPart(value = "images") MultipartFile[] imageFiles) throws IOException {
+    public ProductResponse createProduct(@RequestPart("product") ProductRequest request, @RequestPart(value = "images", required = false) MultipartFile[] imageFiles) throws IOException {
 
         List<String> fileNames = new ArrayList<>();
-        String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/photos/";
+        if(imageFiles != null && imageFiles.length > 0 && !imageFiles[0].isEmpty()){
+            String uploadDir = System.getProperty("user.dir") + "/src/backend/main/resources/static/photos/";
 
-        for (MultipartFile file : imageFiles) {
-            if (!file.isEmpty()) {
-                String uniqueID = UUID.randomUUID().toString();
-                String uniqueFileName = uniqueID + "_" + file.getOriginalFilename();
-                file.transferTo(new File(uploadDir + uniqueFileName));
-                fileNames.add("/photos/" + uniqueFileName);
+            for (MultipartFile file : imageFiles) {
+                if (!file.isEmpty()) {
+                    String uniqueID = UUID.randomUUID().toString();
+                    String uniqueFileName = uniqueID + "_" + file.getOriginalFilename();
+                    file.transferTo(new File(uploadDir + uniqueFileName));
+                    fileNames.add("/photos/" + uniqueFileName);
+                }
             }
+        }
+        else {
+            fileNames.add("/photos/No-image-placeholder.png");
         }
 
         if (!fileNames.isEmpty()) {
@@ -142,7 +146,7 @@ public class ProductController {
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ProductResponse updateImage(@PathVariable Integer id, @RequestPart("images") MultipartFile[] imageFiles) throws IOException {
         List<String> fileNames = new ArrayList<>();
-        String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/photos/";
+        String uploadDir = System.getProperty("user.dir") + "/src/backend/main/resources/static/photos/";
 
         for (MultipartFile file : imageFiles) {
             if (!file.isEmpty()) {

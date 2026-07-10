@@ -54,6 +54,12 @@ function ProductsList({allProducts}){
         }
     });
 
+    const getImageUrl = (url) => {
+        if (!url) return 'http://localhost:8080/photos/No-image-placeholder.png';
+        if (url.startsWith('http')) return url;
+        return `http://localhost:8080${url}`;
+    };
+
     return (
         <div id="main-box">
             {sortedProducts.map((product) => (
@@ -63,8 +69,8 @@ function ProductsList({allProducts}){
                     className="product-link"
                     style={{ textDecoration: 'none', color: 'inherit' }}
                 >
-                    <div className="product">
-                        <img src={product.imageUrls?.[0] || "http://localhost:8080/photos/No-image-placeholder.png"} alt=""/>
+                    <div key={product.productId} className="product">
+                        <img src={getImageUrl(product.imageUrls?.[0])} alt={product.productName}/>
                         <p className="productName">{product.productName}</p>
                         <p className="price">Price: {product.price}$</p>
                         <p className="quantity">Quantity: {product.quantity}</p>

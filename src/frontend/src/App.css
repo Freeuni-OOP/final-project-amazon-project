@@ -311,6 +311,7 @@ body {
     padding: 40px 20px;
     text-align: center;
     margin-top: 40px;
+    width: 100%;
 }
 
 .footer-dark {
@@ -319,6 +320,44 @@ body {
 
 .mail-icon{
     color: white;
+}
+
+@media (max-width: 700px) {
+    .navbar {
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px;
+    }
+
+    .navbar img{
+        height: 90px;
+    }
+
+    #search-item {
+        width: 100%;
+        order: 3;
+    }
+
+    .navbar form{
+        width: 100%;
+    }
+
+    .navbar .search-item{
+        width: 100%;
+        margin: 0;
+        box-sizing: border-box;
+    }
+
+    .navbar-btns {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .categories{
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+    }
 }
 
 .auth-page-container {
@@ -414,6 +453,17 @@ body {
             flex-direction: column;
             gap: 20px;
         }
+}
+
+.app-site-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f4f6f8;
+}
+
+.main-content-layout {
+    flex: 1;
 }
 
 .product-info-side{
