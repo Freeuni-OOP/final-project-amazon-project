@@ -6,6 +6,7 @@ import {Route, Routes} from "react-router-dom";
 import SearchList from "./components/SearchList.jsx";
 import SignInPage from "./components/SignInPage.jsx"
 import SignUpPage from "./components/SignUpPage.jsx"
+import ProductsList from "./components/ProductsList.jsx";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -33,11 +34,11 @@ function App() {
           <Route path="/sign-up" element={<SignUpPage />} />
 
           <Route path="/" element={
-              <MainPage requestedProducts={<CategoryList allProducts={products} />} />
+              <MainPage requestedProducts={<ProductsList allProducts={products} />} />
           }/>
 
-          <Route path="/category/:categoryName" element={
-              <MainPage requestedProducts={<CategoryList allProducts={products} />} />
+          <Route path="/category-name/:categoryName" element={
+              <MainPage requestedProducts={<CategoryList/>} />
           }/>
 
           <Route path="/search/:query" element={
