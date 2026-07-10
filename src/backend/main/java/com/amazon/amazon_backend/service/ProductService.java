@@ -10,6 +10,7 @@ import com.amazon.amazon_backend.dto.ProductUpdateRequests.QuantityUpdateRequest
 import com.amazon.amazon_backend.model.Category;
 import com.amazon.amazon_backend.model.Product;
 import com.amazon.amazon_backend.model.User;
+import com.amazon.amazon_backend.repository.CartItemRepository;
 import com.amazon.amazon_backend.repository.CategoryRepository;
 import com.amazon.amazon_backend.repository.ProductRepository;
 import com.amazon.amazon_backend.repository.UserRepository;
@@ -41,6 +42,9 @@ public class ProductService {
 
     @Autowired
     CategoryRepository categoryRepository;
+
+    @Autowired
+    CartItemRepository cartItemRepository;
 
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
@@ -145,6 +149,7 @@ public class ProductService {
         if(!productRepository.existsById(id)){
             throw new NoSuchElementException("Product not found.");
         }
+        cartItemRepository.deleteByProduct_ProductId(id);
         productRepository.deleteById(id);
     }
 
