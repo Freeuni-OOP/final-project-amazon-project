@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
-@Order(3)
+@Order(6)
 public class RatingRepositorySeeder implements CommandLineRunner {
 
     private final RatingRepository ratingRepository;

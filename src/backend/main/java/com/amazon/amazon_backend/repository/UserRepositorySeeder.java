@@ -11,7 +11,6 @@ import java.util.Date;
 
 @Slf4j
 @Component
-@Order(1)
 @RequiredArgsConstructor
 @Order(1)
 public class UserRepositorySeeder implements CommandLineRunner {
