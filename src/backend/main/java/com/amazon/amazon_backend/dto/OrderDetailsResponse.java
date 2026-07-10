@@ -17,4 +17,6 @@ public class OrderDetailsResponse {
     private BigDecimal price;
     private BigDecimal amount;
     private TransactionStatus status;
+    private String imgUrl;
+    private String sellerName;
 }

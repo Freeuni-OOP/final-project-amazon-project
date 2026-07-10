@@ -160,6 +160,27 @@ body.body-dark{
     border-radius: 3em;
 }
 
+.tabs-container {
+    display: flex;
+    gap: 10px;
+    border-bottom: 1px solid var(--Very-light-gray);
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    color: var(--Very-dark-grayish-blue);
+}
+
+.tab-btn.active {
+    color: var(--Very-dark-desaturated-blue-1);
+    border-bottom: 2px solid var(--Red);
+    font-weight: bold;
+}
+
 .slider{
     background-color: var(--Orange);
     padding: 7px;

@@ -97,4 +97,20 @@ public class OrderService {
 
         return OrderConverter.toOrderResponse(savedOrder);
     }
+
+    public OrderResponse getOrderById(Integer orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NoSuchElementException("Order with ID " + orderId + " not found."));
+
+        return OrderConverter.toOrderResponse(order);
+    }
+
+
+    public List<OrderResponse> getSoldOrders(Integer userId) {
+        List<Order> soldOrders = orderRepository.findBySellerId(userId);
+
+        return soldOrders.stream()
+                .map(OrderConverter::toOrderResponse)
+                .collect(Collectors.toList());
+    }
 }
