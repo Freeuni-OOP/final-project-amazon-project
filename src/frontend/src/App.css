@@ -44,6 +44,10 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+#root {
+    background-color: transparent !important;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -376,7 +380,6 @@ body.body-dark{
     align-items: center;
     justify-content: center;
     padding: 20px 20px;
-    background-color: var(--Light-gray);
 }
 
 .auth-card {
