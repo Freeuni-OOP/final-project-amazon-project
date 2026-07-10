@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import AccountOverview from './profile/AccountOverview.jsx';
-import TabButton from "./profile/TabButton.jsx";
+import AccountOverview from './user-info/AccountOverview.jsx';
+import TabButton from "./TabButton.jsx";
 import './UserProfile.css';
-import MyCart from "./profile/MyCart.jsx";
-import MyProducts from "./profile/MyProducts.jsx";
+import MyCart from "./cart-page/MyCart.jsx";
+import MyProducts from "./user-products/MyProducts.jsx";
 // import { useAuth } from '../context/AuthContext';    // ToDo: uncomment this when authentication is ready
 
 export default function UserProfile() {

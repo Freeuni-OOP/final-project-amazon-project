@@ -4,11 +4,11 @@ import CategoryList from "./components/CategoryList.jsx";
 import MainPage from "./components/MainPage.jsx";
 import {Route, Routes} from "react-router-dom";
 import SearchList from "./components/SearchList.jsx";
-import UserProfile from "./components/UserProfile.jsx";
+import UserProfile from "./components/profile/UserProfile.jsx";
 import ProductsList from "./components/ProductsList.jsx";
 import FilterComponent from "./components/FilterComponent.jsx";
-import EditProductPage from "./components/EditProductPage.jsx";
-import AddProductPage from "./components/AddProductPage.jsx";
+import EditProductPage from "./components/edit-product/EditProductPage.jsx";
+import AddProductPage from "./components/create-product/AddProductPage.jsx";
 
 function App() {
   const [products, setProducts] = useState([]);

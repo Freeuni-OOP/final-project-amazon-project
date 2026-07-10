@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import MainPage from './MainPage.jsx';
-import './EditProductPage.css';
-import NewProductForm from "./create-product/NewProductForm.jsx";
+import MainPage from '../MainPage.jsx';
+import '../edit-product/EditProductPage.css';
+import NewProductForm from "./NewProductForm.jsx";
 
 export default function AddProductPage() {
     const navigate = useNavigate();

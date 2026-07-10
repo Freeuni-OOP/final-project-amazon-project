@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import MainPage from './MainPage.jsx';
-import NameEditor from "./profile/NameEditor.jsx";
-import PriceEditor from "./profile/PriceEditor.jsx";
-import QuantityEditor from "./profile/QuantityEditor.jsx";
-import DescriptionEditor from "./profile/DescriptionEditor.jsx";
-import EditFormButtons from "./profile/EditFormButtons.jsx";
+import MainPage from '../MainPage.jsx';
+import NameEditor from "./NameEditor.jsx";
+import PriceEditor from "./PriceEditor.jsx";
+import QuantityEditor from "./QuantityEditor.jsx";
+import DescriptionEditor from "./DescriptionEditor.jsx";
+import EditFormButtons from "./EditFormButtons.jsx";
 import './EditProductPage.css';
-import ImageEditor from "./profile/ImageEditor.jsx";
+import ImageEditor from "./ImageEditor.jsx";
 
 export default function EditProductPage() {
     const { id } = useParams();

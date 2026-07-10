@@ -1,5 +1,5 @@
 import React from 'react';
-import ImageEditor from "../profile/ImageEditor.jsx";
+import ImageEditor from "../edit-product/ImageEditor.jsx";
 import CategorySelection from "./CategorySelection.jsx";
 import NameField from "./NameField.jsx";
 import PriceField from "./PriceField.jsx";
