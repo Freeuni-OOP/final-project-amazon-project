@@ -29,9 +29,16 @@ export default function MyCart({ cartItems, loading, onUpdateQuantity, onRemoveI
             });
 
             if (response.ok) {
-                await response.json();
+                const newOrderData = await response.json();
 
                 alert("🎉 Order created successfully!");
+
+                if (newOrderData && newOrderData.orderId) {
+                    navigate(`/order-details/${newOrderData.orderId}`);
+                } else {
+                    // Fallback to history tab if backend failed to supply the ID field
+                    navigate('/profile', { state: { defaultTab: 'transactions' } });
+                }
             } else {
                 alert("Checkout failed. Please check product stock metrics or your balance.");
             }
