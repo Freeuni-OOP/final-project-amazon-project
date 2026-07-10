@@ -4,6 +4,8 @@ import CategoryList from "./components/CategoryList.jsx";
 import MainPage from "./components/MainPage.jsx";
 import {Route, Routes} from "react-router-dom";
 import SearchList from "./components/SearchList.jsx";
+import SignInPage from "./components/SignInPage.jsx"
+import SignUpPage from "./components/SignUpPage.jsx"
 import ProductsList from "./components/ProductsList.jsx";
 
 function App() {
@@ -28,6 +30,9 @@ function App() {
 
   return (
       <Routes>
+          <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+
           <Route path="/" element={
               <MainPage requestedProducts={<ProductsList allProducts={products} />} />
           }/>
