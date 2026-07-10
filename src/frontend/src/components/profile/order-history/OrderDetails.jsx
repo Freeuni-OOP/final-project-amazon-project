@@ -33,11 +33,24 @@ function OrderDetails() {
 
     const isBuyer = currentUserId === orderData.userId;
 
-    const getImageUrl = (url) => {
-        if (!url || url.trim() === "") return 'http://localhost:8080/pictures/No-image-placeholder.png';
-        if (url.startsWith('http')) return url;
-        return `http://localhost:8080${url}`;
-    };
+   const visibleItems = isBuyer
+           ? (orderData.items || [])
+           : (orderData.items || []).filter(item => Number(item.sellerId) === currentUserId);
+
+   const displayTotal = isBuyer
+         ? orderData.totalAmount
+         : visibleItems.reduce((sum, item) => sum + Number(item.amount || 0), 0);
+
+   const getImageUrl = (url) => {
+       if (!url || url.trim() === "") {
+           return 'http://localhost:8080/photos/No-image-placeholder.png';
+       }
+       if (url.startsWith('http')) return url;
+
+       const safeUrl = url.startsWith('/') ? url : `/${url}`;
+
+       return `http://localhost:8080${safeUrl}`;
+   };
 
     return (
         <div style={{ maxWidth: '800px', margin: '40px auto', padding: '30px', backgroundColor: 'var(--White)', borderRadius: '8px', border: '1px solid var(--Light-gray)' }}>
@@ -62,7 +75,7 @@ function OrderDetails() {
                                 alt={item.productName}
                                 onError={(e) => {
                                     e.target.onerror = null;
-                                    e.target.src = "http://localhost:8080/pictures/No-image-placeholder.png";
+                                    e.target.src = "http://localhost:8080/photos/No-image-placeholder.png";
                                 }}
                                 style={{
                                     width: '50px',

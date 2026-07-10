@@ -14,6 +14,12 @@ function ProductPage() {
     const userObj = storedUser ? JSON.parse(storedUser) : null;
     const currentUserId = userObj?.id || localStorage.getItem('userId');
 
+    const getImageUrl = (url) => {
+        if (!url || url.trim() === "") return 'http://localhost:8080/photos/No-image-placeholder.png';
+        if (url.startsWith('http')) return url;
+        return `http://localhost:8080${url}`;
+    };
+
     useEffect(() => {
         const fetchProductData = async () => {
             window.scrollTo(0, 0);
@@ -83,14 +89,15 @@ function ProductPage() {
             <div className="product-page-main">
                 <div className="product-images-side">
                     <div className="main-image-wrapper">
-                        <img src={selectedImageUrl || "http://localhost:8080/photos/No-image-placeholder.png"} alt={product.productName}/>
+                        <img src={getImageUrl(selectedImageUrl)} alt={product.productName}/>
                     </div>
                     <div className="thumbnail-list">
-                        {product.imageUrls?.map((url, index) => (
-                            <div className="thumbnail-images" key={index} onClick={() => setSelectedImageUrl(url)}>
-                                <img className="thumbnail-img" src={url} alt="thumbnail" />
-                            </div>
-                        ))}
+                    {product.imageUrls?.map((url, index) => (
+                     <div className="thumbnail-images" key={index} onClick={() => setSelectedImageUrl(url)}>
+
+                         <img className="thumbnail-img" src={getImageUrl(url)} alt="thumbnail" />
+                      </div>
+                      ))}
                     </div>
                     <hr/>
                     <div className="rating-section">

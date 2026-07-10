@@ -4,7 +4,7 @@ import MainPage from '../MainPage.jsx';
 import '../edit-product/EditProductPage.css';
 import NewProductForm from "./NewProductForm.jsx";
 
-export default function AddProductPage() {
+export default function AddProductPage({ onProductAdded }) {
     const navigate = useNavigate();
     const storedUser = localStorage.getItem('user');
     const userObj = storedUser ? JSON.parse(storedUser) : null;
@@ -57,6 +57,12 @@ export default function AddProductPage() {
 
             if (response.ok) {
                 alert("Product added successfully!");
+
+                setFormData({ productName: '', price: '', quantity: '' });
+
+                if (onProductAdded) {
+                    onProductAdded();
+                }
                 navigate('/profile', { state: { defaultTab: 'products' } });
             } else {
                 alert("Server rejected product parameters.");

@@ -5,28 +5,36 @@ import com.amazon.amazon_backend.model.Order;
 import com.amazon.amazon_backend.model.OrderDetails;
 import com.amazon.amazon_backend.model.Product;
 import com.amazon.amazon_backend.model.User;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
 @Component
-@org.springframework.core.annotation.Order(5)
-@RequiredArgsConstructor
+@org.springframework.core.annotation.Order(7)
 public class OrderRepositorySeeder implements CommandLineRunner {
 
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
+    OrderRepositorySeeder(OrderRepository orderRepository, UserRepository userRepository, ProductRepository productRepository){
+        this.orderRepository = orderRepository;
+        this.userRepository = userRepository;
+        this.productRepository = productRepository;
+    }
+
     @Override
     public void run(String... args) throws Exception {
+        if(orderRepository.findAll().size()>1)return;
+        Date date = new Date();
+        User tempBot = new User("TempBot", "TempBot@gmail.com", "TempBotPassword", null, date);
+        userRepository.save(tempBot);
 
         List<User> allUsers = userRepository.findAll();
         List<Product> allProducts = productRepository.findAll();
@@ -35,7 +43,6 @@ public class OrderRepositorySeeder implements CommandLineRunner {
             log.error("Seeder needs at least 2 users and 4 products in the database");
             return;
         }
-        if(orderRepository.findAll().size()>1)return;
         User botUser = allUsers.stream()
                 .filter(u -> u.getUsername().toLowerCase().contains("bot"))
                 .findFirst()
