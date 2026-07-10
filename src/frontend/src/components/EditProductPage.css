@@ -184,3 +184,11 @@
     background-color: #a3000d;
     transform: scale(1.1);
 }
+
+.form-helper-text {
+    display: block;
+    text-align: right;
+    color: #666;
+    font-size: 0.75rem;
+    margin-top: 4px;
+}
