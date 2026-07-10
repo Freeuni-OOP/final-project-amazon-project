@@ -113,22 +113,22 @@ function ProductPage() {
                 <h2 className="comments-main-title">Top reviews from customers</h2>
 
                 {product.top5comments && product.top5comments.length > 0 ? (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                    <div className="comments-list-container">
                         {product.top5comments.map((comment, index) => {
                             const currentCommentRating = product.top5ratings?.[index] || 0;
 
                             return (
-                                <div key={index} className="comment-card" style={{ padding: '15px', borderBottom: '1px solid #eee' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                                <div key={index} className="comment-card">
+                                    <div className="comment-user-header">
                                         <div className="comment-user-avatar"></div>
-                                        <span className="comment-user-name" style={{ fontWeight: 'bold' }}>
-                                              {comment.reviewerName || "Amazon Customer"}
-                                        </span>
+                                        <span className="comment-user-name">
+                                          {comment.reviewerName || "Amazon Customer"}
+                                    </span>
 
                                         {renderIndividualStars(currentCommentRating)}
                                     </div>
 
-                                    <p className="comment-body-text" style={{ margin: '5px 0', color: '#333' }}>
+                                    <p className="comment-body-text">
                                         {typeof comment === 'string'
                                             ? comment
                                             : (comment.comment_STR || comment.comment || "No text available")}
@@ -140,7 +140,8 @@ function ProductPage() {
                 ) : (
                     <p className="no-comments-text">No reviews yet for this product. Be the first to review!</p>
                 )}
-                <hr style={{ border: '0', borderTop: '1px solid #e7e7e7', margin: '40px 0' }}/>
+
+                <hr className="section-divider"/>
 
                 <RelatedProducts
                     currentProductId={id}
