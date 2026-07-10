@@ -2,7 +2,7 @@ import '../App.css';
 import {useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 
-function Navbar({ isLoggedIn, onLogout }){
+function Navbar(){
     const [searchQuery, setSearchQuery] = useState('');
     const [user, setUser]=useState(null);
     const navigate = useNavigate();
@@ -10,6 +10,7 @@ function Navbar({ isLoggedIn, onLogout }){
     useEffect(()=>{
         const storedUser=localStorage.getItem('user');
             if(storedUser){
+                // eslint-disable-next-line react-hooks/set-state-in-effect
                 setUser(JSON.parse(storedUser));
             }
         },

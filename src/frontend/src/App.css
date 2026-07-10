@@ -45,14 +45,14 @@
 }
 
 body {
-    background-color: var(--Very-light-gray);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background-color: var(--Very-light-gray);
 }
 
-.body-dark{
-    background-color: var(--Very-dark-desaturated-blue-3);
+body.body-dark{
+    background-color: var(--Very-dark-desaturated-blue-3) !important;
 }
 
 .navbar {
@@ -366,6 +366,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 20px 20px;
+    background-color: var(--Light-gray);
 }
 
 .auth-card {
@@ -459,7 +460,6 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #f4f6f8;
 }
 
 .main-content-layout {

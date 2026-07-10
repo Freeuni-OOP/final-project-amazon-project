@@ -8,6 +8,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Slf4j
 @Component
 @Order(4)
@@ -31,12 +33,14 @@ public class CartItemsSeeder implements CommandLineRunner {
 
         log.info("Seeding sample CartItems...");
 
+        List<Product> availableProducts = productRepository.findAll();
         User amazonBot = userRepository.findById(1).get();
-        Product product1 = productRepository.findById(3).get();
-        Product product2 = productRepository.findById(10).get();
-        Product product3 = productRepository.findById(12).get();
-        Product product4 = productRepository.findById(15).get();
-        Product product5 = productRepository.findById(21).get();
+
+        Product product1 = availableProducts.get(0);
+        Product product2 = availableProducts.get(1);
+        Product product3 = availableProducts.get(2);
+        Product product4 = availableProducts.get(3);
+        Product product5 = availableProducts.get(4);
 
         product1.setQuantity(4);
         product2.setQuantity(120);
