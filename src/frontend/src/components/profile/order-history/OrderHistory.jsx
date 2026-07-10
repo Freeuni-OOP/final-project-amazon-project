@@ -6,11 +6,18 @@ export default function OrderHistory() {
     const [activeTab, setActiveTab] = useState('my-orders');
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const [currentPage, setCurrentPage] = useState(1);
+        const itemsPerPage = 5;
     const navigate = useNavigate();
 
     const storedUser = localStorage.getItem('user');
     const userObj = storedUser ? JSON.parse(storedUser) : null;
     const currentUserId = userObj?.id || localStorage.getItem('userId');
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [activeTab]);
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -45,6 +52,12 @@ export default function OrderHistory() {
         return dateString.replace('T', ' ').substring(0, 16);
     };
 
+    const indexOfLastOrder = currentPage * itemsPerPage;
+    const indexOfFirstOrder = indexOfLastOrder - itemsPerPage;
+    const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+
+    const totalPages = Math.ceil(orders.length / itemsPerPage);
+
     return (
         <div className="order-history-container">
             <div className="order-history-tabs">
@@ -64,7 +77,7 @@ export default function OrderHistory() {
 
             {!loading && orders.length > 0 && (
                 <div className="order-history-list">
-                    {orders.map(order => (
+                    {currentOrders.map(order => (
                         <div
                             key={order.orderId}
                             className="order-history-row-card"
@@ -85,6 +98,28 @@ export default function OrderHistory() {
                     ))}
                 </div>
             )}
-        </div>
-    );
-}
+            {!loading && totalPages > 1 && (
+                       <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginTop: '20px' }}>
+                           {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNumber => (
+                               <button
+                                   key={pageNumber}
+                                   onClick={() => setCurrentPage(pageNumber)}
+                                   style={{
+                                       padding: '6px 12px',
+                                       border: '1px solid var(--Grayish-orange, #e47911)',
+                                       backgroundColor: currentPage === pageNumber ? 'var(--Grayish-orange, #e47911)' : '#fff',
+                                       color: currentPage === pageNumber ? '#fff' : '#333',
+                                       borderRadius: '4px',
+                                       cursor: 'pointer',
+                                       fontWeight: currentPage === pageNumber ? 'bold' : 'normal',
+                                       transition: 'all 0.2s ease'
+                                   }}
+                               >
+                                   {pageNumber}
+                               </button>
+                           ))}
+                       </div>
+                   )}
+               </div>
+           );
+       }
