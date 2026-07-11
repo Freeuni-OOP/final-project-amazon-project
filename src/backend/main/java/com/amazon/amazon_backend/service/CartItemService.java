@@ -2,6 +2,7 @@ package com.amazon.amazon_backend.service;
 
 import com.amazon.amazon_backend.dto.CartItemRequest;
 import com.amazon.amazon_backend.dto.CartItemResponse;
+import com.amazon.amazon_backend.exception.OutOfStockException;
 import com.amazon.amazon_backend.model.CartItem;
 import com.amazon.amazon_backend.model.Product;
 import com.amazon.amazon_backend.model.User;
@@ -65,7 +66,7 @@ public class CartItemService {
         }
 
         if(request.getQuantity() > product.getQuantity()){
-            throw new IllegalArgumentException("Quantity can not be greater than number of items available in stock.");
+            throw new OutOfStockException("Quantity can not be greater than number of items available in stock.");
         }
 
         Optional<CartItem> existing = cartItemRepository.findByUser_IdAndProduct_ProductId(request.getUserId(), request.getProductId());
@@ -75,7 +76,7 @@ public class CartItemService {
 
             int newQuantity = cartItem.getQuantity() + request.getQuantity();
             if (newQuantity > product.getQuantity()) {
-                throw new IllegalArgumentException("Total requested quantity (" + newQuantity + ") exceeds available stock (" + product.getQuantity() + ").");
+                throw new OutOfStockException("Total requested quantity (" + newQuantity + ") exceeds available stock (" + product.getQuantity() + ").");
             }
 
             cartItem.setQuantity(newQuantity);
