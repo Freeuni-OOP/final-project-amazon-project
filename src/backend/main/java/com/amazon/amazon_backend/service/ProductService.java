@@ -260,7 +260,7 @@ public class ProductService {
         if (categoryName != null && !categoryName.isBlank()) {
             return categoryRepository.findByCategoryName(categoryName).orElseThrow(() -> new NoSuchElementException("Category not found."));
         }
-        return categoryRepository.findByCategoryName(DEFAULT_CATEGORY_NAME).orElseThrow(() -> new IllegalStateException("There is no category 'Other' in database"));
+        return categoryRepository.findByCategoryName(DEFAULT_CATEGORY_NAME).orElseThrow(() -> new RuntimeException("There is no category 'Other' in database"));
     }
 
     public void addProductReview(Integer id, Integer userId, String commentStr, Integer rating) {
