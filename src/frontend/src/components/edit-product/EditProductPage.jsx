@@ -9,7 +9,7 @@ import EditFormButtons from "./EditFormButtons.jsx";
 import './EditProductPage.css';
 import ImageEditor from "./ImageEditor.jsx";
 
-export default function EditProductPage() {
+export default function EditProductPage({ onProductEdited }) {
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -55,7 +55,7 @@ export default function EditProductPage() {
         const updatePromises = [];
 
         updatePromises.push(
-            fetch(`http://localhost:8080/products/${id}/details`, {
+            await fetch(`http://localhost:8080/products/${id}/details`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -66,7 +66,7 @@ export default function EditProductPage() {
         );
 
         updatePromises.push(
-            fetch(`http://localhost:8080/products/${id}/price`, {
+            await fetch(`http://localhost:8080/products/${id}/price`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ price: parseFloat(formData.price) })
@@ -74,7 +74,7 @@ export default function EditProductPage() {
         );
 
         updatePromises.push(
-            fetch(`http://localhost:8080/products/${id}/quantity`, {
+            await fetch(`http://localhost:8080/products/${id}/quantity`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ quantity: parseInt(formData.quantity, 10) })
@@ -89,7 +89,7 @@ export default function EditProductPage() {
             }
 
             updatePromises.push(
-                fetch(`http://localhost:8080/products/${id}/image`, {
+                await fetch(`http://localhost:8080/products/${id}/image`, {
                     method: 'PATCH',
                     body: imageData
                 })
@@ -102,6 +102,9 @@ export default function EditProductPage() {
 
             if (allSuccessful) {
                 alert("All product options synced up successfully!");
+                if (onProductEdited) {
+                    onProductEdited();
+                }
                 navigate('/profile', { state: { defaultTab: 'products' } });
             } else {
                 alert("Some fields failed validation parameters during sync.");
