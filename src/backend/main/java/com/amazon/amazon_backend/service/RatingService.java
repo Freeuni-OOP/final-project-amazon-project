@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -32,10 +33,10 @@ public class RatingService {
     @Transactional
     public RatingResponse addOrUpdateRating(RatingRequest ratingRequest){
         User user = userRepository.findById(ratingRequest.getUserId())
-                .orElseThrow(()->new RuntimeException("User not found with ID:"+ratingRequest.getUserId()));
+                .orElseThrow(()->new NoSuchElementException("User not found with ID:"+ratingRequest.getUserId()));
 
         Product product = productRepository.findById(ratingRequest.getProductId())
-                .orElseThrow(()->new RuntimeException("Product not found with ID:"+ratingRequest.getProductId()));
+                .orElseThrow(()->new NoSuchElementException("Product not found with ID:"+ratingRequest.getProductId()));
 
         Optional<Rating> existingRatings=ratingRepository.findByUser_IdAndProduct_ProductId(user.getId(), product.getProductId());
 

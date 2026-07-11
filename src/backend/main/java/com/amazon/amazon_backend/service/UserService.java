@@ -4,6 +4,7 @@ import com.amazon.amazon_backend.dto.SignInRequest;
 import com.amazon.amazon_backend.dto.UserRequest;
 import com.amazon.amazon_backend.dto.UserResponse;
 import com.amazon.amazon_backend.dto.UserUpdateRequests;
+import com.amazon.amazon_backend.exception.InsufficientBalanceException;
 import com.amazon.amazon_backend.model.User;
 import com.amazon.amazon_backend.repository.UserRepository;
 import com.amazon.amazon_backend.utility.PassEncryption;
@@ -101,7 +102,7 @@ public class UserService {
         User user = findUser(id);
 
         if (user.getBalance().compareTo(request.getExpense()) < 0) {
-            throw new IllegalArgumentException("Insufficient balance for this transaction.");
+            throw new InsufficientBalanceException("Insufficient balance for this transaction.");
         }
 
         BigDecimal newBalance = user.getBalance().subtract(request.getExpense());
