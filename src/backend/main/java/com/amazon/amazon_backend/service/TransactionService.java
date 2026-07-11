@@ -1,12 +1,14 @@
 package com.amazon.amazon_backend.service;
 
 import com.amazon.amazon_backend.dto.TransactionResponse;
+import com.amazon.amazon_backend.exception.InsufficientBalanceException;
 import com.amazon.amazon_backend.model.*;
 import com.amazon.amazon_backend.repository.TransactionRepository;
 import com.amazon.amazon_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -114,17 +116,17 @@ public class TransactionService {
     }
 
     private void permissionCheck(boolean shouldThrow, String message){
-        if(shouldThrow) throw new SecurityException(message);
+        if(shouldThrow) throw new AccessDeniedException(message);
     }
 
-    public void transferMoney(User buyer, User seller, BigDecimal totalForSeller) throws RuntimeException {
+    public void transferMoney(User buyer, User seller, BigDecimal totalForSeller) throws InsufficientBalanceException {
         pay(buyer, seller, totalForSeller);
         userRepository.save(buyer);
         userRepository.save(seller);
     }
 
-    public void pay(User buyer, User seller, BigDecimal totalForSeller) throws RuntimeException {
-        if(buyer.getBalance().compareTo(totalForSeller) < 0) throw new RuntimeException("Insufficient balance");
+    public void pay(User buyer, User seller, BigDecimal totalForSeller) throws InsufficientBalanceException {
+        if(buyer.getBalance().compareTo(totalForSeller) < 0) throw new InsufficientBalanceException();
         buyer.setBalance(buyer.getBalance().subtract(totalForSeller));
         seller.setBalance(seller.getBalance().add(totalForSeller));
     }
