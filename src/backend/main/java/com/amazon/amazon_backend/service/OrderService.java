@@ -1,6 +1,7 @@
 package com.amazon.amazon_backend.service;
 
 import com.amazon.amazon_backend.dto.OrderResponse;
+import com.amazon.amazon_backend.exception.OutOfStockException;
 import com.amazon.amazon_backend.model.*;
 import com.amazon.amazon_backend.repository.*;
 import com.amazon.amazon_backend.utility.OrderConverter;
@@ -70,7 +71,7 @@ public class OrderService {
             Product product=cartItem.getProduct();
 
             if(product.getQuantity()<cartItem.getQuantity()){
-                throw new IllegalStateException("Not enough inventory for product: "+product.getProductName());
+                throw new OutOfStockException("Not enough inventory for product: "+product.getProductName());
             }
 
             product.setQuantity(product.getQuantity()-cartItem.getQuantity());

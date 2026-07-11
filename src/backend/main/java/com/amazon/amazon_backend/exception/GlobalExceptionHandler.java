@@ -11,7 +11,8 @@ import java.util.NoSuchElementException;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler({
-            IllegalArgumentException.class
+            IllegalArgumentException.class,
+            OutOfStockException.class
     })
     public ResponseEntity<String> handleBadRequestExceptions(IllegalArgumentException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
@@ -32,7 +33,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
-    @ExceptionHandler({SecurityException.class, AccessDeniedException.class})
+    @ExceptionHandler({
+            SecurityException.class,
+            AccessDeniedException.class
+    })
     public ResponseEntity<String> handleAccessDeniedExceptions(Exception ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
     }
