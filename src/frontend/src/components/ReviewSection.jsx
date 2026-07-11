@@ -70,7 +70,7 @@ function ReviewSection({ productId, currentUserId, canReview, onReviewSubmitted 
                                 style={{
                                     fontSize: '24px',
                                     cursor: 'pointer',
-                                    color: num <= rating ? '#febd69' : '#ccc', // ოქროსფერი ან ნაცრისფერი
+                                    color: num <= rating ? '#febd69' : '#ccc',
                                     transition: 'color 0.2s'
                                 }}
                             >
