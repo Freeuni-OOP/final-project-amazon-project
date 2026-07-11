@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class User {
+public class User{
     private static final BigDecimal DEFAULT_BALANCE = BigDecimal.valueOf(1000.00);
 
     @Id
@@ -54,4 +54,5 @@ public class User {
         this.birthDate = birthDate;
         this.balance = DEFAULT_BALANCE;
     }
+
 }

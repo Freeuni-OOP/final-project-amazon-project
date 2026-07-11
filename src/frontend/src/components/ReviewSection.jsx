@@ -1,6 +1,5 @@
 import '../App.css';
-import {useState} from 'react';
-
+import { useState } from 'react';
 
 function ReviewSection({ productId, currentUserId, canReview, onReviewSubmitted }) {
     const [comment, setComment] = useState("");
@@ -38,7 +37,7 @@ function ReviewSection({ productId, currentUserId, canReview, onReviewSubmitted 
             setComment("");
 
             onReviewSubmitted({
-                comment: comment,
+                comment_STR: comment,
                 rating: rating,
             });
 
@@ -61,14 +60,25 @@ function ReviewSection({ productId, currentUserId, canReview, onReviewSubmitted 
             <form onSubmit={handleSubmitReview}>
                 <div style={{ marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <label style={{ fontWeight: '500' }}>Overall rating:</label>
-                    <select
-                        value={rating}
-                        onChange={(e) => setRating(Number(e.target.value))}
-                        style={{ padding: '5px 10px', borderRadius: '4px', border: '1px solid #ccd1d1' }}
-                    >
-                        {[5, 4, 3, 2, 1].map(num => <option key={num} value={num}>{num} Stars</option>)}
-                    </select>
+                    <div style={{ display: 'flex', gap: '4px' }}>
+                        {[1, 2, 3, 4, 5].map((num) => (
+                            <span
+                                key={num}
+                                onClick={() => setRating(num)}
+                                style={{
+                                    fontSize: '24px',
+                                    cursor: 'pointer',
+                                    color: num <= rating ? '#febd69' : '#ccc',
+                                    transition: 'color 0.2s'
+                                }}
+                            >
+                                ★
+                            </span>
+                        ))}
+                    </div>
+                    <span style={{ fontSize: '14px', color: '#555', marginLeft: '5px' }}>({rating} Stars)</span>
                 </div>
+
                 <div style={{ marginBottom: '15px' }}>
                     <label style={{ display: 'block', fontWeight: '500', marginBottom: '5px' }}>Add a written review:</label>
                     <textarea
@@ -84,7 +94,7 @@ function ReviewSection({ productId, currentUserId, canReview, onReviewSubmitted 
                 </button>
             </form>
         </div>
-);
+    );
 }
 
 export default ReviewSection;

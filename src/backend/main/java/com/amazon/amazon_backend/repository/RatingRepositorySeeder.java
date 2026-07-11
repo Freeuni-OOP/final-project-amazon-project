@@ -29,7 +29,6 @@ public class RatingRepositorySeeder implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (ratingRepository.count() > 0) return;
-
         List<Product> allProducts = productRepository.findAll();
         List<User> allUsers = userRepository.findAll();
 
@@ -42,7 +41,6 @@ public class RatingRepositorySeeder implements CommandLineRunner {
 
             for (int star : stars) {
                 ratingRepository.save(new Rating(sampleUser, sampleProduct, star, LocalDateTime.now()));
-
                 Thread.sleep(10);
             }
         }

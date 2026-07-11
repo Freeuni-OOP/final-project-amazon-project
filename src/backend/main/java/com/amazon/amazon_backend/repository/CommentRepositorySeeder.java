@@ -52,7 +52,6 @@ public class CommentRepositorySeeder implements CommandLineRunner {
                 comment.setCommentStr(text);
 
                 commentRepository.save(comment);
-
                 Thread.sleep(10);
             }
         }

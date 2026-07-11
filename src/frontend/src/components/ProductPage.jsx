@@ -46,37 +46,53 @@ function ProductPage() {
         fetchProductData();
     }, [id]);
 
-    const handleReviewSubmitted = async (newComment) => {
-        try {
-            const url = currentUserId
-                ? `http://localhost:8080/products/${id}?userId=${currentUserId}`
-                : `http://localhost:8080/products/${id}`;
 
-            const response = await fetch(url);
-            if (response.ok) {
-                const data = await response.json();
-                setProduct(data);
-                return;
-            }
-        } catch (error) {
-            console.error("Error refreshing product data:", error);
+   const handleReviewSubmitted = async (newComment) => {
+    try {
+        const url = currentUserId
+            ? `http://localhost:8080/products/${id}?userId=${currentUserId}`
+            : `http://localhost:8080/products/${id}`;
+
+        const response = await fetch(url);
+        if (response.ok) {
+            const data = await response.json();
+            setProduct(data); 
+            return;
         }
+    } catch (error) {
+        console.error("Error refreshing product data:", error);
+    }
 
-        setProduct(prev => ({
-            ...prev,
-            canReview: false,
-            top5comments: [newComment, ...(prev.top5comments || [])]
-        }));
-    };
+    const newRatingValue = newComment.rating || 0;
+    const commentText = typeof newComment === 'string' ? newComment : (newComment.comment || newComment.comment_STR || "");
+
+    setProduct(prev => ({
+        ...prev,
+        canReview: false,
+        top5comments: [commentText, ...(prev.top5comments || [])],
+        top5ratings: [newRatingValue, ...(prev.top5ratings || [])]
+    }));
+};
 
     const renderStars = (rating) => {
         const roundedRating = Math.min(5, Math.max(0, Math.round(rating || 0)));
         return (
             <span className="rating-stars-wrapper">
-                {"★".repeat(roundedRating)}{"☆".repeat(5 - roundedRating)}
-                <span className="rating-text-count">
+                <span className="star-filled">{"★".repeat(roundedRating)}</span>
+                <span className="star-empty">{"☆".repeat(5 - roundedRating)}</span>
+                <span className="rating-text-count" style={{ marginLeft: '5px', color: '#555', fontSize: '14px' }}>
                     ({rating ? Number(rating).toFixed(1) : "0.0"} out of 5)
                 </span>
+            </span>
+        );
+    };
+
+    const renderIndividualStars = (rating) => {
+        const roundedRating = Math.min(5, Math.max(0, Math.round(rating || 0)));
+        return (
+            <span>
+                <span className="star-filled">{"★".repeat(roundedRating)}</span>
+                <span className="star-empty">{"☆".repeat(5 - roundedRating)}</span>
             </span>
         );
     };
@@ -107,12 +123,10 @@ function ProductPage() {
                     </div>
                 </div>
 
-
                 <ProductDetailsInfo product={product} />
             </div>
 
             <div className="comments-section">
-
                 <ReviewSection
                     productId={id}
                     currentUserId={currentUserId}
@@ -131,6 +145,15 @@ function ProductPage() {
                                     <span className="comment-user-name">
                                           Amazon Customer
                                     </span>
+
+                                        {renderIndividualStars(currentCommentRating)}
+                                    </div>
+
+                                    <p className="comment-body-text">
+                                        {typeof comment === 'string'
+                                            ? comment
+                                            : (comment.comment_STR || comment.comment || "No text available")}
+                                    </p>
                                 </div>
                                 <p className="comment-body-text">{commentText}</p>
                             </div>
@@ -139,7 +162,8 @@ function ProductPage() {
                 ) : (
                     <p className="no-reviews-text">No reviews yet for this product. Be the first to review!</p>
                 )}
-                <hr style={{ border: '0', borderTop: '1px solid #e7e7e7', margin: '40px 0' }}/>
+
+                <hr className="section-divider"/>
 
                 <RelatedProducts
                     currentProductId={id}

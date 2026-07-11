@@ -74,6 +74,8 @@ function ProductDetailsInfo({product}) {
             >
                 Add to Cart
             </button>
+
+
         </div>
     );
 }

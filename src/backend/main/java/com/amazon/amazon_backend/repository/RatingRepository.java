@@ -20,4 +20,6 @@ public interface RatingRepository extends JpaRepository<Rating, Integer> {
 
     @Query("SELECT AVG(r.stars) FROM Rating r WHERE r.product.id = :productId")
     Double calculateAverageRatingByProduct(@Param("productId") Integer productId);
+
+    List<Rating> findTop5ByProduct_ProductIdOrderByRatingIdDesc(Integer productId);
 }

@@ -44,10 +44,6 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-#root {
-    background-color: transparent !important;
-}
-
 body {
     display: flex;
     flex-direction: column;
@@ -160,27 +156,6 @@ body.body-dark{
     border-radius: 3em;
 }
 
-.tabs-container {
-    display: flex;
-    gap: 10px;
-    border-bottom: 1px solid var(--Very-light-gray);
-}
-
-.tab-btn {
-    background: none;
-    border: none;
-    padding: 12px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    color: var(--Very-dark-grayish-blue);
-}
-
-.tab-btn.active {
-    color: var(--Very-dark-desaturated-blue-1);
-    border-bottom: 2px solid var(--Red);
-    font-weight: bold;
-}
-
 .slider{
     background-color: var(--Orange);
     padding: 7px;
@@ -280,7 +255,6 @@ body.body-dark{
     display: flex;
     flex-direction: column;
     transition: all 0.2s ease-in-out;
-    height: 100%;
 }
 
 .product-dark {
@@ -348,15 +322,6 @@ body.body-dark{
     color: white;
 }
 
-.profile-btn{
-    transition: all 0.3s;
-}
-
-.profile-btn:hover{
-    background-color: var(--Very-dark-blue);
-    color: var(--Light-gray);
-}
-
 @media (max-width: 700px) {
     .navbar {
         flex-direction: column;
@@ -401,6 +366,7 @@ body.body-dark{
     align-items: center;
     justify-content: center;
     padding: 20px 20px;
+    background-color: var(--Light-gray);
 }
 
 .auth-card {
@@ -765,12 +731,6 @@ body.body-dark{
     margin: 6px 0 14px 0;
 }
 
-.navbar-btns{
-    display:flex;
-    justify-content: space-between;
-    margin-right: 10px;
-}
-
 .related-product-btn {
     display: block;
     text-align: center;
@@ -823,6 +783,35 @@ body.body-dark{
     align-items: center;
 }
 
+.star-filled {
+    color: #febd69 !important;
+    font-size: 18px;
+    margin-right: 2px;
+}
+
+.star-empty {
+    color: #ccc;
+    font-size: 18px;
+    margin-right: 2px;
+}
+
+.rating-number {
+    font-size: 14px;
+    color: #555;
+    margin-left: 5px;
+}
+
+.comments-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.comment-card {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
 .comment-user-header {
     display: flex;
     align-items: center;
@@ -838,6 +827,19 @@ body.body-dark{
     display: inline-block;
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23757575"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>');
     background-size: cover;
+.comment-user-name {
+    font-weight: bold;
+}
+
+.comment-body-text {
+    margin: 5px 0;
+    color: #333;
+}
+
+.section-divider {
+    border: 0;
+    border-top: 1px solid #e7e7e7;
+    margin: 40px 0;
 }
 
 @media (max-width: 700px) {
@@ -868,9 +870,7 @@ body.body-dark{
 
     .navbar-btns {
         width: 100%;
-        justify-content: center;
-        align-items: center;
-        margin: 0;
+        justify-content: space-between;
     }
 
     .categories{
