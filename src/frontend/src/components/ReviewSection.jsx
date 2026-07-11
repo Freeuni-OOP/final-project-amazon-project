@@ -39,7 +39,6 @@ function ReviewSection({ productId, currentUserId, canReview, onReviewSubmitted 
             onReviewSubmitted({
                 comment_STR: comment,
                 rating: rating,
-                reviewerName: "You"
             });
 
         } catch (err) {
@@ -48,7 +47,6 @@ function ReviewSection({ productId, currentUserId, canReview, onReviewSubmitted 
         }
     };
 
-    if (!canReview) return null;
 
     return (
         <div className="add-review-container" style={{ maxWidth: '600px', marginBottom: '40px', padding: '20px', border: '1px solid #e7e7e7', borderRadius: '8px', backgroundColor: '#fdfdfd' }}>

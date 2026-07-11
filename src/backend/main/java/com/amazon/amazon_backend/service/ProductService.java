@@ -35,6 +35,7 @@ public class ProductService {
     private final CommentRepository commentRepository;
     private final TransactionRepository transactionRepository;
     private final RatingRepository ratingRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -45,11 +46,12 @@ public class ProductService {
     @Autowired
     CartItemRepository cartItemRepository;
 
-    public ProductService(ProductRepository productRepository, CommentRepository commentRepository, TransactionRepository transactionRepository, RatingRepository ratingRepository) {
+    public ProductService(ProductRepository productRepository, CommentRepository commentRepository, TransactionRepository transactionRepository, RatingRepository ratingRepository, OrderRepository orderRepository) {
         this.productRepository = productRepository;
         this.commentRepository = commentRepository;
         this.transactionRepository = transactionRepository;
         this.ratingRepository = ratingRepository;
+        this.orderRepository = orderRepository;
     }
 
     public List<ProductResponse> getAllProducts() {
@@ -63,8 +65,8 @@ public class ProductService {
 
                 List<Comment> comments = commentRepository.findTop5ByProduct_ProductIdOrderByCommentIdDesc(product.getProductId());
                 List<String> top5CommentsText = comments.stream()
-                    .map(Comment::getCommentStr)
-                    .toList();
+                        .map(Comment::getCommentStr)
+                        .toList();
 
                BigDecimal avgRating = product.getAverageRating();
                if (avgRating == null || avgRating.compareTo(BigDecimal.ZERO) == 0) {
@@ -278,7 +280,7 @@ public class ProductService {
     }
 
     public void addProductReview(Integer id, Integer userId, String commentStr, Integer rating) {
-        boolean hasPurchased = transactionRepository.existsByBuyerIdAndItemsProductProductIdAndStatus(userId, id, TransactionStatus.SUCCESS);
+        boolean hasPurchased = orderRepository.existsPurchase(userId, id);
 
         if (!hasPurchased) {
             throw new IllegalStateException("Only users who purchased this product can leave a review.");
@@ -291,19 +293,10 @@ public class ProductService {
             Comment comment = new Comment(commentStr, product, user);
             commentRepository.save(comment);
         }
-        if (rating != null) {
-            Optional<Rating> existingRating = ratingRepository.findByUser_IdAndProduct_ProductId(userId, id);
 
-            if (existingRating.isPresent()) {
-                Rating ratingToUpdate = existingRating.get();
-                ratingToUpdate.setStars(rating);
-                ratingToUpdate.setCreatedAt(LocalDateTime.now());
-                ratingRepository.save(ratingToUpdate);
-            }
-            else {
-                Rating newRating = new Rating(user, product, rating, LocalDateTime.now());
-                ratingRepository.save(newRating);
-            }
+        if (rating != null) {
+            Rating newRating = new Rating(user, product, rating, LocalDateTime.now());
+            ratingRepository.save(newRating);
 
             Double average = ratingRepository.calculateAverageRatingByProduct(id);
             if (average != null) {
@@ -312,11 +305,7 @@ public class ProductService {
                 product.setAverageRating(BigDecimal.ZERO);
             }
         }
-        productRepository.save(product);
-    }
 
-    public List<ProductResponse> getSimilarProducts(Integer categoryId) {
-        List<Product> products = productRepository.findByCategory_CategoryId(categoryId);
-        return ProductConverter.toProductResponseList(products);
+        productRepository.save(product);
     }
 }

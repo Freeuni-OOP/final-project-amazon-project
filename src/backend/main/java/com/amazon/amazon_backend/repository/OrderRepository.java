@@ -16,6 +16,10 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findByBuyer(User buyer);
     List<Order> findByBuyer_Id(Integer userId);
     List<Order> findByDatetime(LocalDateTime dateTime);
+
     @Query("SELECT DISTINCT o FROM Order o JOIN o.orderDetails od WHERE od.product.seller.id = :sellerId")
     List<Order> findBySellerId(@Param("sellerId") Integer sellerId);
+
+    @Query("SELECT COUNT(o) > 0 FROM Order o JOIN o.orderDetails d WHERE o.buyer.id = :userId AND d.product.id = :productId")
+    boolean existsPurchase(@Param("userId") Integer userId, @Param("productId") Integer productId);
 }

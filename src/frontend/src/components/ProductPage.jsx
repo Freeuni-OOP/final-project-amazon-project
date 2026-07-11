@@ -46,16 +46,33 @@ function ProductPage() {
         fetchProductData();
     }, [id]);
 
-    const handleReviewSubmitted = (newComment) => {
-        const newRatingValue = newComment.rating || 0;
 
-        setProduct({
-            ...product,
-            canReview: false,
-            top5comments: [newComment, ...(product.top5comments || [])],
-            top5ratings: [newRatingValue, ...(product.top5ratings || [])]
-        });
-    };
+   const handleReviewSubmitted = async (newComment) => {
+    try {
+        const url = currentUserId
+            ? `http://localhost:8080/products/${id}?userId=${currentUserId}`
+            : `http://localhost:8080/products/${id}`;
+
+        const response = await fetch(url);
+        if (response.ok) {
+            const data = await response.json();
+            setProduct(data); 
+            return;
+        }
+    } catch (error) {
+        console.error("Error refreshing product data:", error);
+    }
+
+    const newRatingValue = newComment.rating || 0;
+    const commentText = typeof newComment === 'string' ? newComment : (newComment.comment || newComment.comment_STR || "");
+
+    setProduct(prev => ({
+        ...prev,
+        canReview: false,
+        top5comments: [commentText, ...(prev.top5comments || [])],
+        top5ratings: [newRatingValue, ...(prev.top5ratings || [])]
+    }));
+};
 
     const renderStars = (rating) => {
         const roundedRating = Math.min(5, Math.max(0, Math.round(rating || 0)));
@@ -102,7 +119,7 @@ function ProductPage() {
                     <hr/>
                     <div className="rating-section">
                         <h3 className="rating-title">Product Rating</h3>
-                        {renderStars(product.rating || product.averageRating)}
+                        {renderStars(product.averageRating)}
                     </div>
                 </div>
 
@@ -121,15 +138,12 @@ function ProductPage() {
 
                 {product.top5comments && product.top5comments.length > 0 ? (
                     <div className="comments-list-container">
-                        {product.top5comments.map((comment, index) => {
-                            const currentCommentRating = product.top5ratings?.[index] || 0;
-
-                            return (
-                                <div key={index} className="comment-card">
-                                    <div className="comment-user-header">
-                                        <div className="comment-user-avatar"></div>
-                                        <span className="comment-user-name">
-                                          {comment.reviewerName || "Amazon Customer"}
+                        {product.top5comments.map((commentText, index) => (
+                            <div key={index} className="comment-card">
+                                <div className="comment-user-header">
+                                    <div className="user-avatar-circle"></div>
+                                    <span className="comment-user-name">
+                                          Amazon Customer
                                     </span>
 
                                         {renderIndividualStars(currentCommentRating)}
@@ -141,11 +155,12 @@ function ProductPage() {
                                             : (comment.comment_STR || comment.comment || "No text available")}
                                     </p>
                                 </div>
-                            );
-                        })}
+                                <p className="comment-body-text">{commentText}</p>
+                            </div>
+                        ))}
                     </div>
                 ) : (
-                    <p className="no-comments-text">No reviews yet for this product. Be the first to review!</p>
+                    <p className="no-reviews-text">No reviews yet for this product. Be the first to review!</p>
                 )}
 
                 <hr className="section-divider"/>
