@@ -109,12 +109,12 @@ function ProductPage() {
                         <img src={getImageUrl(selectedImageUrl)} alt={product.productName}/>
                     </div>
                     <div className="thumbnail-list">
-                    {product.imageUrls?.map((url, index) => (
-                     <div className="thumbnail-images" key={index} onClick={() => setSelectedImageUrl(url)}>
+                        {product.imageUrls?.map((url, index) => (
+                            <div className="thumbnail-images" key={index} onClick={() => setSelectedImageUrl(url)}>
 
-                         <img className="thumbnail-img" src={getImageUrl(url)} alt="thumbnail" />
-                      </div>
-                      ))}
+                                <img className="thumbnail-img" src={getImageUrl(url)} alt="thumbnail" />
+                            </div>
+                        ))}
                     </div>
                     <hr/>
                     <div className="rating-section">
@@ -138,14 +138,18 @@ function ProductPage() {
 
                 {product.top5comments && product.top5comments.length > 0 ? (
                     <div className="comments-list-container">
-                        {product.top5comments.map((commentText, index) => (
-                            <div key={index} className="comment-card">
-                                <div className="comment-user-header">
-                                    <div className="user-avatar-circle"></div>
-                                    <span className="comment-user-name">
-                                          Amazon Customer
-                                    </span>
+                        {product.top5comments.map((commentText, index) => {
+                            // Syntax Fixes: Declared the missing variables so the code compiles
+                            const currentCommentRating = product.top5ratings ? product.top5ratings[index] : 0;
+                            const comment = commentText;
 
+                            return (
+                                <div key={index} className="comment-card">
+                                    <div className="comment-user-header">
+                                        <div className="user-avatar-circle"></div>
+                                        <span className="comment-user-name">
+                                              Amazon Customer
+                                        </span>
                                         {renderIndividualStars(currentCommentRating)}
                                     </div>
 
@@ -154,10 +158,11 @@ function ProductPage() {
                                             ? comment
                                             : (comment.comment_STR || comment.comment || "No text available")}
                                     </p>
+
+                                    <p className="comment-body-text">{commentText}</p>
                                 </div>
-                                <p className="comment-body-text">{commentText}</p>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 ) : (
                     <p className="no-reviews-text">No reviews yet for this product. Be the first to review!</p>
