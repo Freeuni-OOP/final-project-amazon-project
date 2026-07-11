@@ -844,6 +844,109 @@ body.body-dark{
     margin: 40px 0;
 }
 
+.add-review-container {
+    max-width: 600px;
+    margin-bottom: 40px;
+    padding: 24px;
+    border: 1px solid #e7e7e7;
+    border-radius: 8px;
+    background-color: #ffffff;
+    font-family: "Arial", sans-serif;
+    box-sizing: border-box;
+}
+
+.review-box-title {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 22px;
+    color: #111111;
+    font-weight: bold;
+}
+
+.review-error-text {
+    color: #c40000;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.review-success-message {
+    color: #007600;
+    background-color: #fcfff5;
+    border: 1px solid #a3c293;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.add-review-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.review-form-group-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.review-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 25px;
+}
+
+.review-label {
+    font-weight: 500;
+    font-size: 16px;
+    color: #111111;
+}
+
+.review-textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    border: 1px solid #cccccc;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 14px;
+    color: #333333;
+    resize: vertical;
+    outline: none;
+}
+
+.review-textarea::placeholder {
+    color: #888888;
+}
+
+.review-textarea:focus {
+    border-color: #007185;
+}
+
+.amazon-primary-button.review-submit-btn {
+    width: fit-content;
+    padding: 12px 28px;
+    background-color: #1a253c;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.amazon-primary-button.review-submit-btn:hover {
+    background-color: #111a2e;
+}
+
+.amazon-primary-button.review-submit-btn:active {
+    transform: scale(0.98);
+}
+
 @media (max-width: 700px) {
     .navbar {
         flex-direction: column;
