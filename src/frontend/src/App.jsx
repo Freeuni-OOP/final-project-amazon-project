@@ -72,11 +72,11 @@ function App() {
           }/>
 
           <Route path="/edit-product/:id" element={
-              <EditProductPage />
+              <EditProductPage onProductEdited={fetchInitialData} />
           }/>
 
           <Route path="/create-product" element={
-              <AddProductPage onProductAdded={fetchInitialData}/>
+              <AddProductPage onProductAdded={fetchInitialData} />
           }/>
 
           <Route path="/product/:id" element={
