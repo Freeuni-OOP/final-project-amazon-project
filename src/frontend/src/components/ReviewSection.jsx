@@ -17,84 +17,72 @@ function ReviewSection({ productId, currentUserId, canReview, onReviewSubmitted 
 
         try {
             const response = await fetch(`http://localhost:8080/products/${productId}/reviews?userId=${currentUserId}`, {
-                method: 'POST',
+            method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    comment_STR: comment,
-                    rating: rating
-                })
-            });
-
-            if (response.status === 403) {
-                const errorMsg = await response.text();
-                setError(errorMsg);
-                return;
-            }
-
-            if (!response.ok) throw new Error("Server error");
-
-            setSuccess(true);
-            setComment("");
-
-            onReviewSubmitted({
+            body: JSON.stringify({
                 comment_STR: comment,
-                rating: rating,
-            });
+                rating: rating
+            })
+        });
 
-        } catch (err) {
-            setError("Failed to submit review. Please try again.");
-            console.error(err);
+        if (response.status === 403) {
+            const errorMsg = await response.text();
+            setError(errorMsg);
+            return;
         }
-    };
 
+        if (!response.ok) throw new Error("Server error");
 
-    return (
-        <div className="add-review-container" style={{ maxWidth: '600px', marginBottom: '40px', padding: '20px', border: '1px solid #e7e7e7', borderRadius: '8px', backgroundColor: '#fdfdfd' }}>
-            <h3 style={{ marginTop: 0, marginBottom: '15px' }}>Review this product</h3>
-            {error && <p style={{ color: '#c40000', fontSize: '14px' }}>{error}</p>}
-            {success && (
-                <div style={{ color: '#007600', backgroundColor: '#fcfff5', border: '1px solid #a3c293', padding: '15px', borderRadius: '4px', maxWidth: '600px', marginBottom: '40px' }}>
-                    Thank you! Your review has been submitted successfully.
-                </div>
-            )}
-            <form onSubmit={handleSubmitReview}>
-                <div style={{ marginBottom: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <label style={{ fontWeight: '500' }}>Overall rating:</label>
-                    <div style={{ display: 'flex', gap: '4px' }}>
-                        {[1, 2, 3, 4, 5].map((num) => (
-                            <span
-                                key={num}
-                                onClick={() => setRating(num)}
-                                style={{
-                                    fontSize: '24px',
-                                    cursor: 'pointer',
-                                    color: num <= rating ? '#febd69' : '#ccc',
-                                    transition: 'color 0.2s'
-                                }}
-                            >
-                                ★
-                            </span>
-                        ))}
-                    </div>
-                    <span style={{ fontSize: '14px', color: '#555', marginLeft: '5px' }}>({rating} Stars)</span>
-                </div>
+        setSuccess(true);
+        setComment("");
 
-                <div style={{ marginBottom: '15px' }}>
-                    <label style={{ display: 'block', fontWeight: '500', marginBottom: '5px' }}>Add a written review:</label>
-                    <textarea
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
-                        placeholder="What did you like or dislike? What did you use this product for?"
-                        rows="4"
-                        style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccd1d1', boxSizing: 'border-box', fontFamily: 'inherit' }}
-                    />
-                </div>
-                <button type="submit" className="amazon-primary-button" style={{ width: 'auto', padding: '8px 20px', margin: 0 }}>
-                    Submit Review
-                </button>
-            </form>
-        </div>
-    );
+        onReviewSubmitted({
+            comment: comment,
+            rating: rating,
+        });
+
+    } catch (err) {
+        setError("Failed to submit review. Please try again.");
+        console.error(err);
+    }
+};
+
+return (
+    <div className="add-review-container">
+        <h3 className="review-box-title">Review this product</h3>
+        {error && <p className="review-error-text">{error}</p>}
+        {success && (
+            <div className="review-success-message">
+                Thank you! Your review has been submitted successfully.
+            </div>
+        )}
+        <form onSubmit={handleSubmitReview}>
+            <div className="review-form-group-row">
+                <label className="review-label">Overall rating:</label>
+                <select
+                    value={rating}
+                    onChange={(e) => setRating(Number(e.target.value))}
+                    className="review-select"
+                >
+                    {[5, 4, 3, 2, 1].map(num => <option key={num} value={num}>{num} Stars</option>)}
+                </select>
+            </div>
+            <div className="review-form-group">
+                <label className="review-label">Add a written review:</label>
+                <textarea
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    placeholder="What did you like or dislike? What did you use this product for?"
+                    rows="4"
+                    className="review-textarea"
+                />
+            </div>
+            <button type="submit" className="amazon-primary-button review-submit-btn">
+                Submit Review
+            </button>
+        </form>
+    </div>
+);
 }
 
 export default ReviewSection;

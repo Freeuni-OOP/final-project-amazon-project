@@ -153,12 +153,6 @@ function ProductPage() {
                                         {renderIndividualStars(currentCommentRating)}
                                     </div>
 
-                                    <p className="comment-body-text">
-                                        {typeof comment === 'string'
-                                            ? comment
-                                            : (comment.comment_STR || comment.comment || "No text available")}
-                                    </p>
-
                                     <p className="comment-body-text">{commentText}</p>
                                 </div>
                             );
