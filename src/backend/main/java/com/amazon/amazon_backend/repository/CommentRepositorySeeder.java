@@ -8,6 +8,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Slf4j
 @Component
 @Order(5)
@@ -25,6 +27,8 @@ public class CommentRepositorySeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        if (commentRepository.count() > 0) return;
+
         var allProducts = productRepository.findAll();
         var allUsers = userRepository.findAll();
 
@@ -33,11 +37,25 @@ public class CommentRepositorySeeder implements CommandLineRunner {
             Product sampleProduct = allProducts.get(0);
             User sampleUser = allUsers.get(0);
 
-            commentRepository.save(new Comment("Great quality for the price! Will definitely buy again.", sampleProduct, sampleUser));
-            commentRepository.save(new Comment("Fits perfectly, but the color is slightly darker.", sampleProduct, sampleUser));
-            commentRepository.save(new Comment("Super soft material, highly recommend!", sampleProduct, sampleUser));
-            commentRepository.save(new Comment("Decent product, took a bit long to arrive.", sampleProduct, sampleUser));
-        } else {
+            List<String> commentsText = List.of(
+                    "Great quality for the price! Will definitely buy again.",
+                    "Fits perfectly, but the color is slightly darker.",
+                    "Super good quality, highly recommend!",
+                    "Decent product, took a bit long to arrive.",
+                    "Best purchase I have made this year!"
+            );
+
+            for (String text : commentsText) {
+                Comment comment = new Comment();
+                comment.setUser(sampleUser);
+                comment.setProduct(sampleProduct);
+                comment.setCommentStr(text);
+
+                commentRepository.save(comment);
+                Thread.sleep(10);
+            }
+        }
+        else {
             System.out.println("Error seeding comments");
         }
     }

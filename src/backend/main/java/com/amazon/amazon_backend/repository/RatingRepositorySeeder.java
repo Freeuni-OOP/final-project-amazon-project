@@ -28,22 +28,25 @@ public class RatingRepositorySeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-            List<Product> allProducts = productRepository.findAll();
-            List<User> allUsers = userRepository.findAll();
+        if (ratingRepository.count() > 0) return;
+        List<Product> allProducts = productRepository.findAll();
+        List<User> allUsers = userRepository.findAll();
 
-            if (allProducts != null && !allProducts.isEmpty() && allUsers != null && !allUsers.isEmpty()) {
+        if (allProducts != null && !allProducts.isEmpty() && allUsers != null && !allUsers.isEmpty()) {
 
-                Product sampleProduct = allProducts.get(0);
-                User sampleUser = allUsers.get(0);
+            Product sampleProduct = allProducts.get(0);
+            User sampleUser = allUsers.get(0);
 
+            int[] stars = {5, 3, 4, 2, 4};
 
-                ratingRepository.save(new Rating(sampleUser, sampleProduct,5, LocalDateTime.now()));
-                ratingRepository.save(new Rating(sampleUser, sampleProduct,3, LocalDateTime.now()));
-                ratingRepository.save(new Rating(sampleUser, sampleProduct,4, LocalDateTime.now()));
-
-            } else {
-                System.out.println("Error seeding ratings");
+            for (int star : stars) {
+                ratingRepository.save(new Rating(sampleUser, sampleProduct, star, LocalDateTime.now()));
+                Thread.sleep(10);
             }
+        }
+        else {
+            System.out.println("Error seeding ratings");
+        }
 
     }
 }

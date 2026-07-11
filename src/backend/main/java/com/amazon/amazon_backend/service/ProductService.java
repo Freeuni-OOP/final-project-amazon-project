@@ -77,6 +77,9 @@ public class ProductService {
                    }
                }
 
+               List<Rating> ratings = ratingRepository.findTop5ByProduct_ProductIdOrderByRatingIdDesc(product.getProductId());
+               List<Integer> top5RatingsStars = ratings.stream().map(Rating::getStars).toList();
+
                 return new ProductResponse(
                         product.getProductId(),
                         product.getProductName(),
@@ -88,6 +91,7 @@ public class ProductService {
                         product.getSeller() != null ? product.getSeller().getUsername() : "Unknown Seller",
                         avgRating,
                         top5CommentsText,
+                        top5RatingsStars,
                         false
                 );
         }).collect(Collectors.toList());
@@ -116,7 +120,17 @@ public class ProductService {
             );
         }
 
-        return ProductConverter.toProductResponse(product, top5CommentsText, hasPurchased);
+        List<Rating> ratings = ratingRepository.findTop5ByProduct_ProductIdOrderByRatingIdDesc(id);
+
+        List<Integer> top5RatingsStars = ratings.stream()
+                .map(Rating::getStars)
+                .toList();
+
+        ProductResponse response = ProductConverter.toProductResponse(product, top5CommentsText, top5RatingsStars, hasPurchased);
+
+        response.setTop5ratings(top5RatingsStars);
+
+        return response;
     }
 
     public List<ProductResponse> searchProductsByName(String name) {
@@ -185,7 +199,7 @@ public class ProductService {
             }
         }
 
-        return ProductConverter.toProductResponse(productRepository.save(product), List.of(), false);
+        return ProductConverter.toProductResponse(productRepository.save(product), List.of(), List.of(),false);
     }
 
     public void deleteProduct(Integer id){
@@ -203,7 +217,7 @@ public class ProductService {
         }
         Product product = findProduct(id);
         product.setPrice(request.getPrice());
-        return ProductConverter.toProductResponse(productRepository.save(product), List.of(), false);
+        return ProductConverter.toProductResponse(productRepository.save(product), List.of(),List.of(), false);
     }
 
     public ProductResponse updateQuantity(Integer id, QuantityUpdateRequest request) {
@@ -212,7 +226,7 @@ public class ProductService {
         }
         Product product = findProduct(id);
         product.setQuantity(request.getQuantity());
-        return ProductConverter.toProductResponse(productRepository.save(product), List.of(), false);
+        return ProductConverter.toProductResponse(productRepository.save(product), List.of(),List.of(), false);
     }
 
     public ProductResponse updateImage(Integer id, ImagesUpdateRequest request) {
@@ -235,7 +249,7 @@ public class ProductService {
             }
         }
 
-        return ProductConverter.toProductResponse(productRepository.save(product), List.of(), false);
+        return ProductConverter.toProductResponse(productRepository.save(product), List.of(),List.of(), false);
     }
 
     public ProductResponse updateNameAndDescription(Integer id, NameDescriptionUpdateRequest request) {
@@ -246,7 +260,7 @@ public class ProductService {
         if (request.getDescription() != null) {
             product.setDescription(request.getDescription());
         }
-        return ProductConverter.toProductResponse(productRepository.save(product), List.of(), false);
+        return ProductConverter.toProductResponse(productRepository.save(product), List.of(),List.of(), false);
     }
 
     private Product findProduct(Integer id){

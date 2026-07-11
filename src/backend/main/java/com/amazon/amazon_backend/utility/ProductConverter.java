@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ProductConverter {
 
-    public static ProductResponse toProductResponse(Product product, List<String> top5Comments, boolean canReview){
+    public static ProductResponse toProductResponse(Product product, List<String> top5Comments, List<Integer> top5Ratings,boolean canReview){
         if(product == null)return null;
 
         List<String> imageUrls = new ArrayList<>();
@@ -32,6 +32,7 @@ public class ProductConverter {
                 product.getSeller().getUsername(),
                 product.getAverageRating(),
                 top5Comments,
+                top5Ratings,
                 canReview
                 );
     }
@@ -41,7 +42,7 @@ public class ProductConverter {
         if (products == null) return responseList;
 
         for (Product product : products) {
-            responseList.add(toProductResponse(product, List.of(), false));
+            responseList.add(toProductResponse(product, List.of(), List.of(),false));
         }
 
         return responseList;
