@@ -46,12 +46,27 @@ function ProductPage() {
         fetchProductData();
     }, [id]);
 
-    const handleReviewSubmitted = (newComment) => {
-        setProduct({
-            ...product,
+    const handleReviewSubmitted = async (newComment) => {
+        try {
+            const url = currentUserId
+                ? `http://localhost:8080/products/${id}?userId=${currentUserId}`
+                : `http://localhost:8080/products/${id}`;
+
+            const response = await fetch(url);
+            if (response.ok) {
+                const data = await response.json();
+                setProduct(data);
+                return;
+            }
+        } catch (error) {
+            console.error("Error refreshing product data:", error);
+        }
+
+        setProduct(prev => ({
+            ...prev,
             canReview: false,
-            top5comments: [newComment, ...(product.top5comments || [])]
-        });
+            top5comments: [newComment, ...(prev.top5comments || [])]
+        }));
     };
 
     const renderStars = (rating) => {
@@ -88,7 +103,7 @@ function ProductPage() {
                     <hr/>
                     <div className="rating-section">
                         <h3 className="rating-title">Product Rating</h3>
-                        {renderStars(product.rating || product.averageRating)}
+                        {renderStars(product.averageRating)}
                     </div>
                 </div>
 
@@ -108,23 +123,21 @@ function ProductPage() {
                 <h2 className="comments-main-title">Top reviews from customers</h2>
 
                 {product.top5comments && product.top5comments.length > 0 ? (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                        {product.top5comments.map((comment, index) => (
+                    <div className="comments-list-container">
+                        {product.top5comments.map((commentText, index) => (
                             <div key={index} className="comment-card">
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                                    <div className="comment-user-avatar"></div>
+                                <div className="comment-user-header">
+                                    <div className="user-avatar-circle"></div>
                                     <span className="comment-user-name">
-                                        {"Amazon Customer"}
+                                          Amazon Customer
                                     </span>
                                 </div>
-                                <p className="comment-body-text">
-                                    {typeof comment === 'string' ? comment : "No text available"}
-                                </p>
+                                <p className="comment-body-text">{commentText}</p>
                             </div>
                         ))}
                     </div>
                 ) : (
-                    <p className="no-comments-text">No reviews yet for this product. Be the first to review!</p>
+                    <p className="no-reviews-text">No reviews yet for this product. Be the first to review!</p>
                 )}
                 <hr style={{ border: '0', borderTop: '1px solid #e7e7e7', margin: '40px 0' }}/>
 

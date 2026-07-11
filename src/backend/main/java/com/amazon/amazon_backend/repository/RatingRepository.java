@@ -18,6 +18,6 @@ public interface RatingRepository extends JpaRepository<Rating, Integer> {
     List<Rating> findByProduct_ProductId(Integer productId);
     Optional<Rating> findByUser_IdAndProduct_ProductId(Integer userId, Integer productId);
 
-    @Query("SELECT AVG(r.stars) FROM Rating r WHERE r.product.productId = :productId")
+    @Query("SELECT AVG(r.stars) FROM Rating r WHERE r.product.id = :productId")
     Double calculateAverageRatingByProduct(@Param("productId") Integer productId);
 }
