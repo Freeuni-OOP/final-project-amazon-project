@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static com.amazon.amazon_backend.utility.CommentConverter.toCommentResponse;
 import static com.amazon.amazon_backend.utility.CommentConverter.toCommentResponseList;
@@ -44,9 +45,9 @@ public class CommentService {
     @Transactional
     public CommentResponse addComment(Integer productId, Integer userId, CommentRequest request){
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+                .orElseThrow(() -> new NoSuchElementException("Product not found"));
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
 
         Comment comment = new Comment(request.getCommentStr(), product, user);
         Comment savedComment = commentRepository.save(comment);
