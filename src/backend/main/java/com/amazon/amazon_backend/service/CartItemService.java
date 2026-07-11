@@ -72,7 +72,13 @@ public class CartItemService {
 
         if (existing.isPresent()) {
             CartItem cartItem = existing.get();
-            cartItem.setQuantity(cartItem.getQuantity() + request.getQuantity());
+
+            int newQuantity = cartItem.getQuantity() + request.getQuantity();
+            if (newQuantity > product.getQuantity()) {
+                throw new IllegalArgumentException("Total requested quantity (" + newQuantity + ") exceeds available stock (" + product.getQuantity() + ").");
+            }
+
+            cartItem.setQuantity(newQuantity);
             return toCartItemResponse(cartItemRepository.save(cartItem));
         }
 
